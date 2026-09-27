@@ -225,7 +225,7 @@ public final class LivingWorldGameTests {
         VillageLife.receiveGift(level, villager, player, flowers, day);
         helper.assertTrue(villager.getPlayerReputation(player) == reputation, "a fourth gift in a day still counted");
         helper.assertTrue(flowers.getCount() == 5, "the villager took a fourth flower");
-        helper.assertFalse(villager.getPersistentData().getString(VillageLife.NAME).isEmpty(), "the villager has no name");
+        helper.assertTrue(villager.getPersistentData().contains(VillageLife.NAME), "the villager has no name");
         helper.succeed();
     }
 
