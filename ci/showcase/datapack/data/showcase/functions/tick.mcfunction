@@ -14,7 +14,17 @@ execute if score t showcase matches 2000..2399 run tp @a 0.5 -41 -46 0 28
 execute if score t showcase matches 2400..2799 run tp @a 42 -43 -42 0 14
 execute if score t showcase matches 2800..3199 run tp @a -122 -14 8.5 90 10
 execute if score t showcase matches 3200 run effect give @a minecraft:night_vision infinite 0 true
-execute if score t showcase matches 3200..3599 run tp @a -194.5 -52 8.5 90 32
+execute if score t showcase matches 3200..3599 run tp @a -194.5 -49.5 8.5 90 30
 execute if score t showcase matches 3600 run effect clear @a minecraft:night_vision
 execute if score t showcase matches 3600 run weather thunder 1000000
 execute if score t showcase matches 3600.. run tp @a 0.5 -40 -48 0 22
+execute if score t showcase matches 300 run say showcase_shot 01_blocks
+execute if score t showcase matches 700 run say showcase_shot 02_mobs
+execute if score t showcase matches 1100 run say showcase_shot 03_ruins_oasis
+execute if score t showcase matches 1500 run say showcase_shot 04_sandstorm
+execute if score t showcase matches 1900 run say showcase_shot 05_sandstorm_blocks
+execute if score t showcase matches 2300 run say showcase_shot 06_volcanic_blocks
+execute if score t showcase matches 2700 run say showcase_shot 07_volcanic_mobs
+execute if score t showcase matches 3100 run say showcase_shot 08_volcano
+execute if score t showcase matches 3500 run say showcase_shot 09_magma_chamber
+execute if score t showcase matches 3900 run say showcase_shot 10_ashfall_eruption

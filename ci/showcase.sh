@@ -50,17 +50,20 @@ fi
 sleep 3
 xdotool key F1 || true   # hide the HUD
 
-shot() { sleep "$1"; import -window root -display :99 "ci/screenshots/$2.png" && echo "captured $2"; }
-shot 14 01_blocks
-shot 20 02_mobs
-shot 20 03_ruins_oasis
-shot 22 04_sandstorm
-shot 20 05_sandstorm_blocks
-shot 20 06_volcanic_blocks
-shot 20 07_volcanic_mobs
-shot 20 08_volcano
-shot 20 09_magma_chamber
-shot 24 10_ashfall_eruption
+# The datapack announces each view in chat ("showcase_shot <name>") once it has settled; the game can run slower
+# than real time on the virtual display, so wait for the announcement instead of sleeping a fixed time.
+shot() {
+  for i in $(seq 1 180); do
+    grep -q "showcase_shot $1" client.log && break
+    sleep 1
+  done
+  sleep 1
+  import -window root -display :99 "ci/screenshots/$1.png" && echo "captured $1"
+}
+for view in 01_blocks 02_mobs 03_ruins_oasis 04_sandstorm 05_sandstorm_blocks 06_volcanic_blocks 07_volcanic_mobs \
+            08_volcano 09_magma_chamber 10_ashfall_eruption; do
+  shot "$view"
+done
 
 echo "---- client warnings and errors mentioning the mod ----"
 grep -nE "WARN|ERROR" client.log | grep -iE "dunesrelics|missing|unable|failed to load|exception" | head -60 || true

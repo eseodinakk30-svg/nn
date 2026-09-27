@@ -60,7 +60,7 @@ public class VolcanoPiece extends StructurePiece {
         this.peakY = peak(seed, center.getY(), seaLevel);
         this.craterRadius = 6 + Math.floorMod(seed >> 8, 3);
         this.lavaY = this.peakY - 7;
-        this.chamberY = seaLevel + 9;
+        this.chamberY = chamberY(center.getY(), seaLevel);
         this.tunnel = Direction.from2DDataValue(Math.floorMod(seed >> 12, 4));
     }
 
@@ -75,12 +75,17 @@ public class VolcanoPiece extends StructurePiece {
         this.peakY = peak(this.seed, this.baseY, this.seaLevel);
         this.craterRadius = 6 + Math.floorMod(this.seed >> 8, 3);
         this.lavaY = this.peakY - 7;
-        this.chamberY = this.seaLevel + 9;
+        this.chamberY = chamberY(this.baseY, this.seaLevel);
         this.tunnel = Direction.from2DDataValue(Math.floorMod(this.seed >> 12, 4));
     }
 
     private static int radius(int seed) {
         return 34 + Math.floorMod(seed, 12);
+    }
+
+    /** The magma chamber sits just above sea level, or just under the ground when the volcano stands on high land. */
+    private static int chamberY(int baseY, int seaLevel) {
+        return Math.max(seaLevel + 9, baseY - 2);
     }
 
     private static int peak(int seed, int baseY, int seaLevel) {
@@ -161,11 +166,12 @@ public class VolcanoPiece extends StructurePiece {
             return;
         }
         boolean river = distance > this.craterRadius + 1 && slope > 0.12D && this.lavaRiver(angle);
-        int minY = Math.max(chunkBox.minY(), floor - 3);
+        // Reach below the ground as far as the chamber, so it is carved out whole even under high land.
+        int minY = Math.max(chunkBox.minY(), Math.min(floor - 3, this.chamberY - 8));
         int maxY = Math.min(chunkBox.maxY(), Math.max(top, this.lavaY) + 1);
         for (int y = minY; y <= maxY; y++) {
             pos.set(x, y, z);
-            BlockState state = this.blockAt(x, y, z, distance, slope, top, river);
+            BlockState state = this.blockAt(x, y, z, distance, slope, top, floor, river);
             if (state != null) {
                 level.setBlock(pos, state, FLAGS);
             }
@@ -191,16 +197,16 @@ public class VolcanoPiece extends StructurePiece {
     }
 
     /** The block of the volcano at a position, or null to leave the world untouched. */
-    private BlockState blockAt(int x, int y, int z, double distance, double slope, int top, boolean river) {
+    private BlockState blockAt(int x, int y, int z, double distance, double slope, int top, int ground, boolean river) {
         // Magma chamber and the tunnel into it.
         double chamber = this.chamberShape(x, y, z);
         if (chamber < 1.0D) {
             return this.chamberBlock(x, y, z, chamber);
         }
-        if (this.inTunnel(x, y, z, top)) {
+        if (this.inTunnel(x, y, z, top, ground)) {
             return Blocks.AIR.defaultBlockState();
         }
-        if (this.tunnelLining(x, y, z, top)) {
+        if (this.tunnelLining(x, y, z, top, ground)) {
             return this.hash(x, y, z, 5) < 0.2D ? VolcanicBlocks.CRACKED_SCORIA_BRICKS.get().defaultBlockState()
                     : VolcanicBlocks.SCORIA_BRICKS.get().defaultBlockState();
         }
@@ -219,6 +225,10 @@ public class VolcanoPiece extends StructurePiece {
             // The walls of the chamber glow with molten rock.
             return this.hash(x, y, z, 7) < 0.3D ? VolcanicBlocks.MOLTEN_SCORIA.get().defaultBlockState()
                     : Blocks.BASALT.defaultBlockState();
+        }
+        if (y < ground - 3) {
+            // Deep underground only the chamber, its tunnel and the vent are carved; the rest stays as it was.
+            return null;
         }
         int depth = top - y;
         double roll = this.hash(x, y, z, 1);
@@ -296,13 +306,23 @@ public class VolcanoPiece extends StructurePiece {
         return Math.abs((x - this.cx) * this.tunnel.getStepZ() - (z - this.cz) * this.tunnel.getStepX());
     }
 
-    private boolean inTunnel(int x, int y, int z, int top) {
-        int floorY = this.chamberY - 3;
+    /**
+     * The tunnel leaves the chamber level, then climbs gently towards the flank until it reaches the height of the
+     * surrounding ground, so it always opens to the outside.
+     */
+    private int tunnelFloor(int x, int z, int ground) {
+        int start = this.chamberY - 3;
+        int climbing = start + Math.max(0, this.along(x, z) - 10) * 2 / 3;
+        return Math.min(climbing, Math.max(start, ground + 1));
+    }
+
+    private boolean inTunnel(int x, int y, int z, int top, int ground) {
+        int floorY = this.tunnelFloor(x, z, ground);
         return this.along(x, z) >= 6 && this.across(x, z) <= 1 && y >= floorY && y <= floorY + 3 && y <= top;
     }
 
-    private boolean tunnelLining(int x, int y, int z, int top) {
-        int floorY = this.chamberY - 3;
+    private boolean tunnelLining(int x, int y, int z, int top, int ground) {
+        int floorY = this.tunnelFloor(x, z, ground);
         int across = this.across(x, z);
         return this.along(x, z) >= 8 && across <= 2 && y >= floorY - 1 && y <= floorY + 4 && y <= top
                 && (across == 2 || y == floorY - 1 || y == floorY + 4);
