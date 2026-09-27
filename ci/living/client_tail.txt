@@ -1,40 +1,40 @@
-[18:05:57] [Server thread/INFO] [minecraft/IntegratedServer]: Changing view distance to 8, from 10
-[18:05:57] [Server thread/INFO] [minecraft/IntegratedServer]: Changing simulation distance to 6, from 0
-[18:05:57] [Render thread/WARN] [io.ne.ut.in.SystemPropertyUtil/]: Unable to parse the boolean system property 'java.net.preferIPv6Addresses':system - using the default value: false
-[18:05:58] [Netty Local Client IO #0/INFO] [ne.mi.ne.NetworkHooks/]: Connected to a modded server.
-[18:05:58] [Server thread/INFO] [minecraft/PlayerList]: Dev[local:E:1748de37] logged in with entity id 197 at (-29.5, 63.0, 5.5)
-[18:05:58] [Server thread/INFO] [minecraft/MinecraftServer]: Dev joined the game
-[18:05:59] [Render thread/INFO] [minecraft/AdvancementList]: Loaded 31 advancements
-[18:06:14] [Server thread/INFO] [minecraft/MinecraftServer]: [Not Secure] [Server] living_shot 01_pirate_ship
-[18:06:14] [Render thread/INFO] [minecraft/ChatComponent]: [System] [CHAT] [Server] living_shot 01_pirate_ship
-[18:06:20] [Render thread/INFO] [minecraft/AdvancementList]: Loaded 40 advancements
-[18:06:34] [Server thread/INFO] [minecraft/MinecraftServer]: [Not Secure] [Server] living_shot 02_boarding
-[18:06:34] [Render thread/INFO] [minecraft/ChatComponent]: [System] [CHAT] [Server] living_shot 02_boarding
-[18:06:42] [Server thread/WARN] [minecraft/MinecraftServer]: Can't keep up! Is the server overloaded? Running 2516ms or 50 ticks behind
-[18:06:48] [Server thread/INFO] [minecraft/MinecraftServer]: [Not Secure] [Server] living_result pirates_landed
-[18:06:48] [Render thread/INFO] [minecraft/ChatComponent]: [System] [CHAT] [Server] living_result pirates_landed
-[18:07:02] [Server thread/INFO] [minecraft/MinecraftServer]: [Not Secure] [Server] living_shot 03_village
-[18:07:02] [Render thread/INFO] [minecraft/ChatComponent]: [System] [CHAT] [Server] living_shot 03_village
-[18:07:22] [Server thread/INFO] [minecraft/MinecraftServer]: [Not Secure] [Server] living_shot 04_village_life
-[18:07:22] [Render thread/INFO] [minecraft/ChatComponent]: [System] [CHAT] [Server] living_shot 04_village_life
-[18:07:28] [Server thread/INFO] [minecraft/MinecraftServer]: [Not Secure] [Server] living_result world_reacted
-[18:07:28] [Render thread/INFO] [minecraft/ChatComponent]: [System] [CHAT] [Server] living_result world_reacted
-[18:07:47] [Server thread/INFO] [minecraft/MinecraftServer]: [Not Secure] [Server] living_shot 05_world_memory
-[18:07:47] [Render thread/INFO] [minecraft/ChatComponent]: [System] [CHAT] [Server] living_shot 05_world_memory
-[18:08:07] [Server thread/INFO] [minecraft/MinecraftServer]: [Not Secure] [Server] living_shot 06_night
-[18:08:07] [Render thread/INFO] [minecraft/ChatComponent]: [System] [CHAT] [Server] living_shot 06_night
-[18:08:12] [Server thread/INFO] [minecraft/MinecraftServer]: [Not Secure] [Server] living_done
-[18:08:12] [Render thread/INFO] [minecraft/ChatComponent]: [System] [CHAT] [Server] living_done
-[18:08:15] [Server thread/INFO] [minecraft/MinecraftServer]: Stopping server
-[18:08:15] [Server thread/INFO] [minecraft/MinecraftServer]: Saving players
-[18:08:15] [Server thread/INFO] [minecraft/MinecraftServer]: Saving worlds
-[18:08:16] [Server thread/INFO] [minecraft/MinecraftServer]: Saving chunks for level 'ServerLevel[world]'/minecraft:overworld
-[18:08:16] [Server thread/INFO] [minecraft/MinecraftServer]: Saving chunks for level 'ServerLevel[world]'/minecraft:the_end
-[18:08:16] [Server thread/INFO] [minecraft/MinecraftServer]: Saving chunks for level 'ServerLevel[world]'/minecraft:the_nether
-[18:08:16] [Server thread/INFO] [minecraft/MinecraftServer]: ThreadedAnvilChunkStorage (living): All chunks are saved
-[18:08:16] [Server thread/INFO] [minecraft/MinecraftServer]: ThreadedAnvilChunkStorage (DIM1): All chunks are saved
-[18:08:16] [Server thread/INFO] [minecraft/MinecraftServer]: ThreadedAnvilChunkStorage (DIM-1): All chunks are saved
-[18:08:16] [Server thread/INFO] [minecraft/MinecraftServer]: ThreadedAnvilChunkStorage: All dimensions are saved
+[19:09:17] [Server thread/INFO] [minecraft/IntegratedServer]: Changing view distance to 8, from 10
+[19:09:17] [Server thread/INFO] [minecraft/IntegratedServer]: Changing simulation distance to 6, from 0
+[19:09:18] [Render thread/WARN] [io.ne.ut.in.SystemPropertyUtil/]: Unable to parse the boolean system property 'java.net.preferIPv6Addresses':system - using the default value: false
+[19:09:18] [Netty Local Client IO #0/INFO] [ne.mi.ne.NetworkHooks/]: Connected to a modded server.
+[19:09:18] [Server thread/INFO] [minecraft/PlayerList]: Dev[local:E:4366c474] logged in with entity id 201 at (-34.5, 67.0, -4.5)
+[19:09:18] [Server thread/INFO] [minecraft/MinecraftServer]: Dev joined the game
+[19:09:19] [Render thread/INFO] [minecraft/AdvancementList]: Loaded 31 advancements
+[19:09:34] [Server thread/INFO] [minecraft/MinecraftServer]: [Not Secure] [Server] living_shot 01_pirate_ship
+[19:09:35] [Render thread/INFO] [minecraft/ChatComponent]: [System] [CHAT] [Server] living_shot 01_pirate_ship
+[19:09:40] [Render thread/INFO] [minecraft/AdvancementList]: Loaded 40 advancements
+[19:09:55] [Server thread/INFO] [minecraft/MinecraftServer]: [Not Secure] [Server] living_shot 02_boarding
+[19:09:55] [Render thread/INFO] [minecraft/ChatComponent]: [System] [CHAT] [Server] living_shot 02_boarding
+[19:10:03] [Server thread/WARN] [minecraft/MinecraftServer]: Can't keep up! Is the server overloaded? Running 3413ms or 68 ticks behind
+[19:10:11] [Server thread/INFO] [minecraft/MinecraftServer]: [Not Secure] [Server] living_result pirates_landed
+[19:10:11] [Render thread/INFO] [minecraft/ChatComponent]: [System] [CHAT] [Server] living_result pirates_landed
+[19:10:23] [Server thread/INFO] [minecraft/MinecraftServer]: [Not Secure] [Server] living_shot 03_village
+[19:10:23] [Render thread/INFO] [minecraft/ChatComponent]: [System] [CHAT] [Server] living_shot 03_village
+[19:10:43] [Server thread/INFO] [minecraft/MinecraftServer]: [Not Secure] [Server] living_shot 04_village_life
+[19:10:43] [Render thread/INFO] [minecraft/ChatComponent]: [System] [CHAT] [Server] living_shot 04_village_life
+[19:10:49] [Server thread/INFO] [minecraft/MinecraftServer]: [Not Secure] [Server] living_result world_reacted
+[19:10:49] [Render thread/INFO] [minecraft/ChatComponent]: [System] [CHAT] [Server] living_result world_reacted
+[19:11:08] [Server thread/INFO] [minecraft/MinecraftServer]: [Not Secure] [Server] living_shot 05_world_memory
+[19:11:08] [Render thread/INFO] [minecraft/ChatComponent]: [System] [CHAT] [Server] living_shot 05_world_memory
+[19:11:28] [Server thread/INFO] [minecraft/MinecraftServer]: [Not Secure] [Server] living_shot 06_night
+[19:11:28] [Render thread/INFO] [minecraft/ChatComponent]: [System] [CHAT] [Server] living_shot 06_night
+[19:11:33] [Server thread/INFO] [minecraft/MinecraftServer]: [Not Secure] [Server] living_done
+[19:11:33] [Render thread/INFO] [minecraft/ChatComponent]: [System] [CHAT] [Server] living_done
+[19:11:35] [Server thread/INFO] [minecraft/MinecraftServer]: Stopping server
+[19:11:35] [Server thread/INFO] [minecraft/MinecraftServer]: Saving players
+[19:11:35] [Server thread/INFO] [minecraft/MinecraftServer]: Saving worlds
+[19:11:36] [Server thread/INFO] [minecraft/MinecraftServer]: Saving chunks for level 'ServerLevel[world]'/minecraft:overworld
+[19:11:37] [Server thread/INFO] [minecraft/MinecraftServer]: Saving chunks for level 'ServerLevel[world]'/minecraft:the_nether
+[19:11:37] [Server thread/INFO] [minecraft/MinecraftServer]: Saving chunks for level 'ServerLevel[world]'/minecraft:the_end
+[19:11:37] [Server thread/INFO] [minecraft/MinecraftServer]: ThreadedAnvilChunkStorage (living): All chunks are saved
+[19:11:37] [Server thread/INFO] [minecraft/MinecraftServer]: ThreadedAnvilChunkStorage (DIM-1): All chunks are saved
+[19:11:37] [Server thread/INFO] [minecraft/MinecraftServer]: ThreadedAnvilChunkStorage (DIM1): All chunks are saved
+[19:11:37] [Server thread/INFO] [minecraft/MinecraftServer]: ThreadedAnvilChunkStorage: All dimensions are saved
 
 > Task :runClient FAILED
 
@@ -56,5 +56,5 @@ You can use '--warning-mode all' to show the individual deprecation warnings and
 
 For more on this, please refer to https://docs.gradle.org/8.8/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
 
-BUILD FAILED in 3m 3s
+BUILD FAILED in 3m
 10 actionable tasks: 3 executed, 7 up-to-date
