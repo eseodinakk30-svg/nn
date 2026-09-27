@@ -1021,6 +1021,7 @@ def main():
     world_data.generate_tags()
     world_data.generate_worldgen()
     world_data.generate_misc_data()
+    world_data.generate_particles()
     generate_client_assets()
     import lang
     lang.generate(ASSETS)

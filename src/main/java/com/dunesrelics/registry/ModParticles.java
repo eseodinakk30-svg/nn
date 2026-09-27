@@ -13,5 +13,8 @@ public final class ModParticles {
     /** Wind-blown grains of sand, used by sandstorms and the Scepter of Sands. */
     public static final RegistryObject<SimpleParticleType> SAND_GUST = PARTICLES.register("sand_gust", () -> new SimpleParticleType(true));
 
+    /** Foam drifting on the surface of running water. */
+    public static final RegistryObject<SimpleParticleType> FOAM = PARTICLES.register("foam", () -> new SimpleParticleType(false));
+
     private ModParticles() {}
 }

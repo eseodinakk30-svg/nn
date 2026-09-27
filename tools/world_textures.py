@@ -399,6 +399,21 @@ def pearl_trim_palette():
     return img
 
 
+def foam(n):
+    """A fleck of foam: a soft white blob, a little different in each frame."""
+    img = new(8, 8)
+    px = img.load()
+    cx, cy = 3.5 + (n - 1) * 0.5, 3.5
+    radius = 1.6 + n * 0.7
+    for y in range(8):
+        for x in range(8):
+            d = ((x - cx) ** 2 + (y - cy) ** 2) ** 0.5
+            if d <= radius:
+                edge = d > radius - 1.0
+                px[x, y] = (230, 242, 250, 150) if edge else (250, 253, 255, 230)
+    return img
+
+
 def main():
     blocks = {"wet_sand": wet_sand(), "clam_top": clam(True), "clam_side": clam(False),
               "millstone_top": millstone_top(), "millstone_side": millstone_side(),
@@ -414,6 +429,8 @@ def main():
     for name, img in items.items():
         save(img, "item/" + name)
     save(pearl_trim_palette(), "trims/color_palettes/pearl")
+    for n in range(3):
+        save(foam(n), "particle/foam_%d" % n)
     print("living world textures: %d blocks, %d items" % (len(blocks), len(items)))
 
 

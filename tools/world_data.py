@@ -408,6 +408,10 @@ def generate_worldgen():
 
 # ================================================================================================ misc
 
+def generate_particles():
+    write(os.path.join(ASSETS, "particles/foam.json"), {"textures": [m("foam_%d" % i) for i in range(3)]})
+
+
 def generate_misc_data():
     write(os.path.join(DATA, MOD, "trim_material/pearl.json"), {
         "asset_name": "pearl", "description": {"color": "#E8E0F0", "translate": "trim_material.dunesrelics.pearl"},

@@ -1,5 +1,6 @@
 package com.dunesrelics;
 
+import com.dunesrelics.network.ModNetwork;
 import com.dunesrelics.registry.ModBlockEntities;
 import com.dunesrelics.registry.ModBlocks;
 import com.dunesrelics.registry.ModBrewing;
@@ -57,6 +58,7 @@ public class DunesRelics {
         ModRecipes.SERIALIZERS.register(modBus);
         ModPoiTypes.POI_TYPES.register(modBus);
 
+        ModNetwork.register();
         modBus.addListener(this::commonSetup);
     }
 

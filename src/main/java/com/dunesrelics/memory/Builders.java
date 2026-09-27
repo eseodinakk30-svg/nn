@@ -157,7 +157,8 @@ public final class Builders {
         for (int dx = 0; dx < sx; dx++) {
             for (int dz = 0; dz < sz; dz++) {
                 int ground = groundY(level, min.getX() + dx, min.getZ() + dz);
-                for (int yy = Math.min(ground + 1, y); yy <= y; yy++) {
+                // a footing at most four blocks deep: over a hollow the building stands on posts, not a pillar
+                for (int yy = Math.max(y - 4, Math.min(ground + 1, y)); yy <= y; yy++) {
                     pos.set(min.getX() + dx, yy, min.getZ() + dz);
                     put(level, pos, fill);
                 }

@@ -10,19 +10,14 @@ import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.FluidTags;
-import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.vehicle.Boat;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.Heightmap;
-import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.HashMap;
@@ -123,42 +118,6 @@ public final class Tides {
             }
         }
         return false;
-    }
-
-    // ------------------------------------------------------------------------------------------ currents
-
-    /**
-     * The current at a position, in blocks per tick of drift added each tick: a smooth, slowly turning field over
-     * the seas, faster in rivers, strongest while the tide is running (between high and low water).
-     */
-    public static Vec3 current(Level level, BlockPos pos) {
-        boolean river = level.getBiome(pos).is(net.minecraft.tags.BiomeTags.IS_RIVER);
-        float x = pos.getX();
-        float z = pos.getZ();
-        float angle = Mth.sin(x * 0.0021F + Mth.cos(z * 0.0017F) * 1.7F) * Mth.PI
-                + Mth.cos(z * 0.0023F - Mth.sin(x * 0.0013F) * 1.3F) * Mth.PI * 0.5F;
-        double running = 1.0D - Math.abs(tide(level)) * 0.5D;
-        double strength = (river ? 0.0055D : 0.0035D) * running;
-        return new Vec3(Mth.cos(angle) * strength, 0.0D, Mth.sin(angle) * strength);
-    }
-
-    public static boolean hasCurrent(Level level, Entity entity) {
-        return entity.isInWater() && level.getBiome(entity.blockPosition()).is(ModTags.HAS_CURRENTS);
-    }
-
-    /** Server side: drifting boats nobody steers, floating items and swimming mobs near players. */
-    public static void tickCurrents(ServerLevel level) {
-        for (ServerPlayer player : level.players()) {
-            AABB area = player.getBoundingBox().inflate(48.0D, 24.0D, 48.0D);
-            for (Entity entity : level.getEntities((Entity) null, area, e -> e.isInWater() && (e instanceof ItemEntity
-                    || e instanceof Boat boat && boat.getControllingPassenger() == null || e instanceof Mob))) {
-                if (!level.getBiome(entity.blockPosition()).is(ModTags.HAS_CURRENTS)) {
-                    continue;
-                }
-                Vec3 push = current(level, entity.blockPosition());
-                entity.setDeltaMovement(entity.getDeltaMovement().add(entity instanceof Mob ? push.scale(0.4D) : push));
-            }
-        }
     }
 
     /** Server side: the rising tide brings more fish to the hook. */

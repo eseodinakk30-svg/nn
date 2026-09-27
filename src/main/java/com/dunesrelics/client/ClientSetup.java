@@ -10,6 +10,7 @@ import com.dunesrelics.client.model.SalamanderModel;
 import com.dunesrelics.client.model.ScarabModel;
 import com.dunesrelics.client.model.ScorpionModel;
 import com.dunesrelics.client.model.VultureModel;
+import com.dunesrelics.client.particle.FoamParticle;
 import com.dunesrelics.client.particle.SandGustParticle;
 import com.dunesrelics.client.renderer.CinderWraithRenderer;
 import com.dunesrelics.client.renderer.LavaCrabRenderer;
@@ -126,5 +127,6 @@ public final class ClientSetup {
     @SubscribeEvent
     public static void registerParticles(RegisterParticleProvidersEvent event) {
         event.registerSpriteSet(ModParticles.SAND_GUST.get(), SandGustParticle.Provider::new);
+        event.registerSpriteSet(ModParticles.FOAM.get(), FoamParticle.Provider::new);
     }
 }

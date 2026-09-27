@@ -66,6 +66,14 @@ public final class LivingWorldGameTests {
         return found;
     }
 
+    /** Village workers only work by day; the test world keeps whatever time it had. */
+    private static void morning(ServerLevel level) {
+        long time = level.getDayTime() % 24000L;
+        if (time < 1000L || time > 9000L) {
+            level.setDayTime(level.getDayTime() - time + 24000L + 1000L);
+        }
+    }
+
     private static void use(GameTestHelper helper, BlockPos pos, Player player) {
         BlockPos absolute = helper.absolutePos(pos);
         BlockState state = helper.getBlockState(pos);
@@ -261,6 +269,7 @@ public final class LivingWorldGameTests {
     public static void builderPutsUpAWellBlockByBlock(GameTestHelper helper) {
         fill(helper, 0, 2, Blocks.GRASS_BLOCK);
         ServerLevel level = helper.getLevel();
+        morning(level);
         helper.setBlock(new BlockPos(4, 3, 4), Blocks.BELL);
         BlockPos bell = helper.absolutePos(new BlockPos(4, 3, 4));
         WorldMemory.VillageRecord record = WorldMemory.get(level).village(bell, 0L, 0);
@@ -272,7 +281,8 @@ public final class LivingWorldGameTests {
         VillageWorker builder = helper.spawn(ModEntities.VILLAGE_BUILDER.get(), new BlockPos(7, 3, 7));
         builder.setHomeBell(bell);
         helper.succeedWhen(() -> {
-            helper.assertTrue(record.sites.isEmpty(), "the builder has not finished the well: " + well.next + " of " + well.size());
+            helper.assertTrue(record.sites.isEmpty(), "the builder has not finished the well: " + well.next + " of " + well.size()
+                    + " (time " + level.getDayTime() + ", wood " + record.wood + ", stone " + record.stone + ")");
             helper.assertBlockPresent(Blocks.COBBLESTONE_WALL, new BlockPos(12, 2, 12));
             helper.assertTrue(helper.getBlockState(new BlockPos(13, 2, 13)).is(Blocks.WATER), "there is no water in the well");
         });
@@ -282,6 +292,7 @@ public final class LivingWorldGameTests {
     public static void builderRepairsWhatWasDestroyedButNotWhatAPlayerChanged(GameTestHelper helper) {
         fill(helper, 1, 1, Blocks.GRASS_BLOCK);
         ServerLevel level = helper.getLevel();
+        morning(level);
         helper.setBlock(new BlockPos(3, 2, 3), Blocks.BELL);
         BlockPos bell = helper.absolutePos(new BlockPos(3, 2, 3));
         WorldMemory.VillageRecord record = WorldMemory.get(level).village(bell, 0L, 1);
@@ -306,7 +317,7 @@ public final class LivingWorldGameTests {
         VillageWorker builder = helper.spawn(ModEntities.VILLAGE_BUILDER.get(), new BlockPos(5, 2, 5));
         builder.setHomeBell(bell);
         helper.succeedWhen(() -> {
-            helper.assertTrue(record.repairs.isEmpty(), record.repairs.size() + " holes are still open");
+            helper.assertTrue(record.repairs.isEmpty(), record.repairs.size() + " holes are still open (time " + level.getDayTime() + ")");
             for (int i = 1; i < holes.length; i++) {
                 helper.assertTrue(helper.getBlockState(holes[i]).is(was[i].getBlock()), "not repaired: " + holes[i]);
             }

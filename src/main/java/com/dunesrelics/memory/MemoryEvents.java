@@ -17,6 +17,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
+import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.player.ItemFishedEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
@@ -82,7 +83,10 @@ public final class MemoryEvents {
         GameRules rules = level.getGameRules();
         long time = level.getGameTime();
         if (rules.getBoolean(ModGameRules.TIDES)) {
-            Tides.tickCurrents(level);
+            Currents.tick(level);
+        }
+        if (time % 20 == 0) {
+            Currents.sync(level, rules.getBoolean(ModGameRules.TIDES));
         }
         if (time % 10 == 0) {
             Set<UUID> handled = VillageLife.newHandledSet();
@@ -162,6 +166,11 @@ public final class MemoryEvents {
         if (rules.getBoolean(ModGameRules.VILLAGE_GROWTH)) {
             VillageLife.growVillages(level, memory, day, force);
         }
+    }
+
+    @SubscribeEvent
+    public static void onServerStarting(ServerStartingEvent event) {
+        Currents.clear();
     }
 
     @SubscribeEvent
