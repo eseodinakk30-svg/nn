@@ -1,0 +1,11 @@
+{
+  "type": "dunesrelics:milling",
+  "ingredient": {
+    "item": "dunesrelics:scoria"
+  },
+  "result": {
+    "item": "minecraft:gravel",
+    "count": 1
+  },
+  "time": 100
+}

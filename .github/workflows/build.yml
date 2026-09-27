@@ -10,7 +10,7 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    timeout-minutes: 120
     steps:
       - uses: actions/checkout@v4
 
@@ -76,10 +76,30 @@ jobs:
           git pull --rebase origin ${GITHUB_REF_NAME}
           git push origin HEAD:${GITHUB_REF_NAME}
 
+      - name: Living world visit (real world, a pirate ship, a village and the world memory)
+        if: contains(github.event.head_commit.message, '[living]')
+        continue-on-error: true
+        timeout-minutes: 35
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq xvfb imagemagick xdotool libgl1-mesa-dri > /dev/null
+          ./ci/living.sh
+
+      - name: Commit living world results
+        if: contains(github.event.head_commit.message, '[living]')
+        continue-on-error: true
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -f ci/living
+          git commit -m "CI living world results for ${GITHUB_SHA::7} [skip ci]" || exit 0
+          git pull --rebase origin ${GITHUB_REF_NAME}
+          git push origin HEAD:${GITHUB_REF_NAME}
+
       - name: Showcase (runs the game and takes screenshots)
         if: github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[showcase]')
         continue-on-error: true
-        timeout-minutes: 25
+        timeout-minutes: 45
         run: |
           sudo apt-get update -qq
           sudo apt-get install -y -qq xvfb imagemagick xdotool libgl1-mesa-dri > /dev/null

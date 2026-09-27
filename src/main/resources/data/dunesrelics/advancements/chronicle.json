@@ -1,0 +1,32 @@
+{
+  "display": {
+    "icon": {
+      "item": "dunesrelics:world_chronicle"
+    },
+    "title": {
+      "translate": "advancements.dunesrelics.chronicle.title"
+    },
+    "description": {
+      "translate": "advancements.dunesrelics.chronicle.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "has": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "dunesrelics:world_chronicle"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "parent": "dunesrelics:living_root"
+}

@@ -1,0 +1,32 @@
+{
+  "display": {
+    "icon": {
+      "item": "dunesrelics:flour"
+    },
+    "title": {
+      "translate": "advancements.dunesrelics.mill.title"
+    },
+    "description": {
+      "translate": "advancements.dunesrelics.mill.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "has": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "dunesrelics:flour"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "parent": "dunesrelics:living_root"
+}

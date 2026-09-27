@@ -1,0 +1,27 @@
+{
+  "textures": {
+    "water": "minecraft:block/water_still",
+    "particle": "minecraft:block/spruce_planks"
+  },
+  "elements": [
+    {
+      "from": [
+        0,
+        2,
+        0
+      ],
+      "to": [
+        16,
+        6.5,
+        16
+      ],
+      "faces": {
+        "up": {
+          "texture": "#water",
+          "tintindex": 0
+        }
+      }
+    }
+  ],
+  "render_type": "minecraft:translucent"
+}

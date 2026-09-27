@@ -1,0 +1,37 @@
+{
+  "display": {
+    "icon": {
+      "item": "dunesrelics:captain_hat"
+    },
+    "title": {
+      "translate": "advancements.dunesrelics.pirate_captain.title"
+    },
+    "description": {
+      "translate": "advancements.dunesrelics.pirate_captain.description"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "killed": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type": "dunesrelics:pirate_captain"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "parent": "dunesrelics:pirate_ship",
+  "rewards": {
+    "experience": 100
+  }
+}

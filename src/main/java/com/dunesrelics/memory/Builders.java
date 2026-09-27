@@ -376,7 +376,10 @@ public final class Builders {
 
     // ------------------------------------------------------------------------------------------ paths
 
-    /** Turns the grass (or dirt) at the top of a column into a path block; returns false over water or rock. */
+    /**
+     * Turns the grass (or dirt) at the top of a column into a path block, or sand into smooth sandstone as in desert
+     * villages; returns false over water or rock.
+     */
     public static boolean pathAt(ServerLevel level, int x, int z) {
         BlockPos pos = new BlockPos(x, level.getHeight(Heightmap.Types.WORLD_SURFACE, x, z) - 1, z);
         BlockState top = level.getBlockState(pos);
@@ -393,7 +396,11 @@ public final class Builders {
             level.setBlock(pos, Blocks.DIRT_PATH.defaultBlockState(), FLAGS);
             return true;
         }
-        return top.is(Blocks.DIRT_PATH);
+        if (top.is(Blocks.SAND) || top.is(Blocks.RED_SAND)) {
+            level.setBlock(pos, (top.is(Blocks.SAND) ? Blocks.SMOOTH_SANDSTONE : Blocks.SMOOTH_RED_SANDSTONE).defaultBlockState(), FLAGS);
+            return true;
+        }
+        return top.is(Blocks.DIRT_PATH) || top.is(Blocks.SMOOTH_SANDSTONE) || top.is(Blocks.SMOOTH_RED_SANDSTONE);
     }
 
     /** A straight dirt path between two points, skipping anything but natural ground and player-built chunks. */

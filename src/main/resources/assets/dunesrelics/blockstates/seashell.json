@@ -1,0 +1,140 @@
+{
+  "variants": {
+    "natural=false,variant=0": [
+      {
+        "model": "dunesrelics:block/seashell_0"
+      },
+      {
+        "model": "dunesrelics:block/seashell_0",
+        "y": 90
+      },
+      {
+        "model": "dunesrelics:block/seashell_0",
+        "y": 180
+      },
+      {
+        "model": "dunesrelics:block/seashell_0",
+        "y": 270
+      }
+    ],
+    "natural=false,variant=1": [
+      {
+        "model": "dunesrelics:block/seashell_1"
+      },
+      {
+        "model": "dunesrelics:block/seashell_1",
+        "y": 90
+      },
+      {
+        "model": "dunesrelics:block/seashell_1",
+        "y": 180
+      },
+      {
+        "model": "dunesrelics:block/seashell_1",
+        "y": 270
+      }
+    ],
+    "natural=false,variant=2": [
+      {
+        "model": "dunesrelics:block/seashell_2"
+      },
+      {
+        "model": "dunesrelics:block/seashell_2",
+        "y": 90
+      },
+      {
+        "model": "dunesrelics:block/seashell_2",
+        "y": 180
+      },
+      {
+        "model": "dunesrelics:block/seashell_2",
+        "y": 270
+      }
+    ],
+    "natural=false,variant=3": [
+      {
+        "model": "dunesrelics:block/seashell_3"
+      },
+      {
+        "model": "dunesrelics:block/seashell_3",
+        "y": 90
+      },
+      {
+        "model": "dunesrelics:block/seashell_3",
+        "y": 180
+      },
+      {
+        "model": "dunesrelics:block/seashell_3",
+        "y": 270
+      }
+    ],
+    "natural=true,variant=0": [
+      {
+        "model": "dunesrelics:block/seashell_0"
+      },
+      {
+        "model": "dunesrelics:block/seashell_0",
+        "y": 90
+      },
+      {
+        "model": "dunesrelics:block/seashell_0",
+        "y": 180
+      },
+      {
+        "model": "dunesrelics:block/seashell_0",
+        "y": 270
+      }
+    ],
+    "natural=true,variant=1": [
+      {
+        "model": "dunesrelics:block/seashell_1"
+      },
+      {
+        "model": "dunesrelics:block/seashell_1",
+        "y": 90
+      },
+      {
+        "model": "dunesrelics:block/seashell_1",
+        "y": 180
+      },
+      {
+        "model": "dunesrelics:block/seashell_1",
+        "y": 270
+      }
+    ],
+    "natural=true,variant=2": [
+      {
+        "model": "dunesrelics:block/seashell_2"
+      },
+      {
+        "model": "dunesrelics:block/seashell_2",
+        "y": 90
+      },
+      {
+        "model": "dunesrelics:block/seashell_2",
+        "y": 180
+      },
+      {
+        "model": "dunesrelics:block/seashell_2",
+        "y": 270
+      }
+    ],
+    "natural=true,variant=3": [
+      {
+        "model": "dunesrelics:block/seashell_3"
+      },
+      {
+        "model": "dunesrelics:block/seashell_3",
+        "y": 90
+      },
+      {
+        "model": "dunesrelics:block/seashell_3",
+        "y": 180
+      },
+      {
+        "model": "dunesrelics:block/seashell_3",
+        "y": 270
+      }
+    ]
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "type": "dunesrelics:milling",
+  "ingredient": {
+    "item": "dunesrelics:pumice"
+  },
+  "result": {
+    "item": "dunesrelics:volcanic_ash",
+    "count": 2
+  },
+  "time": 100
+}

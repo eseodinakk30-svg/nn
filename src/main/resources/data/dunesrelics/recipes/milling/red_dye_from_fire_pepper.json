@@ -1,0 +1,11 @@
+{
+  "type": "dunesrelics:milling",
+  "ingredient": {
+    "item": "dunesrelics:fire_pepper"
+  },
+  "result": {
+    "item": "minecraft:red_dye",
+    "count": 2
+  },
+  "time": 60
+}

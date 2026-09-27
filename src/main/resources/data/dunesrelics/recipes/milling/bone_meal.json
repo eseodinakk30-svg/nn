@@ -1,0 +1,11 @@
+{
+  "type": "dunesrelics:milling",
+  "ingredient": {
+    "item": "minecraft:bone"
+  },
+  "result": {
+    "item": "minecraft:bone_meal",
+    "count": 5
+  },
+  "time": 100
+}

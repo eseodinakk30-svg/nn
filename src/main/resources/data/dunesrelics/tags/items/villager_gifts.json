@@ -1,0 +1,19 @@
+{
+  "replace": false,
+  "values": [
+    "#minecraft:small_flowers",
+    "minecraft:bread",
+    "minecraft:cake",
+    "minecraft:cookie",
+    "minecraft:pumpkin_pie",
+    "minecraft:emerald",
+    "minecraft:honey_bottle",
+    "minecraft:sweet_berries",
+    "minecraft:glow_berries",
+    "minecraft:apple",
+    "dunesrelics:dates",
+    "dunesrelics:honeyed_dates",
+    "dunesrelics:pearl",
+    "dunesrelics:seashell"
+  ]
+}

@@ -139,6 +139,9 @@ def generate(assets):
     for table, extra in ((BLOCKS, volcanic_data.BLOCKS), (ITEMS, volcanic_data.ITEMS), (ENTITIES, volcanic_data.ENTITIES),
                          (ADVANCEMENTS, volcanic_data.ADVANCEMENTS), (EXTRA, volcanic_data.EXTRA)):
         table.update(extra)
+    import world_data
+    for table, extra in zip((BLOCKS, ITEMS, ENTITIES, ADVANCEMENTS, EXTRA), world_data.lang_tables()):
+        table.update(extra)
     for index, code in ((0, "en_us"), (1, "ru_ru")):
         entries = {}
         for key, names in BLOCKS.items():

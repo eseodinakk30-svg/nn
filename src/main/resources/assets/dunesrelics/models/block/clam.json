@@ -1,0 +1,78 @@
+{
+  "parent": "minecraft:block/block",
+  "textures": {
+    "top": "dunesrelics:block/clam_top",
+    "side": "dunesrelics:block/clam_side",
+    "particle": "dunesrelics:block/clam_side"
+  },
+  "elements": [
+    {
+      "from": [
+        3,
+        0,
+        3
+      ],
+      "to": [
+        13,
+        4,
+        13
+      ],
+      "faces": {
+        "north": {
+          "texture": "#side",
+          "uv": [
+            3,
+            6,
+            13,
+            10
+          ]
+        },
+        "south": {
+          "texture": "#side",
+          "uv": [
+            3,
+            6,
+            13,
+            10
+          ]
+        },
+        "east": {
+          "texture": "#side",
+          "uv": [
+            3,
+            6,
+            13,
+            10
+          ]
+        },
+        "west": {
+          "texture": "#side",
+          "uv": [
+            3,
+            6,
+            13,
+            10
+          ]
+        },
+        "up": {
+          "texture": "#top",
+          "uv": [
+            3,
+            3,
+            13,
+            13
+          ]
+        },
+        "down": {
+          "texture": "#top",
+          "uv": [
+            3,
+            3,
+            13,
+            13
+          ]
+        }
+      }
+    }
+  ]
+}

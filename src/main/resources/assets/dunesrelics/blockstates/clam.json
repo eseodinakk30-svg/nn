@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "natural=false": {
+      "model": "dunesrelics:block/clam"
+    },
+    "natural=true": {
+      "model": "dunesrelics:block/clam"
+    }
+  }
+}

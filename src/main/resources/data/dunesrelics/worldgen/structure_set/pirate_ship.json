@@ -1,0 +1,14 @@
+{
+  "structures": [
+    {
+      "structure": "dunesrelics:pirate_ship",
+      "weight": 1
+    }
+  ],
+  "placement": {
+    "type": "minecraft:random_spread",
+    "salt": 918273645,
+    "spacing": 36,
+    "separation": 14
+  }
+}

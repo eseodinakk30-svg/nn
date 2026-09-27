@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "dunesrelics:flour"
+    },
+    {
+      "item": "dunesrelics:flour"
+    },
+    {
+      "item": "dunesrelics:flour"
+    },
+    {
+      "item": "minecraft:water_bucket"
+    }
+  ],
+  "result": {
+    "item": "dunesrelics:dough",
+    "count": 3
+  }
+}

@@ -12,4 +12,7 @@ scoreboard players set t showcase 0
 scoreboard players set started showcase 0
 function showcase:build
 function showcase:build_volcanic
+function showcase:build_living
 forceload add -264 -56 -136 72
+forceload add -96 -96 -16 -40
+forceload add 120 -336 336 -120

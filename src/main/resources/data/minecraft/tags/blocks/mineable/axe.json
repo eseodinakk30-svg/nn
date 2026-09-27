@@ -27,6 +27,8 @@
     "dunesrelics:ember_trapdoor",
     "dunesrelics:ember_button",
     "dunesrelics:ember_pressure_plate",
-    "dunesrelics:fire_pepper_bush"
+    "dunesrelics:fire_pepper_bush",
+    "dunesrelics:water_wheel",
+    "dunesrelics:water_trough"
   ]
 }

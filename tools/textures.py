@@ -1745,6 +1745,8 @@ def main():
     print("textures: %d blocks, %d items" % (len(blocks), len(items)))
     import volcanic_textures
     volcanic_textures.main()
+    import world_textures
+    world_textures.main()
 
 
 if __name__ == "__main__":

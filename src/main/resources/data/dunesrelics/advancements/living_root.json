@@ -1,0 +1,23 @@
+{
+  "display": {
+    "icon": {
+      "item": "dunesrelics:water_wheel"
+    },
+    "title": {
+      "translate": "advancements.dunesrelics.living_root.title"
+    },
+    "description": {
+      "translate": "advancements.dunesrelics.living_root.description"
+    },
+    "frame": "task",
+    "show_toast": false,
+    "announce_to_chat": false,
+    "hidden": false,
+    "background": "minecraft:textures/block/spruce_planks.png"
+  },
+  "criteria": {
+    "tick": {
+      "trigger": "minecraft:tick"
+    }
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "type": "dunesrelics:milling",
+  "ingredient": {
+    "item": "minecraft:wheat"
+  },
+  "result": {
+    "item": "dunesrelics:flour",
+    "count": 1
+  },
+  "time": 80
+}

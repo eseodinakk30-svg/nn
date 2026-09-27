@@ -1,0 +1,11 @@
+{
+  "type": "dunesrelics:milling",
+  "ingredient": {
+    "item": "minecraft:beetroot"
+  },
+  "result": {
+    "item": "minecraft:red_dye",
+    "count": 2
+  },
+  "time": 60
+}

@@ -1,0 +1,32 @@
+{
+  "display": {
+    "icon": {
+      "item": "dunesrelics:pearl"
+    },
+    "title": {
+      "translate": "advancements.dunesrelics.pearl.title"
+    },
+    "description": {
+      "translate": "advancements.dunesrelics.pearl.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "has": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "dunesrelics:pearl"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "parent": "dunesrelics:living_root"
+}

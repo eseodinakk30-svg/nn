@@ -1,6 +1,7 @@
 package com.dunesrelics.command;
 
 import com.dunesrelics.DunesRelics;
+import com.dunesrelics.memory.Names;
 import com.dunesrelics.memory.PirateRaids;
 import com.dunesrelics.memory.Tides;
 import com.dunesrelics.memory.VillageLife;
@@ -24,6 +25,7 @@ import net.minecraftforge.fml.common.Mod;
  *     <li>{@code react [mornings]}: run the next mornings' reactions right away;</li>
  *     <li>{@code stage <1..4>}: pretend you have lived here long enough for that stage;</li>
  *     <li>{@code grow}: let the villages near you build something now;</li>
+ *     <li>{@code hamlet}: found a small hamlet (a cottage, a field, a bell and two villagers) where you stand;</li>
  *     <li>{@code pirates}: send a pirate landing party to the nearest coastal village.</li>
  * </ul>
  */
@@ -45,6 +47,7 @@ public final class LivingWorldCommand {
                 .then(Commands.literal("stage").then(Commands.argument("stage", IntegerArgumentType.integer(1, 4))
                         .executes(context -> stage(context.getSource(), IntegerArgumentType.getInteger(context, "stage")))))
                 .then(Commands.literal("grow").executes(context -> grow(context.getSource())))
+                .then(Commands.literal("hamlet").executes(context -> hamlet(context.getSource())))
                 .then(Commands.literal("pirates").executes(context -> pirates(context.getSource()))));
     }
 
@@ -103,6 +106,23 @@ public final class LivingWorldCommand {
         }
         VillageLife.growVillages(level, memory, level.getDayTime() / 24000L, true);
         source.sendSuccess(() -> Component.translatable("commands.dunesrelics.livingworld.grew"), true);
+        return 1;
+    }
+
+    private static int hamlet(CommandSourceStack source) {
+        ServerLevel level = source.getLevel();
+        WorldMemory memory = WorldMemory.get(level);
+        long day = level.getDayTime() / 24000L;
+        BlockPos bell = WorldReactions.buildHamlet(level, memory, BlockPos.containing(source.getPosition()), level.random);
+        if (bell == null) {
+            source.sendFailure(Component.translatable("commands.dunesrelics.livingworld.no_room"));
+            return 0;
+        }
+        WorldMemory.VillageRecord record = memory.village(bell, day, Names.randomVillage(level.random));
+        memory.record(day, "chronicle.dunesrelics.hamlet", "#" + record.nameKey());
+        memory.setDirty();
+        source.sendSuccess(() -> Component.translatable("commands.dunesrelics.livingworld.hamlet",
+                Component.translatable(record.nameKey())), true);
         return 1;
     }
 

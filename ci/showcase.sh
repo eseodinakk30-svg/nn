@@ -61,7 +61,8 @@ shot() {
   import -window root -display :99 "ci/screenshots/$1.png" && echo "captured $1"
 }
 for view in 01_blocks 02_mobs 03_ruins_oasis 04_sandstorm 05_sandstorm_blocks 06_volcanic_blocks 07_volcanic_mobs \
-            08_volcano 09_magma_chamber 10_ashfall_eruption; do
+            08_volcano 09_magma_chamber 10_ashfall_eruption 11_mill 12_living_blocks 13_living_mobs 14_hamlet \
+            15_world_memory; do
   shot "$view"
 done
 

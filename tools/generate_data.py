@@ -982,7 +982,8 @@ def generate_client_assets():
     permutations = json.loads(vanilla("assets", "atlases/armor_trims"))["sources"][0]["permutations"]
     vanilla_textures = json.loads(vanilla("assets", "atlases/armor_trims"))["sources"][0]["textures"]
     all_permutations = dict(permutations)
-    mod_materials = {"amber": m("trims/color_palettes/amber"), "fire_opal": m("trims/color_palettes/fire_opal")}
+    mod_materials = {"amber": m("trims/color_palettes/amber"), "fire_opal": m("trims/color_palettes/fire_opal"),
+                     "pearl": m("trims/color_palettes/pearl")}
     all_permutations.update(mod_materials)
     write(os.path.join(RES, "assets/minecraft/atlases/armor_trims.json"), {"sources": [
         {"type": "paletted_permutations",
@@ -1012,6 +1013,14 @@ def main():
     volcanic_data.generate_tags()
     volcanic_data.generate_worldgen()
     volcanic_data.generate_misc_data()
+    import world_data
+    world_data.generate_block_assets()
+    world_data.generate_item_models()
+    world_data.generate_loot()
+    world_data.generate_recipes()
+    world_data.generate_tags()
+    world_data.generate_worldgen()
+    world_data.generate_misc_data()
     generate_client_assets()
     import lang
     lang.generate(ASSETS)

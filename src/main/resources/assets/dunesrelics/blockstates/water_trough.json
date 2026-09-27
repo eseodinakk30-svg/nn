@@ -1,0 +1,49 @@
+{
+  "multipart": [
+    {
+      "apply": {
+        "model": "dunesrelics:block/water_trough_floor"
+      }
+    },
+    {
+      "when": {
+        "north": "false"
+      },
+      "apply": {
+        "model": "dunesrelics:block/water_trough_north"
+      }
+    },
+    {
+      "when": {
+        "south": "false"
+      },
+      "apply": {
+        "model": "dunesrelics:block/water_trough_south"
+      }
+    },
+    {
+      "when": {
+        "west": "false"
+      },
+      "apply": {
+        "model": "dunesrelics:block/water_trough_west"
+      }
+    },
+    {
+      "when": {
+        "east": "false"
+      },
+      "apply": {
+        "model": "dunesrelics:block/water_trough_east"
+      }
+    },
+    {
+      "when": {
+        "water": "1|2|3|4|5|6|7"
+      },
+      "apply": {
+        "model": "dunesrelics:block/water_trough_water"
+      }
+    }
+  ]
+}

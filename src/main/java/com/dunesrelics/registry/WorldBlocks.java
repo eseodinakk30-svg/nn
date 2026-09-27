@@ -24,13 +24,13 @@ public final class WorldBlocks {
     // ---------------------------------------------------------------- Water power and irrigation
     public static final RegistryObject<Block> WATER_WHEEL = register("water_wheel", () -> new WaterWheelBlock(
             BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).instrument(NoteBlockInstrument.BASS).strength(2.0F)
-                    .sound(SoundType.WOOD).noOcclusion().ignitedByLava()));
+                    .sound(SoundType.WOOD).noOcclusion().ignitedByLava().forceSolidOn()));
     public static final RegistryObject<Block> MILLSTONE = register("millstone", () -> new MillstoneBlock(
             BlockBehaviour.Properties.of().mapColor(MapColor.STONE).instrument(NoteBlockInstrument.BASEDRUM)
                     .requiresCorrectToolForDrops().strength(2.5F, 6.0F).sound(SoundType.STONE).noOcclusion()));
     public static final RegistryObject<Block> WATER_TROUGH = register("water_trough", () -> new WaterTroughBlock(
             BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).instrument(NoteBlockInstrument.BASS).strength(1.0F)
-                    .sound(SoundType.WOOD).noOcclusion().randomTicks().ignitedByLava()));
+                    .sound(SoundType.WOOD).noOcclusion().randomTicks().ignitedByLava().forceSolidOn()));
 
     // ---------------------------------------------------------------- Tides
     public static final RegistryObject<Block> WET_SAND = register("wet_sand", () -> new WetSandBlock(

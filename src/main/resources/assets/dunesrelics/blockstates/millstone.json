@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "active=false": {
+      "model": "dunesrelics:block/millstone"
+    },
+    "active=true": {
+      "model": "dunesrelics:block/millstone"
+    }
+  }
+}

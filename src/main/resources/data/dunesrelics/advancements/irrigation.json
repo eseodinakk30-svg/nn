@@ -1,0 +1,37 @@
+{
+  "display": {
+    "icon": {
+      "item": "dunesrelics:water_trough"
+    },
+    "title": {
+      "translate": "advancements.dunesrelics.irrigation.title"
+    },
+    "description": {
+      "translate": "advancements.dunesrelics.irrigation.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "placed": {
+      "trigger": "minecraft:placed_block",
+      "conditions": {
+        "location": [
+          {
+            "condition": "minecraft:location_check",
+            "predicate": {
+              "block": {
+                "blocks": [
+                  "dunesrelics:water_trough"
+                ]
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+  "parent": "dunesrelics:mill"
+}

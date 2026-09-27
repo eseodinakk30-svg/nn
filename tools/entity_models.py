@@ -583,6 +583,8 @@ def main():
         if any(c.glow for p in parts for c in p.cubes):
             paint(parts, tw, th, glow=True).save(os.path.join(TEX_DIR, layer[0] + "_glow.png"))
         print("generated", class_name)
+    import world_models
+    world_models.main()
 
 
 if __name__ == "__main__":

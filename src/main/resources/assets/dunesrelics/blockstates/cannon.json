@@ -1,0 +1,64 @@
+{
+  "variants": {
+    "facing=north,loaded=false,powered=false": {
+      "model": "dunesrelics:block/cannon"
+    },
+    "facing=north,loaded=false,powered=true": {
+      "model": "dunesrelics:block/cannon"
+    },
+    "facing=north,loaded=true,powered=false": {
+      "model": "dunesrelics:block/cannon"
+    },
+    "facing=north,loaded=true,powered=true": {
+      "model": "dunesrelics:block/cannon"
+    },
+    "facing=east,loaded=false,powered=false": {
+      "model": "dunesrelics:block/cannon",
+      "y": 90
+    },
+    "facing=east,loaded=false,powered=true": {
+      "model": "dunesrelics:block/cannon",
+      "y": 90
+    },
+    "facing=east,loaded=true,powered=false": {
+      "model": "dunesrelics:block/cannon",
+      "y": 90
+    },
+    "facing=east,loaded=true,powered=true": {
+      "model": "dunesrelics:block/cannon",
+      "y": 90
+    },
+    "facing=south,loaded=false,powered=false": {
+      "model": "dunesrelics:block/cannon",
+      "y": 180
+    },
+    "facing=south,loaded=false,powered=true": {
+      "model": "dunesrelics:block/cannon",
+      "y": 180
+    },
+    "facing=south,loaded=true,powered=false": {
+      "model": "dunesrelics:block/cannon",
+      "y": 180
+    },
+    "facing=south,loaded=true,powered=true": {
+      "model": "dunesrelics:block/cannon",
+      "y": 180
+    },
+    "facing=west,loaded=false,powered=false": {
+      "model": "dunesrelics:block/cannon",
+      "y": 270
+    },
+    "facing=west,loaded=false,powered=true": {
+      "model": "dunesrelics:block/cannon",
+      "y": 270
+    },
+    "facing=west,loaded=true,powered=false": {
+      "model": "dunesrelics:block/cannon",
+      "y": 270
+    },
+    "facing=west,loaded=true,powered=true": {
+      "model": "dunesrelics:block/cannon",
+      "y": 270
+    }
+  }
+}

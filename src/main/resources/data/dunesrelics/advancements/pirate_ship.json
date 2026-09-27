@@ -1,0 +1,26 @@
+{
+  "display": {
+    "icon": {
+      "item": "dunesrelics:cutlass"
+    },
+    "title": {
+      "translate": "advancements.dunesrelics.pirate_ship.title"
+    },
+    "description": {
+      "translate": "advancements.dunesrelics.pirate_ship.description"
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "looted": {
+      "trigger": "minecraft:player_generates_container_loot",
+      "conditions": {
+        "loot_table": "dunesrelics:chests/pirate_captain"
+      }
+    }
+  },
+  "parent": "dunesrelics:cannon"
+}

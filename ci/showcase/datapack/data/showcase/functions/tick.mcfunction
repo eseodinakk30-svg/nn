@@ -17,7 +17,24 @@ execute if score t showcase matches 3200 run effect give @a minecraft:night_visi
 execute if score t showcase matches 3200..3599 run tp @a -194.5 -49.5 8.5 90 30
 execute if score t showcase matches 3600 run effect clear @a minecraft:night_vision
 execute if score t showcase matches 3600 run weather thunder 1000000
-execute if score t showcase matches 3600.. run tp @a 0.5 -40 -48 0 22
+execute if score t showcase matches 3600..3999 run tp @a 0.5 -40 -48 0 22
+execute if score t showcase matches 4000 run weather clear 1000000
+execute if score t showcase matches 4000..4399 run tp @a -48 -42 -88 -43 16
+execute if score t showcase matches 4400 positioned -80 -47 -60 store success score hamlet showcase run livingworld hamlet
+execute if score t showcase matches 4401 if score hamlet showcase matches 1 run say showcase_result hamlet_founded
+execute if score t showcase matches 4401 unless score hamlet showcase matches 1 run say showcase_result hamlet_failed
+execute if score t showcase matches 4400..4799 run tp @a 0.5 -41 -78 0 28
+execute if score t showcase matches 4800 run time set 18000
+execute if score t showcase matches 4800 run effect give @a minecraft:night_vision infinite 0 true
+execute if score t showcase matches 4800 run summon dunesrelics:shade 48.5 -47 -70.5 {NoAI:1b,PersistenceRequired:1b,Rotation:[180f,0f]}
+execute if score t showcase matches 4800 run fill 212 -47 -228 228 -40 -212 minecraft:stone_bricks hollow
+execute if score t showcase matches 4800 positioned 220 -47 -220 run livingworld stage 4
+execute if score t showcase matches 4801 positioned 220 -47 -220 run livingworld react 12
+execute if score t showcase matches 4800..5199 run tp @a 40.5 -43 -83 0 14
+execute if score t showcase matches 5200 run time set 5000
+execute if score t showcase matches 5200 run effect clear @a minecraft:night_vision
+execute if score t showcase matches 5200..5599 run tp @a -72 -42 -40 173 17
+execute if score t showcase matches 5600.. run tp @a 250 -5 -250 61 30
 execute if score t showcase matches 300 run say showcase_shot 01_blocks
 execute if score t showcase matches 700 run say showcase_shot 02_mobs
 execute if score t showcase matches 1100 run say showcase_shot 03_ruins_oasis
@@ -28,3 +45,8 @@ execute if score t showcase matches 2700 run say showcase_shot 07_volcanic_mobs
 execute if score t showcase matches 3100 run say showcase_shot 08_volcano
 execute if score t showcase matches 3500 run say showcase_shot 09_magma_chamber
 execute if score t showcase matches 3900 run say showcase_shot 10_ashfall_eruption
+execute if score t showcase matches 4300 run say showcase_shot 11_mill
+execute if score t showcase matches 4700 run say showcase_shot 12_living_blocks
+execute if score t showcase matches 5100 run say showcase_shot 13_living_mobs
+execute if score t showcase matches 5500 run say showcase_shot 14_hamlet
+execute if score t showcase matches 5900 run say showcase_shot 15_world_memory

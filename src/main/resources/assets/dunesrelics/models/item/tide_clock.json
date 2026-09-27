@@ -1,0 +1,56 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "dunesrelics:item/tide_clock_04"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "dunesrelics:tide": 0.0
+      },
+      "model": "dunesrelics:item/tide_clock_00"
+    },
+    {
+      "predicate": {
+        "dunesrelics:tide": 0.125
+      },
+      "model": "dunesrelics:item/tide_clock_01"
+    },
+    {
+      "predicate": {
+        "dunesrelics:tide": 0.25
+      },
+      "model": "dunesrelics:item/tide_clock_02"
+    },
+    {
+      "predicate": {
+        "dunesrelics:tide": 0.375
+      },
+      "model": "dunesrelics:item/tide_clock_03"
+    },
+    {
+      "predicate": {
+        "dunesrelics:tide": 0.5
+      },
+      "model": "dunesrelics:item/tide_clock_04"
+    },
+    {
+      "predicate": {
+        "dunesrelics:tide": 0.625
+      },
+      "model": "dunesrelics:item/tide_clock_05"
+    },
+    {
+      "predicate": {
+        "dunesrelics:tide": 0.75
+      },
+      "model": "dunesrelics:item/tide_clock_06"
+    },
+    {
+      "predicate": {
+        "dunesrelics:tide": 0.875
+      },
+      "model": "dunesrelics:item/tide_clock_07"
+    }
+  ]
+}
