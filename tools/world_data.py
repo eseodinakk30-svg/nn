@@ -24,6 +24,14 @@ def face(texture, uv=None, tint=False, cull=None):
 
 def box(frm, to, texture, faces=("north", "south", "east", "west", "up", "down"), rotation=None):
     element = {"from": frm, "to": to, "faces": {f: {"texture": texture} for f in faces}}
+    if any(c < 0 or c > 16 for c in frm + to):
+        # Outside the block the game would take the texture coordinates from the position and sample the
+        # neighbouring sprites in the atlas; map each face onto the texture explicitly instead.
+        dx, dy, dz = (abs(b - a) for a, b in zip(frm, to))
+        size = {"north": (dx, dy), "south": (dx, dy), "east": (dz, dy), "west": (dz, dy), "up": (dx, dz), "down": (dx, dz)}
+        for f in faces:
+            w, h = size[f]
+            element["faces"][f]["uv"] = [0, 0, min(w, 16), min(h, 16)]
     if rotation:
         element["rotation"] = rotation
     return element
@@ -144,8 +152,9 @@ def generate_block_assets():
     elements = [box([2, 1, 3], [14, 5, 13], "#wood"), box([1, 0, 3], [3, 4, 7], "#wheel"), box([13, 0, 3], [15, 4, 7], "#wheel"),
                 box([1, 0, 9], [3, 4, 13], "#wheel"), box([13, 0, 9], [15, 4, 13], "#wheel"),
                 {"from": [5, 5, -2], "to": [11, 11, 14], "faces": {
-                    "north": face("#muzzle"), "south": face("#barrel", [5, 5, 11, 11]), "east": face("#barrel"),
-                    "west": face("#barrel"), "up": face("#barrel"), "down": face("#barrel")}},
+                    "north": face("#muzzle"), "south": face("#barrel", [5, 5, 11, 11]), "east": face("#barrel", [0, 5, 16, 11]),
+                    "west": face("#barrel", [0, 5, 16, 11]), "up": face("#barrel", [5, 0, 11, 16]),
+                    "down": face("#barrel", [5, 0, 11, 16])}},
                 box([6.5, 6.5, 14], [9.5, 9.5, 16], "#barrel")]
     block_model("cannon", {"parent": "minecraft:block/block", "textures": {"wood": DARK_OAK, "wheel": wheel,
                                                                            "barrel": tex("cannon_barrel"), "muzzle": tex("cannon_muzzle"),
