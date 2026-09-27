@@ -62,10 +62,12 @@ shot() {
 }
 for view in 01_blocks 02_mobs 03_ruins_oasis 04_sandstorm 05_sandstorm_blocks 06_volcanic_blocks 07_volcanic_mobs \
             08_volcano 09_magma_chamber 10_ashfall_eruption 11_mill 12_living_blocks 13_living_mobs 14_hamlet \
-            15_world_memory; do
+            15_world_memory 16_pirate_sloop; do
   shot "$view"
 done
 
+echo "---- villages ----"
+grep -n "\[livingworld\]" client.log | tail -5 || true
 echo "---- client warnings and errors mentioning the mod ----"
 grep -nE "WARN|ERROR" client.log | grep -iE "dunesrelics|missing|unable|failed to load|exception" | head -60 || true
 pkill -f forgeclientuserdev || true

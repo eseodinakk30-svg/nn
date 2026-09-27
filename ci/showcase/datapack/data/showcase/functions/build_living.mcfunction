@@ -57,3 +57,16 @@ summon dunesrelics:traveler 44.5 -47 -70.5 {NoAI:1b,PersistenceRequired:1b,Rotat
 setblock 40 -47 -67 dunesrelics:cannon[facing=north,loaded=true]
 setblock 36 -47 -67 minecraft:barrel[facing=up]
 setblock 37 -47 -67 minecraft:barrel[facing=up]
+
+# ---- 14: a few trees near where the hamlet will be founded, for its lumberjack
+setblock -94 -48 -50 minecraft:dirt
+place feature minecraft:oak -94 -47 -50
+setblock -96 -48 -60 minecraft:dirt
+place feature minecraft:oak -96 -47 -60
+setblock -60 -48 -40 minecraft:dirt
+place feature minecraft:birch -60 -47 -40
+setblock -58 -48 -66 minecraft:dirt
+place feature minecraft:oak -58 -47 -66
+
+# ---- 16: a stretch of sea for the pirate sloop
+fill 16 -50 -126 46 -48 -96 minecraft:water
