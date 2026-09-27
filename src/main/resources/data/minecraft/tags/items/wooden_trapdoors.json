@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
-    "dunesrelics:palm_trapdoor"
+    "dunesrelics:palm_trapdoor",
+    "dunesrelics:ember_trapdoor"
   ]
 }

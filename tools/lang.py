@@ -135,6 +135,10 @@ EXTRA = {
 
 
 def generate(assets):
+    import volcanic_data
+    for table, extra in ((BLOCKS, volcanic_data.BLOCKS), (ITEMS, volcanic_data.ITEMS), (ENTITIES, volcanic_data.ENTITIES),
+                         (ADVANCEMENTS, volcanic_data.ADVANCEMENTS), (EXTRA, volcanic_data.EXTRA)):
+        table.update(extra)
     for index, code in ((0, "en_us"), (1, "ru_ru")):
         entries = {}
         for key, names in BLOCKS.items():

@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "dunesrelics:block/pumice_brick_slab"
+    },
+    "type=double": {
+      "model": "dunesrelics:block/pumice_bricks"
+    },
+    "type=top": {
+      "model": "dunesrelics:block/pumice_brick_slab_top"
+    }
+  }
+}

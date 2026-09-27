@@ -1743,6 +1743,8 @@ def main():
         save(sand_gust(n), "particle/sand_gust_%d" % n)
     logo().save(os.path.join(ROOT, "src/main/resources/logo.png"))
     print("textures: %d blocks, %d items" % (len(blocks), len(items)))
+    import volcanic_textures
+    volcanic_textures.main()
 
 
 if __name__ == "__main__":

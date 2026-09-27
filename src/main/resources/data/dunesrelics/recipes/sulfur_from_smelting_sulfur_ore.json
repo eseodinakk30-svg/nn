@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:smelting",
+  "category": "misc",
+  "ingredient": {
+    "item": "dunesrelics:sulfur_ore"
+  },
+  "result": "dunesrelics:sulfur",
+  "experience": 0.5,
+  "cookingtime": 200
+}

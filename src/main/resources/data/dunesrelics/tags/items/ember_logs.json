@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "dunesrelics:ember_log",
+    "dunesrelics:ember_wood",
+    "dunesrelics:stripped_ember_log",
+    "dunesrelics:stripped_ember_wood"
+  ]
+}

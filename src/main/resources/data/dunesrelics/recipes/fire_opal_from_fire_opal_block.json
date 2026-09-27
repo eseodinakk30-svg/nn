@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "dunesrelics:fire_opal_block"
+    }
+  ],
+  "result": {
+    "item": "dunesrelics:fire_opal",
+    "count": 9
+  }
+}

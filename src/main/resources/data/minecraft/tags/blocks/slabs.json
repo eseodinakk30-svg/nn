@@ -3,6 +3,11 @@
   "values": [
     "dunesrelics:limestone_slab",
     "dunesrelics:polished_limestone_slab",
-    "dunesrelics:limestone_brick_slab"
+    "dunesrelics:limestone_brick_slab",
+    "dunesrelics:scoria_slab",
+    "dunesrelics:polished_scoria_slab",
+    "dunesrelics:scoria_brick_slab",
+    "dunesrelics:pumice_brick_slab",
+    "dunesrelics:obsidian_brick_slab"
   ]
 }

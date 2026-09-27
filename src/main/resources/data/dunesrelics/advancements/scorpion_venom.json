@@ -1,0 +1,32 @@
+{
+  "display": {
+    "icon": {
+      "item": "dunesrelics:scorpion_venom"
+    },
+    "title": {
+      "translate": "advancements.dunesrelics.scorpion_venom.title"
+    },
+    "description": {
+      "translate": "advancements.dunesrelics.scorpion_venom.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "has": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "dunesrelics:scorpion_venom"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "parent": "dunesrelics:ancient_dunes"
+}

@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
-    "dunesrelics:pharaoh_armor_trim_smithing_template"
+    "dunesrelics:pharaoh_armor_trim_smithing_template",
+    "dunesrelics:titan_armor_trim_smithing_template"
   ]
 }

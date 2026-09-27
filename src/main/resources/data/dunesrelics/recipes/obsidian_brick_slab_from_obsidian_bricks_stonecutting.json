@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": {
+    "item": "dunesrelics:obsidian_bricks"
+  },
+  "result": "dunesrelics:obsidian_brick_slab",
+  "count": 2
+}

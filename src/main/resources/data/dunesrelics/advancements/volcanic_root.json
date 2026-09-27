@@ -1,0 +1,23 @@
+{
+  "display": {
+    "icon": {
+      "item": "dunesrelics:heart_of_the_volcano"
+    },
+    "title": {
+      "translate": "advancements.dunesrelics.volcanic_root.title"
+    },
+    "description": {
+      "translate": "advancements.dunesrelics.volcanic_root.description"
+    },
+    "frame": "task",
+    "show_toast": false,
+    "announce_to_chat": false,
+    "hidden": false,
+    "background": "dunesrelics:textures/block/scoria.png"
+  },
+  "criteria": {
+    "tick": {
+      "trigger": "minecraft:tick"
+    }
+  }
+}

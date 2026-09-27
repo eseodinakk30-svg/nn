@@ -1,0 +1,7 @@
+{
+  "asset_id": "dunesrelics:titan",
+  "description": {
+    "translate": "trim_pattern.dunesrelics.titan"
+  },
+  "template_item": "dunesrelics:titan_armor_trim_smithing_template"
+}

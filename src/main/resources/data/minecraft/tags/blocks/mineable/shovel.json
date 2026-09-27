@@ -1,6 +1,10 @@
 {
   "replace": false,
   "values": [
-    "dunesrelics:quicksand"
+    "dunesrelics:quicksand",
+    "dunesrelics:ash_block",
+    "dunesrelics:ash_layer",
+    "dunesrelics:black_sand",
+    "dunesrelics:cooled_lava_crust"
   ]
 }

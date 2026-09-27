@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "pattern": [
+    "#",
+    "#"
+  ],
+  "key": {
+    "#": {
+      "item": "dunesrelics:scoria_brick_slab"
+    }
+  },
+  "result": {
+    "item": "dunesrelics:chiseled_scoria_bricks",
+    "count": 1
+  }
+}

@@ -1,5 +1,6 @@
 package com.dunesrelics.item.volcanic;
 
+import com.dunesrelics.block.volcanic.CooledLavaCrustBlock;
 import com.dunesrelics.registry.VolcanicBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
@@ -32,9 +33,15 @@ public class SalamanderBootsItem extends ArmorItem {
     public static void coolLava(Level level, BlockPos center) {
         BlockState crust = VolcanicBlocks.COOLED_LAVA_CRUST.get().defaultBlockState();
         for (BlockPos pos : BlockPos.betweenClosed(center.offset(-RADIUS, -1, -RADIUS), center.offset(RADIUS, -1, RADIUS))) {
-            if (pos.closerThan(center.below(), RADIUS + 0.5D) && level.getBlockState(pos).is(Blocks.LAVA)
-                    && level.getFluidState(pos).isSource() && level.getBlockState(pos.above()).isAir()) {
+            if (!pos.closerThan(center.below(), RADIUS + 0.5D)) {
+                continue;
+            }
+            BlockState state = level.getBlockState(pos);
+            if (state.is(Blocks.LAVA) && level.getFluidState(pos).isSource() && level.getBlockState(pos.above()).isAir()) {
                 level.setBlockAndUpdate(pos, crust);
+            } else if (state.is(crust.getBlock()) && state.getValue(CooledLavaCrustBlock.AGE) > 0) {
+                // standing still keeps the crust underfoot from melting, like frost walker ice
+                level.setBlock(pos, state.setValue(CooledLavaCrustBlock.AGE, 0), 2);
             }
         }
     }

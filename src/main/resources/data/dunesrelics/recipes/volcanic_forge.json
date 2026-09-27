@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "O O",
+    "OFO",
+    "SSS"
+  ],
+  "key": {
+    "O": {
+      "item": "dunesrelics:obsidian_bricks"
+    },
+    "F": {
+      "item": "dunesrelics:fire_opal"
+    },
+    "S": {
+      "item": "dunesrelics:polished_scoria"
+    }
+  },
+  "result": {
+    "item": "dunesrelics:volcanic_forge",
+    "count": 1
+  }
+}

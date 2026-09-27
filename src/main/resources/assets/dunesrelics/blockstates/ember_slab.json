@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "dunesrelics:block/ember_slab"
+    },
+    "type=double": {
+      "model": "dunesrelics:block/ember_planks"
+    },
+    "type=top": {
+      "model": "dunesrelics:block/ember_slab_top"
+    }
+  }
+}

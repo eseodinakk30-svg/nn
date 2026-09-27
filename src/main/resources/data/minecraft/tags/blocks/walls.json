@@ -3,6 +3,10 @@
   "values": [
     "dunesrelics:limestone_wall",
     "dunesrelics:polished_limestone_wall",
-    "dunesrelics:limestone_brick_wall"
+    "dunesrelics:limestone_brick_wall",
+    "dunesrelics:scoria_wall",
+    "dunesrelics:polished_scoria_wall",
+    "dunesrelics:scoria_brick_wall",
+    "dunesrelics:obsidian_brick_wall"
   ]
 }

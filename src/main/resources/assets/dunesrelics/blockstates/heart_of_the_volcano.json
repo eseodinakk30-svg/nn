@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "dormant=false": {
+      "model": "dunesrelics:block/heart_of_the_volcano"
+    },
+    "dormant=true": {
+      "model": "dunesrelics:block/heart_of_the_volcano_dormant"
+    }
+  }
+}

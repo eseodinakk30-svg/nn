@@ -2,6 +2,7 @@
   "replace": false,
   "values": [
     "dunesrelics:amber_ore",
-    "dunesrelics:bronze_block"
+    "dunesrelics:bronze_block",
+    "dunesrelics:sulfur_ore"
   ]
 }

@@ -1,0 +1,82 @@
+{
+  "type": "minecraft:vegetation_patch",
+  "config": {
+    "depth": {
+      "type": "minecraft:uniform",
+      "value": {
+        "min_inclusive": 1,
+        "max_inclusive": 2
+      }
+    },
+    "extra_bottom_block_chance": 0.0,
+    "extra_edge_column_chance": 0.3,
+    "ground_state": {
+      "type": "minecraft:weighted_state_provider",
+      "entries": [
+        {
+          "data": {
+            "Name": "dunesrelics:scoria"
+          },
+          "weight": 5
+        },
+        {
+          "data": {
+            "Name": "minecraft:basalt",
+            "Properties": {
+              "axis": "y"
+            }
+          },
+          "weight": 4
+        },
+        {
+          "data": {
+            "Name": "minecraft:magma_block"
+          },
+          "weight": 3
+        },
+        {
+          "data": {
+            "Name": "dunesrelics:molten_scoria"
+          },
+          "weight": 2
+        }
+      ]
+    },
+    "replaceable": "#minecraft:base_stone_overworld",
+    "surface": "floor",
+    "vegetation_chance": 0.12,
+    "vertical_range": 5,
+    "xz_radius": {
+      "type": "minecraft:uniform",
+      "value": {
+        "min_inclusive": 3,
+        "max_inclusive": 7
+      }
+    },
+    "vegetation_feature": {
+      "feature": {
+        "type": "minecraft:simple_block",
+        "config": {
+          "to_place": {
+            "type": "minecraft:weighted_state_provider",
+            "entries": [
+              {
+                "data": {
+                  "Name": "dunesrelics:sulfur_cluster"
+                },
+                "weight": 3
+              },
+              {
+                "data": {
+                  "Name": "dunesrelics:ash_grass"
+                },
+                "weight": 2
+              }
+            ]
+          }
+        }
+      },
+      "placement": []
+    }
+  }
+}

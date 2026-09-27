@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "pattern": [
+    "PAP",
+    "AMA",
+    "PAP"
+  ],
+  "key": {
+    "P": {
+      "item": "dunesrelics:pumice"
+    },
+    "A": {
+      "item": "dunesrelics:volcanic_ash"
+    },
+    "M": {
+      "item": "minecraft:magma_cream"
+    }
+  },
+  "result": {
+    "item": "dunesrelics:pumice_sponge",
+    "count": 1
+  }
+}

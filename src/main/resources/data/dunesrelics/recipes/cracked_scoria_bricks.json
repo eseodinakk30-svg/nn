@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:smelting",
+  "category": "blocks",
+  "ingredient": {
+    "item": "dunesrelics:scoria_bricks"
+  },
+  "result": "dunesrelics:cracked_scoria_bricks",
+  "experience": 0.1,
+  "cookingtime": 200
+}

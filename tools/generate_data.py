@@ -655,7 +655,13 @@ def generate_recipes():
 # ================================================================================================ tags
 
 def tag(registry, namespace, name, values, replace=False):
-    write(os.path.join(DATA, namespace, "tags", registry, name + ".json"), {"replace": replace, "values": values})
+    """Writes a tag file; calling it again for the same tag appends to it (both updates share vanilla tags)."""
+    path = os.path.join(DATA, namespace, "tags", registry, name + ".json")
+    if os.path.exists(path):
+        with open(path, encoding="utf-8") as f:
+            old = json.load(f)["values"]
+        values = old + [v for v in values if v not in old]
+    write(path, {"replace": replace, "values": values})
 
 
 LIMESTONE_BLOCKS = ["limestone", "limestone_stairs", "limestone_slab", "limestone_wall", "polished_limestone",
@@ -976,13 +982,14 @@ def generate_client_assets():
     permutations = json.loads(vanilla("assets", "atlases/armor_trims"))["sources"][0]["permutations"]
     vanilla_textures = json.loads(vanilla("assets", "atlases/armor_trims"))["sources"][0]["textures"]
     all_permutations = dict(permutations)
-    all_permutations["amber"] = m("trims/color_palettes/amber")
+    mod_materials = {"amber": m("trims/color_palettes/amber"), "fire_opal": m("trims/color_palettes/fire_opal")}
+    all_permutations.update(mod_materials)
     write(os.path.join(RES, "assets/minecraft/atlases/armor_trims.json"), {"sources": [
         {"type": "paletted_permutations",
-         "textures": [m("trims/models/armor/pharaoh"), m("trims/models/armor/pharaoh_leggings")],
+         "textures": [m("trims/models/armor/" + t) for t in ("pharaoh", "pharaoh_leggings", "titan", "titan_leggings")],
          "palette_key": "trims/color_palettes/trim_palette", "permutations": all_permutations},
         {"type": "paletted_permutations", "textures": vanilla_textures,
-         "palette_key": "trims/color_palettes/trim_palette", "permutations": {"amber": m("trims/color_palettes/amber")}},
+         "palette_key": "trims/color_palettes/trim_palette", "permutations": mod_materials},
     ]})
 
 
@@ -997,6 +1004,14 @@ def main():
     generate_tags()
     generate_worldgen()
     generate_misc_data()
+    import volcanic_data
+    volcanic_data.generate_block_assets()
+    volcanic_data.generate_item_models()
+    volcanic_data.generate_loot()
+    volcanic_data.generate_recipes()
+    volcanic_data.generate_tags()
+    volcanic_data.generate_worldgen()
+    volcanic_data.generate_misc_data()
     generate_client_assets()
     import lang
     lang.generate(ASSETS)

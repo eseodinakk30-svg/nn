@@ -1,0 +1,9 @@
+{
+  "asset_name": "fire_opal",
+  "description": {
+    "color": "#F06A22",
+    "translate": "trim_material.dunesrelics.fire_opal"
+  },
+  "ingredient": "dunesrelics:fire_opal",
+  "item_model_index": 0.45
+}

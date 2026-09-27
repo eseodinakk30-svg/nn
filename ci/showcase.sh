@@ -56,6 +56,11 @@ shot 20 02_mobs
 shot 20 03_ruins_oasis
 shot 22 04_sandstorm
 shot 20 05_sandstorm_blocks
+shot 20 06_volcanic_blocks
+shot 20 07_volcanic_mobs
+shot 20 08_volcano
+shot 20 09_magma_chamber
+shot 24 10_ashfall_eruption
 
 echo "---- client warnings and errors mentioning the mod ----"
 grep -nE "WARN|ERROR" client.log | grep -iE "dunesrelics|missing|unable|failed to load|exception" | head -60 || true

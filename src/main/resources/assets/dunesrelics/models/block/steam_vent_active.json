@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/cube_bottom_top",
+  "textures": {
+    "top": "dunesrelics:block/steam_vent_top_active",
+    "side": "dunesrelics:block/steam_vent_side",
+    "bottom": "dunesrelics:block/scoria"
+  }
+}

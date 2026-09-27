@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "pattern": [
+    "S S",
+    "SWS",
+    "SSS"
+  ],
+  "key": {
+    "S": {
+      "item": "dunesrelics:scoria"
+    },
+    "W": {
+      "item": "minecraft:water_bucket"
+    }
+  },
+  "result": {
+    "item": "dunesrelics:steam_vent",
+    "count": 1
+  }
+}

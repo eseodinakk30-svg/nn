@@ -1,0 +1,75 @@
+{
+  "display": {
+    "icon": {
+      "item": "dunesrelics:ash_block"
+    },
+    "title": {
+      "translate": "advancements.dunesrelics.ashen_lands.title"
+    },
+    "description": {
+      "translate": "advancements.dunesrelics.ashen_lands.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "wastes": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "location": {
+                "biome": "dunesrelics:ashen_wastes"
+              }
+            }
+          }
+        ]
+      }
+    },
+    "isles": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "location": {
+                "biome": "dunesrelics:volcanic_archipelago"
+              }
+            }
+          }
+        ]
+      }
+    },
+    "caverns": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "location": {
+                "biome": "dunesrelics:magma_caverns"
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+  "parent": "dunesrelics:volcanic_root",
+  "requirements": [
+    [
+      "wastes",
+      "isles",
+      "caverns"
+    ]
+  ]
+}

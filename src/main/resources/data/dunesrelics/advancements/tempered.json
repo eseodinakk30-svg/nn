@@ -1,0 +1,30 @@
+{
+  "display": {
+    "icon": {
+      "item": "dunesrelics:volcanic_forge"
+    },
+    "title": {
+      "translate": "advancements.dunesrelics.tempered.title"
+    },
+    "description": {
+      "translate": "advancements.dunesrelics.tempered.description"
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "tempered": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "nbt": "{dunesrelics_tempered:1b}"
+          }
+        ]
+      }
+    }
+  },
+  "parent": "dunesrelics:fire_opal"
+}

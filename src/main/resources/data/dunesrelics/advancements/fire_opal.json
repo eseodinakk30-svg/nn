@@ -1,0 +1,32 @@
+{
+  "display": {
+    "icon": {
+      "item": "dunesrelics:fire_opal"
+    },
+    "title": {
+      "translate": "advancements.dunesrelics.fire_opal.title"
+    },
+    "description": {
+      "translate": "advancements.dunesrelics.fire_opal.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "has": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "dunesrelics:fire_opal"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "parent": "dunesrelics:ashen_lands"
+}

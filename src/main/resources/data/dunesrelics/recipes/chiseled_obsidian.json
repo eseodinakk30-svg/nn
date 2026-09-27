@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "pattern": [
+    "#",
+    "#"
+  ],
+  "key": {
+    "#": {
+      "item": "dunesrelics:obsidian_brick_slab"
+    }
+  },
+  "result": {
+    "item": "dunesrelics:chiseled_obsidian",
+    "count": 1
+  }
+}

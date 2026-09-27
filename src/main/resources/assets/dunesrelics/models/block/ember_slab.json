@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/slab",
+  "textures": {
+    "bottom": "dunesrelics:block/ember_planks",
+    "top": "dunesrelics:block/ember_planks",
+    "side": "dunesrelics:block/ember_planks"
+  }
+}

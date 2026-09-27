@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "pattern": [
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "dunesrelics:obsidian_bricks"
+    }
+  },
+  "result": {
+    "item": "dunesrelics:obsidian_brick_slab",
+    "count": 6
+  }
+}

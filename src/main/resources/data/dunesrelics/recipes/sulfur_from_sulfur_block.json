@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "dunesrelics:sulfur_block"
+    }
+  ],
+  "result": {
+    "item": "dunesrelics:sulfur",
+    "count": 9
+  }
+}

@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
-    "dunesrelics:palm_fence_gate"
+    "dunesrelics:palm_fence_gate",
+    "dunesrelics:ember_fence_gate"
   ]
 }

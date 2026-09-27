@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": {
+    "item": "dunesrelics:pumice_bricks"
+  },
+  "result": "dunesrelics:pumice_brick_stairs",
+  "count": 1
+}

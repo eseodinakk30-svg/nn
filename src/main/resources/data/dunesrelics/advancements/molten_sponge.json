@@ -1,0 +1,32 @@
+{
+  "display": {
+    "icon": {
+      "item": "dunesrelics:pumice_sponge"
+    },
+    "title": {
+      "translate": "advancements.dunesrelics.molten_sponge.title"
+    },
+    "description": {
+      "translate": "advancements.dunesrelics.molten_sponge.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "has": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "dunesrelics:molten_pumice_sponge"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "parent": "dunesrelics:ashen_lands"
+}

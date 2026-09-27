@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "dunesrelics:block/cracked_scoria_bricks"
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "pattern": [
+    "##",
+    "##",
+    "##"
+  ],
+  "key": {
+    "#": {
+      "item": "dunesrelics:ember_planks"
+    }
+  },
+  "result": {
+    "item": "dunesrelics:ember_door",
+    "count": 3
+  }
+}

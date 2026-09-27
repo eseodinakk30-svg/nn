@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "pattern": [
+    "###",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "dunesrelics:scoria"
+    }
+  },
+  "result": {
+    "item": "dunesrelics:scoria_wall",
+    "count": 6
+  }
+}

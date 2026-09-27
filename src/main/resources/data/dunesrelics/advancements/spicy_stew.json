@@ -1,0 +1,30 @@
+{
+  "display": {
+    "icon": {
+      "item": "dunesrelics:spicy_stew"
+    },
+    "title": {
+      "translate": "advancements.dunesrelics.spicy_stew.title"
+    },
+    "description": {
+      "translate": "advancements.dunesrelics.spicy_stew.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "ate": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": {
+          "items": [
+            "dunesrelics:spicy_stew"
+          ]
+        }
+      }
+    }
+  },
+  "parent": "dunesrelics:salamander"
+}

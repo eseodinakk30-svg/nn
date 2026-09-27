@@ -4,7 +4,7 @@ onboardAccessibility:false
 tutorialStep:none
 joinedFirstServer:true
 skipMultiplayerWarning:true
-renderDistance:6
+renderDistance:8
 simulationDistance:6
 guiScale:2
 narrator:0

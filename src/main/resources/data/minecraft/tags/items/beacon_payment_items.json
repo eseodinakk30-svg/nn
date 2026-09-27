@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
-    "dunesrelics:bronze_ingot"
+    "dunesrelics:bronze_ingot",
+    "dunesrelics:fire_opal"
   ]
 }

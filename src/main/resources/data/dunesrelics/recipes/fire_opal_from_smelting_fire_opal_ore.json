@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:smelting",
+  "category": "misc",
+  "ingredient": {
+    "item": "dunesrelics:fire_opal_ore"
+  },
+  "result": "dunesrelics:fire_opal",
+  "experience": 1.0,
+  "cookingtime": 200
+}

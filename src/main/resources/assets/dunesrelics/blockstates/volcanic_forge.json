@@ -1,0 +1,79 @@
+{
+  "variants": {
+    "facing=north,lava=0": {
+      "model": "dunesrelics:block/volcanic_forge_lava0"
+    },
+    "facing=north,lava=1": {
+      "model": "dunesrelics:block/volcanic_forge_lava1"
+    },
+    "facing=north,lava=2": {
+      "model": "dunesrelics:block/volcanic_forge_lava2"
+    },
+    "facing=north,lava=3": {
+      "model": "dunesrelics:block/volcanic_forge_lava3"
+    },
+    "facing=north,lava=4": {
+      "model": "dunesrelics:block/volcanic_forge_lava4"
+    },
+    "facing=east,lava=0": {
+      "model": "dunesrelics:block/volcanic_forge_lava0",
+      "y": 90
+    },
+    "facing=east,lava=1": {
+      "model": "dunesrelics:block/volcanic_forge_lava1",
+      "y": 90
+    },
+    "facing=east,lava=2": {
+      "model": "dunesrelics:block/volcanic_forge_lava2",
+      "y": 90
+    },
+    "facing=east,lava=3": {
+      "model": "dunesrelics:block/volcanic_forge_lava3",
+      "y": 90
+    },
+    "facing=east,lava=4": {
+      "model": "dunesrelics:block/volcanic_forge_lava4",
+      "y": 90
+    },
+    "facing=south,lava=0": {
+      "model": "dunesrelics:block/volcanic_forge_lava0",
+      "y": 180
+    },
+    "facing=south,lava=1": {
+      "model": "dunesrelics:block/volcanic_forge_lava1",
+      "y": 180
+    },
+    "facing=south,lava=2": {
+      "model": "dunesrelics:block/volcanic_forge_lava2",
+      "y": 180
+    },
+    "facing=south,lava=3": {
+      "model": "dunesrelics:block/volcanic_forge_lava3",
+      "y": 180
+    },
+    "facing=south,lava=4": {
+      "model": "dunesrelics:block/volcanic_forge_lava4",
+      "y": 180
+    },
+    "facing=west,lava=0": {
+      "model": "dunesrelics:block/volcanic_forge_lava0",
+      "y": 270
+    },
+    "facing=west,lava=1": {
+      "model": "dunesrelics:block/volcanic_forge_lava1",
+      "y": 270
+    },
+    "facing=west,lava=2": {
+      "model": "dunesrelics:block/volcanic_forge_lava2",
+      "y": 270
+    },
+    "facing=west,lava=3": {
+      "model": "dunesrelics:block/volcanic_forge_lava3",
+      "y": 270
+    },
+    "facing=west,lava=4": {
+      "model": "dunesrelics:block/volcanic_forge_lava4",
+      "y": 270
+    }
+  }
+}

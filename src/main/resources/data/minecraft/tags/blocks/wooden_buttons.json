@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
-    "dunesrelics:palm_button"
+    "dunesrelics:palm_button",
+    "dunesrelics:ember_button"
   ]
 }

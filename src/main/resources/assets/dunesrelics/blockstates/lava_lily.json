@@ -1,0 +1,21 @@
+{
+  "variants": {
+    "": [
+      {
+        "model": "dunesrelics:block/lava_lily"
+      },
+      {
+        "model": "dunesrelics:block/lava_lily",
+        "y": 90
+      },
+      {
+        "model": "dunesrelics:block/lava_lily",
+        "y": 180
+      },
+      {
+        "model": "dunesrelics:block/lava_lily",
+        "y": 270
+      }
+    ]
+  }
+}

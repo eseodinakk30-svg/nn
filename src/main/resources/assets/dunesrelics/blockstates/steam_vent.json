@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "active=false": {
+      "model": "dunesrelics:block/steam_vent"
+    },
+    "active=true": {
+      "model": "dunesrelics:block/steam_vent_active"
+    }
+  }
+}

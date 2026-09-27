@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "pattern": [
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "dunesrelics:ash_block"
+    }
+  },
+  "result": {
+    "item": "dunesrelics:ash_layer",
+    "count": 6
+  }
+}

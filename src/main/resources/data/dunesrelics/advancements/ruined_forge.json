@@ -1,0 +1,26 @@
+{
+  "display": {
+    "icon": {
+      "item": "dunesrelics:scoria_bricks"
+    },
+    "title": {
+      "translate": "advancements.dunesrelics.ruined_forge.title"
+    },
+    "description": {
+      "translate": "advancements.dunesrelics.ruined_forge.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "looted": {
+      "trigger": "minecraft:player_generates_container_loot",
+      "conditions": {
+        "loot_table": "dunesrelics:chests/ruined_forge"
+      }
+    }
+  },
+  "parent": "dunesrelics:ashen_lands"
+}

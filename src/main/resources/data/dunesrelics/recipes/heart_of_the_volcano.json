@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "pattern": [
+    "MMM",
+    "MEM",
+    "MMM"
+  ],
+  "key": {
+    "M": {
+      "item": "minecraft:magma_block"
+    },
+    "E": {
+      "item": "dunesrelics:ember_core"
+    }
+  },
+  "result": {
+    "item": "dunesrelics:heart_of_the_volcano",
+    "count": 1
+  }
+}

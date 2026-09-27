@@ -1,0 +1,14 @@
+{
+  "structures": [
+    {
+      "structure": "dunesrelics:volcano",
+      "weight": 1
+    }
+  ],
+  "placement": {
+    "type": "minecraft:random_spread",
+    "salt": 571930213,
+    "spacing": 24,
+    "separation": 10
+  }
+}

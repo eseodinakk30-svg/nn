@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/outer_stairs",
+  "textures": {
+    "bottom": "dunesrelics:block/scoria",
+    "top": "dunesrelics:block/scoria",
+    "side": "dunesrelics:block/scoria"
+  }
+}

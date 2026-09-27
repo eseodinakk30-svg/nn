@@ -1,0 +1,11 @@
+{
+  "replace": false,
+  "values": [
+    "dunesrelics:obsidian_bricks",
+    "dunesrelics:obsidian_brick_stairs",
+    "dunesrelics:obsidian_brick_slab",
+    "dunesrelics:obsidian_brick_wall",
+    "dunesrelics:chiseled_obsidian",
+    "dunesrelics:heart_of_the_volcano"
+  ]
+}

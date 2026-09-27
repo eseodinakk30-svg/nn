@@ -1,6 +1,10 @@
 {
   "replace": false,
   "values": [
-    "dunesrelics:limestone"
+    "dunesrelics:limestone",
+    "dunesrelics:scoria",
+    "dunesrelics:ash_block",
+    "dunesrelics:black_sand",
+    "dunesrelics:pumice"
   ]
 }

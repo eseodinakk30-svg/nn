@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "pattern": [
+    "##",
+    "##"
+  ],
+  "key": {
+    "#": {
+      "item": "dunesrelics:volcanic_ash"
+    }
+  },
+  "result": {
+    "item": "dunesrelics:ash_block",
+    "count": 1
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "display": {
+    "icon": {
+      "item": "dunesrelics:chiseled_obsidian"
+    },
+    "title": {
+      "translate": "advancements.dunesrelics.volcano.title"
+    },
+    "description": {
+      "translate": "advancements.dunesrelics.volcano.description"
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "looted": {
+      "trigger": "minecraft:player_generates_container_loot",
+      "conditions": {
+        "loot_table": "dunesrelics:chests/volcano_lair"
+      }
+    }
+  },
+  "parent": "dunesrelics:ashen_lands"
+}

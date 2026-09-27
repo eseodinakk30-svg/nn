@@ -1,0 +1,30 @@
+{
+  "display": {
+    "icon": {
+      "item": "dunesrelics:lava_crab_bucket"
+    },
+    "title": {
+      "translate": "advancements.dunesrelics.crab_bucket.title"
+    },
+    "description": {
+      "translate": "advancements.dunesrelics.crab_bucket.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "filled": {
+      "trigger": "minecraft:filled_bucket",
+      "conditions": {
+        "item": {
+          "items": [
+            "dunesrelics:lava_crab_bucket"
+          ]
+        }
+      }
+    }
+  },
+  "parent": "dunesrelics:ashen_lands"
+}

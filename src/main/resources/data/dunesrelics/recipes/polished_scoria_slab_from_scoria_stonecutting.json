@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": {
+    "item": "dunesrelics:scoria"
+  },
+  "result": "dunesrelics:polished_scoria_slab",
+  "count": 2
+}

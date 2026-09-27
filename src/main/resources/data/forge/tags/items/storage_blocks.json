@@ -1,6 +1,8 @@
 {
   "replace": false,
   "values": [
-    "#forge:storage_blocks/bronze"
+    "#forge:storage_blocks/bronze",
+    "#forge:storage_blocks/fire_opal",
+    "#forge:storage_blocks/sulfur"
   ]
 }

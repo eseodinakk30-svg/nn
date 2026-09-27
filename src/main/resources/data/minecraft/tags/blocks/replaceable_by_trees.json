@@ -2,6 +2,9 @@
   "replace": false,
   "values": [
     "dunesrelics:dune_grass",
-    "dunesrelics:cattail"
+    "dunesrelics:cattail",
+    "dunesrelics:ash_grass",
+    "dunesrelics:ash_layer",
+    "dunesrelics:sulfur_cluster"
   ]
 }

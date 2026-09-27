@@ -1,0 +1,37 @@
+{
+  "display": {
+    "icon": {
+      "item": "dunesrelics:magma_hammer"
+    },
+    "title": {
+      "translate": "advancements.dunesrelics.magma_titan.title"
+    },
+    "description": {
+      "translate": "advancements.dunesrelics.magma_titan.description"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "killed": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type": "dunesrelics:magma_titan"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "parent": "dunesrelics:volcano",
+  "rewards": {
+    "experience": 150
+  }
+}

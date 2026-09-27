@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
-    "#forge:gems/amber"
+    "#forge:gems/amber",
+    "#forge:gems/fire_opal"
   ]
 }

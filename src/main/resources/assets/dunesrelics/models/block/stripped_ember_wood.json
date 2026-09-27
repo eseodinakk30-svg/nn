@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "end": "dunesrelics:block/stripped_ember_log",
+    "side": "dunesrelics:block/stripped_ember_log"
+  }
+}

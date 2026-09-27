@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/slab",
+  "textures": {
+    "bottom": "dunesrelics:block/scoria_bricks",
+    "top": "dunesrelics:block/scoria_bricks",
+    "side": "dunesrelics:block/scoria_bricks"
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "dunesrelics:fire_opal_ore",
+    "dunesrelics:deepslate_fire_opal_ore",
+    "dunesrelics:fire_opal_block",
+    "dunesrelics:heart_of_the_volcano"
+  ]
+}

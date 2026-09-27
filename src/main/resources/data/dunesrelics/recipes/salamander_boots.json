@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    "S S",
+    "S S"
+  ],
+  "key": {
+    "S": {
+      "item": "dunesrelics:salamander_scale"
+    }
+  },
+  "result": {
+    "item": "dunesrelics:salamander_boots",
+    "count": 1
+  }
+}

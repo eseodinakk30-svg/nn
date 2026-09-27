@@ -1,6 +1,8 @@
 {
   "replace": false,
   "values": [
-    "dunesrelics:ancient_dunes"
+    "dunesrelics:ancient_dunes",
+    "dunesrelics:ashen_wastes",
+    "dunesrelics:magma_caverns"
   ]
 }

@@ -1,0 +1,32 @@
+{
+  "display": {
+    "icon": {
+      "item": "dunesrelics:salamander_boots"
+    },
+    "title": {
+      "translate": "advancements.dunesrelics.salamander_boots.title"
+    },
+    "description": {
+      "translate": "advancements.dunesrelics.salamander_boots.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "has": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "dunesrelics:salamander_boots"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "parent": "dunesrelics:salamander"
+}

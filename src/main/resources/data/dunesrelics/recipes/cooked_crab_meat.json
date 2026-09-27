@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:smelting",
+  "category": "food",
+  "ingredient": {
+    "item": "dunesrelics:crab_meat"
+  },
+  "result": "dunesrelics:cooked_crab_meat",
+  "experience": 0.35,
+  "cookingtime": 200
+}

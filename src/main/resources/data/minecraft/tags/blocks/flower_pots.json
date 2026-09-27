@@ -2,6 +2,8 @@
   "replace": false,
   "values": [
     "dunesrelics:potted_palm_sapling",
-    "dunesrelics:potted_desert_rose"
+    "dunesrelics:potted_desert_rose",
+    "dunesrelics:potted_ember_sapling",
+    "dunesrelics:potted_fireblossom"
   ]
 }

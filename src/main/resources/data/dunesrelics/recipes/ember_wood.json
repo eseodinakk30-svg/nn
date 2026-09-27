@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "pattern": [
+    "##",
+    "##"
+  ],
+  "key": {
+    "#": {
+      "item": "dunesrelics:ember_log"
+    }
+  },
+  "result": {
+    "item": "dunesrelics:ember_wood",
+    "count": 3
+  }
+}

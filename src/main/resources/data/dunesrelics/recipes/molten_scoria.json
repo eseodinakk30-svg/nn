@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "pattern": [
+    "##",
+    "##"
+  ],
+  "key": {
+    "#": {
+      "item": "minecraft:magma_block"
+    }
+  },
+  "result": {
+    "item": "dunesrelics:molten_scoria",
+    "count": 4
+  }
+}

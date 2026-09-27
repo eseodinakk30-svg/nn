@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
-    "dunesrelics:palm_pressure_plate"
+    "dunesrelics:palm_pressure_plate",
+    "dunesrelics:ember_pressure_plate"
   ]
 }

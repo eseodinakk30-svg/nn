@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "dunesrelics:block/scoria_slab"
+    },
+    "type=double": {
+      "model": "dunesrelics:block/scoria"
+    },
+    "type=top": {
+      "model": "dunesrelics:block/scoria_slab_top"
+    }
+  }
+}

@@ -13,6 +13,20 @@
     "dunesrelics:palm_door",
     "dunesrelics:palm_trapdoor",
     "dunesrelics:palm_button",
-    "dunesrelics:palm_pressure_plate"
+    "dunesrelics:palm_pressure_plate",
+    "dunesrelics:ember_log",
+    "dunesrelics:ember_wood",
+    "dunesrelics:stripped_ember_log",
+    "dunesrelics:stripped_ember_wood",
+    "dunesrelics:ember_planks",
+    "dunesrelics:ember_stairs",
+    "dunesrelics:ember_slab",
+    "dunesrelics:ember_fence",
+    "dunesrelics:ember_fence_gate",
+    "dunesrelics:ember_door",
+    "dunesrelics:ember_trapdoor",
+    "dunesrelics:ember_button",
+    "dunesrelics:ember_pressure_plate",
+    "dunesrelics:fire_pepper_bush"
   ]
 }
