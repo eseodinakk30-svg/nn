@@ -1,0 +1,26 @@
+{
+  "display": {
+    "icon": {
+      "item": "dunesrelics:quicksand"
+    },
+    "title": {
+      "translate": "advancements.dunesrelics.quicksand.title"
+    },
+    "description": {
+      "translate": "advancements.dunesrelics.quicksand.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "sank": {
+      "trigger": "minecraft:enter_block",
+      "conditions": {
+        "block": "dunesrelics:quicksand"
+      }
+    }
+  },
+  "parent": "dunesrelics:ancient_dunes"
+}

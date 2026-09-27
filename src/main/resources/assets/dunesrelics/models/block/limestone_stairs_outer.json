@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/outer_stairs",
+  "textures": {
+    "bottom": "dunesrelics:block/limestone",
+    "top": "dunesrelics:block/limestone",
+    "side": "dunesrelics:block/limestone"
+  }
+}

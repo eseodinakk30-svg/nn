@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "pattern": [
+    "###",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "dunesrelics:polished_limestone"
+    }
+  },
+  "result": {
+    "item": "dunesrelics:polished_limestone_wall",
+    "count": 6
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "decorations",
+  "pattern": [
+    "GPG",
+    "PLP",
+    "PPP"
+  ],
+  "key": {
+    "G": {
+      "item": "minecraft:gold_ingot"
+    },
+    "P": {
+      "item": "dunesrelics:polished_limestone"
+    },
+    "L": {
+      "item": "dunesrelics:linen"
+    }
+  },
+  "result": {
+    "item": "dunesrelics:sarcophagus",
+    "count": 1
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "ingredients": [
+    {
+      "tag": "dunesrelics:palm_logs"
+    }
+  ],
+  "result": {
+    "item": "dunesrelics:palm_planks",
+    "count": 4
+  }
+}

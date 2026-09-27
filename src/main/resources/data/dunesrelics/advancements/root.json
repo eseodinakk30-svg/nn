@@ -1,0 +1,23 @@
+{
+  "display": {
+    "icon": {
+      "item": "dunesrelics:chiseled_limestone_bricks"
+    },
+    "title": {
+      "translate": "advancements.dunesrelics.root.title"
+    },
+    "description": {
+      "translate": "advancements.dunesrelics.root.description"
+    },
+    "frame": "task",
+    "show_toast": false,
+    "announce_to_chat": false,
+    "hidden": false,
+    "background": "minecraft:textures/block/sandstone_top.png"
+  },
+  "criteria": {
+    "tick": {
+      "trigger": "minecraft:tick"
+    }
+  }
+}

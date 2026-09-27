@@ -1,0 +1,32 @@
+{
+  "display": {
+    "icon": {
+      "item": "dunesrelics:amber_goggles"
+    },
+    "title": {
+      "translate": "advancements.dunesrelics.goggles.title"
+    },
+    "description": {
+      "translate": "advancements.dunesrelics.goggles.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "has": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "dunesrelics:amber_goggles"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "parent": "dunesrelics:bronze"
+}

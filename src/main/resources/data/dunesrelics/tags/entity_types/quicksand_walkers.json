@@ -1,0 +1,12 @@
+{
+  "replace": false,
+  "values": [
+    "dunesrelics:mummy",
+    "dunesrelics:pharaoh",
+    "dunesrelics:scorpion",
+    "dunesrelics:scarab",
+    "dunesrelics:meerkat",
+    "minecraft:husk",
+    "minecraft:camel"
+  ]
+}

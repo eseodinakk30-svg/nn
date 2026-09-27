@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "redstone",
+  "ingredients": [
+    {
+      "item": "dunesrelics:palm_planks"
+    }
+  ],
+  "result": {
+    "item": "dunesrelics:palm_button",
+    "count": 1
+  }
+}

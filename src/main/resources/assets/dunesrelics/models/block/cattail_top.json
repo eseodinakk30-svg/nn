@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cross",
+  "textures": {
+    "cross": "dunesrelics:block/cattail_top"
+  },
+  "render_type": "minecraft:cutout"
+}

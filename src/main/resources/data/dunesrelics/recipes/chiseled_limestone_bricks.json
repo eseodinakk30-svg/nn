@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "pattern": [
+    "#",
+    "#"
+  ],
+  "key": {
+    "#": {
+      "item": "dunesrelics:limestone_brick_slab"
+    }
+  },
+  "result": {
+    "item": "dunesrelics:chiseled_limestone_bricks",
+    "count": 1
+  }
+}

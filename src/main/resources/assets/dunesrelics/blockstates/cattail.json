@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "half=lower": {
+      "model": "dunesrelics:block/cattail_bottom"
+    },
+    "half=upper": {
+      "model": "dunesrelics:block/cattail_top"
+    }
+  }
+}

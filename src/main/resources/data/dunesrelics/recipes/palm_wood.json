@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "pattern": [
+    "##",
+    "##"
+  ],
+  "key": {
+    "#": {
+      "item": "dunesrelics:palm_log"
+    }
+  },
+  "result": {
+    "item": "dunesrelics:palm_wood",
+    "count": 3
+  }
+}

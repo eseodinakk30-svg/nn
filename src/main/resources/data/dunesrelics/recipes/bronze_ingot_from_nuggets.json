@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "###",
+    "###",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "dunesrelics:bronze_nugget"
+    }
+  },
+  "result": {
+    "item": "dunesrelics:bronze_ingot",
+    "count": 1
+  }
+}

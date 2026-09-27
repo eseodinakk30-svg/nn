@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "dunesrelics:bronze_helmet",
+    "dunesrelics:bronze_chestplate",
+    "dunesrelics:bronze_leggings",
+    "dunesrelics:bronze_boots"
+  ]
+}

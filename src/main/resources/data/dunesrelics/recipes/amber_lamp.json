@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "pattern": [
+    " A ",
+    "ATA",
+    " A "
+  ],
+  "key": {
+    "A": {
+      "item": "dunesrelics:amber"
+    },
+    "T": {
+      "item": "minecraft:torch"
+    }
+  },
+  "result": {
+    "item": "dunesrelics:amber_lamp",
+    "count": 1
+  }
+}

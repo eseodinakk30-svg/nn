@@ -1,0 +1,26 @@
+{
+  "display": {
+    "icon": {
+      "item": "dunesrelics:sarcophagus"
+    },
+    "title": {
+      "translate": "advancements.dunesrelics.tomb.title"
+    },
+    "description": {
+      "translate": "advancements.dunesrelics.tomb.description"
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "looted": {
+      "trigger": "minecraft:player_generates_container_loot",
+      "conditions": {
+        "loot_table": "dunesrelics:chests/ancient_tomb"
+      }
+    }
+  },
+  "parent": "dunesrelics:ruins"
+}

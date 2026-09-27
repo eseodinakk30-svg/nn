@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "dunesrelics:linen"
+    },
+    {
+      "item": "dunesrelics:linen"
+    },
+    {
+      "item": "dunesrelics:aloe_leaf"
+    }
+  ],
+  "result": {
+    "item": "dunesrelics:bandage",
+    "count": 2
+  }
+}

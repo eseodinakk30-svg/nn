@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "dunesrelics:block/limestone_slab"
+    },
+    "type=double": {
+      "model": "dunesrelics:block/limestone"
+    },
+    "type=top": {
+      "model": "dunesrelics:block/limestone_slab_top"
+    }
+  }
+}

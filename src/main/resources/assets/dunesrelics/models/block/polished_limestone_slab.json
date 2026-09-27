@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/slab",
+  "textures": {
+    "bottom": "dunesrelics:block/polished_limestone",
+    "top": "dunesrelics:block/polished_limestone",
+    "side": "dunesrelics:block/polished_limestone"
+  }
+}

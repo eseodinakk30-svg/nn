@@ -1,0 +1,8 @@
+{
+  "type": "forge:add_features",
+  "biomes": "minecraft:desert",
+  "features": [
+    "dunesrelics:ancient_ruin_rare"
+  ],
+  "step": "surface_structures"
+}

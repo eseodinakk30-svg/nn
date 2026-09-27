@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": {
+    "item": "dunesrelics:polished_limestone"
+  },
+  "result": "dunesrelics:chiseled_limestone_bricks",
+  "count": 1
+}

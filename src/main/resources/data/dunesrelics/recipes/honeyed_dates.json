@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "food",
+  "ingredients": [
+    {
+      "item": "dunesrelics:dates"
+    },
+    {
+      "item": "dunesrelics:dates"
+    },
+    {
+      "item": "dunesrelics:dates"
+    },
+    {
+      "item": "minecraft:honey_bottle"
+    }
+  ],
+  "result": {
+    "item": "dunesrelics:honeyed_dates",
+    "count": 3
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "type": "forge:add_features",
+  "biomes": "minecraft:desert",
+  "features": [
+    "dunesrelics:patch_aloe_vera",
+    "dunesrelics:flower_desert_rose"
+  ],
+  "step": "vegetal_decoration"
+}

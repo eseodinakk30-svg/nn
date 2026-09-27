@@ -1,0 +1,18 @@
+{
+  "replace": false,
+  "values": [
+    "dunesrelics:palm_log",
+    "dunesrelics:palm_wood",
+    "dunesrelics:stripped_palm_log",
+    "dunesrelics:stripped_palm_wood",
+    "dunesrelics:palm_planks",
+    "dunesrelics:palm_stairs",
+    "dunesrelics:palm_slab",
+    "dunesrelics:palm_fence",
+    "dunesrelics:palm_fence_gate",
+    "dunesrelics:palm_door",
+    "dunesrelics:palm_trapdoor",
+    "dunesrelics:palm_button",
+    "dunesrelics:palm_pressure_plate"
+  ]
+}

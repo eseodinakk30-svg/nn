@@ -1,0 +1,27 @@
+{
+  "replace": false,
+  "values": [
+    "dunesrelics:limestone",
+    "dunesrelics:limestone_stairs",
+    "dunesrelics:limestone_slab",
+    "dunesrelics:limestone_wall",
+    "dunesrelics:polished_limestone",
+    "dunesrelics:polished_limestone_stairs",
+    "dunesrelics:polished_limestone_slab",
+    "dunesrelics:polished_limestone_wall",
+    "dunesrelics:limestone_bricks",
+    "dunesrelics:limestone_brick_stairs",
+    "dunesrelics:limestone_brick_slab",
+    "dunesrelics:limestone_brick_wall",
+    "dunesrelics:cracked_limestone_bricks",
+    "dunesrelics:chiseled_limestone_bricks",
+    "dunesrelics:limestone_pillar",
+    "dunesrelics:gilded_limestone",
+    "dunesrelics:amber_ore",
+    "dunesrelics:amber_block",
+    "dunesrelics:amber_lamp",
+    "dunesrelics:bronze_block",
+    "dunesrelics:sarcophagus",
+    "dunesrelics:ancient_urn"
+  ]
+}

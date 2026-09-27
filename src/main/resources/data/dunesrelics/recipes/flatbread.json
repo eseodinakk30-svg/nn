@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "food",
+  "ingredients": [
+    {
+      "item": "minecraft:wheat"
+    },
+    {
+      "item": "minecraft:wheat"
+    },
+    {
+      "item": "dunesrelics:dates"
+    }
+  ],
+  "result": {
+    "item": "dunesrelics:flatbread",
+    "count": 1
+  }
+}

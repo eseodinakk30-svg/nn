@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/inner_stairs",
+  "textures": {
+    "bottom": "dunesrelics:block/palm_planks",
+    "top": "dunesrelics:block/palm_planks",
+    "side": "dunesrelics:block/palm_planks"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "type": "dunesrelics:add_item",
+  "item": "dunesrelics:dates",
+  "conditions": [
+    {
+      "condition": "forge:loot_table_id",
+      "loot_table_id": "minecraft:chests/village/village_desert_house"
+    },
+    {
+      "condition": "minecraft:random_chance",
+      "chance": 0.4
+    }
+  ]
+}

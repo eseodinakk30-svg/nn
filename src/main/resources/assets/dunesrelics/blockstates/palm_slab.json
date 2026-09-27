@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "dunesrelics:block/palm_slab"
+    },
+    "type=double": {
+      "model": "dunesrelics:block/palm_planks"
+    },
+    "type=top": {
+      "model": "dunesrelics:block/palm_slab_top"
+    }
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "sealed=false": {
+      "model": "dunesrelics:block/ancient_urn"
+    },
+    "sealed=true": {
+      "model": "dunesrelics:block/ancient_urn"
+    }
+  }
+}

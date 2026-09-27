@@ -1,0 +1,32 @@
+{
+  "display": {
+    "icon": {
+      "item": "dunesrelics:bronze_ingot"
+    },
+    "title": {
+      "translate": "advancements.dunesrelics.bronze.title"
+    },
+    "description": {
+      "translate": "advancements.dunesrelics.bronze.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "has": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "dunesrelics:bronze_ingot"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "parent": "dunesrelics:root"
+}

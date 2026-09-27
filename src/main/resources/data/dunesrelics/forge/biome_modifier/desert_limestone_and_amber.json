@@ -1,0 +1,9 @@
+{
+  "type": "forge:add_features",
+  "biomes": "minecraft:desert",
+  "features": [
+    "dunesrelics:ore_limestone",
+    "dunesrelics:ore_amber"
+  ],
+  "step": "underground_ores"
+}

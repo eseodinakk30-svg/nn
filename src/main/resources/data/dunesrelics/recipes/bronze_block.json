@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "pattern": [
+    "###",
+    "###",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "dunesrelics:bronze_ingot"
+    }
+  },
+  "result": {
+    "item": "dunesrelics:bronze_block",
+    "count": 1
+  }
+}

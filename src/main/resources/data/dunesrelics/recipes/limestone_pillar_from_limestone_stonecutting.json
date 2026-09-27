@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": {
+    "item": "dunesrelics:limestone"
+  },
+  "result": "dunesrelics:limestone_pillar",
+  "count": 1
+}

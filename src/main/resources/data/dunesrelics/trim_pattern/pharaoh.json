@@ -1,0 +1,7 @@
+{
+  "asset_id": "dunesrelics:pharaoh",
+  "description": {
+    "translate": "trim_pattern.dunesrelics.pharaoh"
+  },
+  "template_item": "dunesrelics:pharaoh_armor_trim_smithing_template"
+}

@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "dunesrelics:bronze_block"
+    }
+  ],
+  "result": {
+    "item": "dunesrelics:bronze_ingot",
+    "count": 9
+  }
+}
