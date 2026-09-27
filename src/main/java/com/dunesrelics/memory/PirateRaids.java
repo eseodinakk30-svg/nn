@@ -2,6 +2,7 @@ package com.dunesrelics.memory;
 
 import com.dunesrelics.entity.world.Pirate;
 import com.dunesrelics.entity.world.PirateGunner;
+import com.dunesrelics.entity.world.PirateSloop;
 import com.dunesrelics.registry.ModEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -116,6 +117,28 @@ public final class PirateRaids {
             Boat boat = new Boat(level, water.getX() + 0.5D + i * 2, water.getY() + 1.0D, water.getZ() + 0.5D);
             boat.setVariant(Boat.Type.DARK_OAK);
             level.addFreshEntity(boat);
+        }
+        // the sloop that brought them stands off the shore, bombards the village and puts its gunners ashore
+        Vec3 out = Vec3.atCenterOf(water).subtract(dir.scale(28.0D));
+        BlockPos anchorage = BlockPos.containing(out.x, water.getY(), out.z);
+        if (level.isLoaded(anchorage) && level.getFluidState(anchorage).is(net.minecraft.tags.FluidTags.WATER)) {
+            PirateSloop sloop = ModEntities.PIRATE_SLOOP.get().create(level);
+            if (sloop != null) {
+                float yaw = (float) Math.toDegrees(Math.atan2(-dir.x, dir.z));
+                sloop.moveTo(out.x, water.getY() + 0.5D, out.z, yaw, 0.0F);
+                sloop.setHome(anchorage);
+                sloop.setRaid(record.bell);
+                level.addFreshEntity(sloop);
+                for (int i = 0; i < 2; i++) {
+                    PirateGunner gunner = ModEntities.PIRATE_GUNNER.get().create(level);
+                    if (gunner != null) {
+                        gunner.moveTo(out.x, water.getY() + 1.0D, out.z, yaw, 0.0F);
+                        gunner.finalizeSpawn(level, level.getCurrentDifficultyAt(anchorage), MobSpawnType.EVENT, null, null);
+                        level.addFreshEntity(gunner);
+                        gunner.startRiding(sloop, true);
+                    }
+                }
+            }
         }
         level.playSound(null, landing, SoundEvents.RAID_HORN.value(), SoundSource.NEUTRAL, 64.0F, 0.8F);
         record.lastPirateRaid = day;

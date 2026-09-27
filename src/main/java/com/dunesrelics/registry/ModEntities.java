@@ -17,6 +17,7 @@ import com.dunesrelics.entity.world.Cannonball;
 import com.dunesrelics.entity.world.Pirate;
 import com.dunesrelics.entity.world.PirateCaptain;
 import com.dunesrelics.entity.world.PirateGunner;
+import com.dunesrelics.entity.world.PirateSloop;
 import com.dunesrelics.entity.world.Shade;
 import com.dunesrelics.entity.world.Traveler;
 import com.dunesrelics.entity.world.VillageWorker;
@@ -88,6 +89,9 @@ public final class ModEntities {
             () -> EntityType.Builder.<Cannonball>of(Cannonball::new, MobCategory.MISC).sized(0.4F, 0.4F).clientTrackingRange(8)
                     .updateInterval(10).build(DunesRelics.id("cannonball").toString()));
 
+    public static final RegistryObject<EntityType<PirateSloop>> PIRATE_SLOOP = ENTITIES.register("pirate_sloop",
+            () -> EntityType.Builder.<PirateSloop>of(PirateSloop::new, MobCategory.MISC).sized(3.2F, 1.4F).clientTrackingRange(10)
+                    .updateInterval(3).build(DunesRelics.id("pirate_sloop").toString()));
     public static final RegistryObject<EntityType<VillageWorker>> VILLAGE_BUILDER = worker("village_builder", VillageWorker.Job.BUILDER);
     public static final RegistryObject<EntityType<VillageWorker>> LUMBERJACK = worker("lumberjack", VillageWorker.Job.LUMBERJACK);
     public static final RegistryObject<EntityType<VillageWorker>> QUARRYMAN = worker("quarryman", VillageWorker.Job.QUARRYMAN);

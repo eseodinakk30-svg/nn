@@ -6,8 +6,10 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Vindicator;
@@ -15,6 +17,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.UUID;
 
 /** A pirate illager with a cutlass. Crews the pirate ships and comes ashore to plunder coastal villages. */
 public class Pirate extends Vindicator implements PirateCrew {
@@ -48,6 +52,56 @@ public class Pirate extends Vindicator implements PirateCrew {
         this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(WorldItems.CUTLASS.get()));
     }
 
+    // ------------------------------------------------------------------------------------------ duels
+
+    @Nullable
+    private UUID duelist;
+    private boolean surrendered;
+    private int surrenderedFor;
+
+    @Nullable
+    @Override
+    public UUID getDuelist() {
+        return this.duelist;
+    }
+
+    @Override
+    public void setDuelist(@Nullable UUID duelist) {
+        this.duelist = duelist;
+    }
+
+    @Override
+    public boolean hasSurrendered() {
+        return this.surrendered;
+    }
+
+    @Override
+    public void surrender() {
+        this.surrendered = true;
+        this.duelist = null;
+        Duels.surrender(this);
+    }
+
+    @Override
+    public boolean canAttack(LivingEntity target) {
+        return !Duels.holdsBack(this, target) && super.canAttack(target);
+    }
+
+    @Override
+    protected void customServerAiStep() {
+        super.customServerAiStep();
+        if (this.surrendered) {
+            this.surrenderedFor++;
+        }
+        Duels.tick(this, this, this.surrenderedFor);
+    }
+
+    @Override
+    public boolean hurt(DamageSource source, float amount) {
+        Duels.onHurt(this, this, source);
+        return super.hurt(source, amount);
+    }
+
     @Nullable
     @Override
     public BlockPos getRaidTarget() {
@@ -62,6 +116,7 @@ public class Pirate extends Vindicator implements PirateCrew {
     @Override
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
+        tag.putBoolean("Surrendered", this.surrendered);
         if (this.raidTarget != null) {
             tag.put("RaidTarget", NbtUtils.writeBlockPos(this.raidTarget));
         }
@@ -70,6 +125,7 @@ public class Pirate extends Vindicator implements PirateCrew {
     @Override
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
+        this.surrendered = tag.getBoolean("Surrendered");
         this.raidTarget = tag.contains("RaidTarget") ? NbtUtils.readBlockPos(tag.getCompound("RaidTarget")) : null;
     }
 }

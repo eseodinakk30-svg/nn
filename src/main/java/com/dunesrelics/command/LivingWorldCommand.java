@@ -1,6 +1,8 @@
 package com.dunesrelics.command;
 
 import com.dunesrelics.DunesRelics;
+import com.dunesrelics.entity.world.VillageWorker;
+import com.dunesrelics.memory.Construction;
 import com.dunesrelics.memory.Names;
 import com.dunesrelics.memory.PirateRaids;
 import com.dunesrelics.memory.Tides;
@@ -14,9 +16,13 @@ import net.minecraft.commands.Commands;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.npc.Villager;
+import net.minecraft.world.phys.AABB;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+
+import java.util.List;
 
 /**
  * {@code /livingworld} (operators): look at what the world remembers around you, and hurry it along.
@@ -25,6 +31,7 @@ import net.minecraftforge.fml.common.Mod;
  *     <li>{@code react [mornings]}: run the next mornings' reactions right away;</li>
  *     <li>{@code stage <1..4>}: pretend you have lived here long enough for that stage;</li>
  *     <li>{@code grow}: let the villages near you build something now;</li>
+ *     <li>{@code village}: what the nearest village has, builds and mends;</li>
  *     <li>{@code hamlet}: found a small hamlet (a cottage, a field, a bell and two villagers) where you stand;</li>
  *     <li>{@code pirates}: send a pirate landing party to the nearest coastal village.</li>
  * </ul>
@@ -48,6 +55,7 @@ public final class LivingWorldCommand {
                         .executes(context -> stage(context.getSource(), IntegerArgumentType.getInteger(context, "stage")))))
                 .then(Commands.literal("grow").executes(context -> grow(context.getSource())))
                 .then(Commands.literal("hamlet").executes(context -> hamlet(context.getSource())))
+                .then(Commands.literal("village").executes(context -> village(context.getSource())))
                 .then(Commands.literal("pirates").executes(context -> pirates(context.getSource()))));
     }
 
@@ -123,6 +131,35 @@ public final class LivingWorldCommand {
         memory.setDirty();
         source.sendSuccess(() -> Component.translatable("commands.dunesrelics.livingworld.hamlet",
                 Component.translatable(record.nameKey())), true);
+        return 1;
+    }
+
+    /** The nearest village: its people, workers, stock, what it is building and what it is mending. */
+    private static int village(CommandSourceStack source) {
+        ServerLevel level = source.getLevel();
+        WorldMemory memory = WorldMemory.get(level);
+        VillageLife.discoverVillages(level, memory, level.getDayTime() / 24000L);
+        WorldMemory.VillageRecord record = memory.nearestVillage(BlockPos.containing(source.getPosition()), 160.0D);
+        if (record == null) {
+            source.sendFailure(Component.translatable("commands.dunesrelics.livingworld.no_village"));
+            return 0;
+        }
+        AABB area = new AABB(record.bell).inflate(Construction.VILLAGE_RADIUS + 32.0D);
+        int villagers = level.getEntitiesOfClass(Villager.class, area).size();
+        List<VillageWorker> workers = level.getEntitiesOfClass(VillageWorker.class, area, w -> record.bell.equals(w.getHomeBell()));
+        long builders = workers.stream().filter(w -> w.getJob() == VillageWorker.Job.BUILDER).count();
+        long lumberjacks = workers.stream().filter(w -> w.getJob() == VillageWorker.Job.LUMBERJACK).count();
+        long quarrymen = workers.stream().filter(w -> w.getJob() == VillageWorker.Job.QUARRYMAN).count();
+        String building = record.sites.isEmpty() ? "-" : record.sites.get(0).project + " " + record.sites.get(0).next
+                + "/" + record.sites.get(0).size();
+        Component line = Component.translatable("commands.dunesrelics.livingworld.village", Component.translatable(record.nameKey()),
+                villagers, builders, lumberjacks, quarrymen, record.wood, record.stone, record.houses, record.projects,
+                building, record.repairs.size(), record.roads.size());
+        source.sendSuccess(() -> line, false);
+        DunesRelics.LOGGER.info("[livingworld] village {} at {}: villagers {}, builders {}, lumberjacks {}, quarrymen {}, wood {}, stone {},"
+                        + " houses {}, projects {}, building {}, repairs {}, roads {}", record.name, record.bell.toShortString(), villagers,
+                builders, lumberjacks, quarrymen, record.wood, record.stone, record.houses, record.projects, building,
+                record.repairs.size(), record.roads.size());
         return 1;
     }
 

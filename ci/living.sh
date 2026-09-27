@@ -87,10 +87,12 @@ execute if score t living matches 860 positioned $VX 64 $VZ run livingworld grow
 execute if score t living matches 880 positioned $VX 64 $VZ store success score pirates living run livingworld pirates
 execute if score t living matches 881 if score pirates living matches 1 run say living_result pirates_landed
 execute if score t living matches 881 unless score pirates living matches 1 run say living_result no_coastal_village
+execute if score t living matches 900 positioned $VX 64 $VZ run livingworld village
 execute if score t living matches 1200 run say living_shot 03_village
 execute if score t living matches 1300 run gamemode survival @a
 execute if score t living matches 1300 run spreadplayers $VX $VZ 0 6 false @a
 execute if score t living matches 1600 run say living_shot 04_village_life
+execute if score t living matches 1650 positioned $VX 64 $VZ run livingworld village
 execute if score t living matches 1700 run gamemode spectator @a
 execute if score t living matches 1700 run spreadplayers 0 0 0 4 false @a
 execute if score t living matches 1720 at @p run fill ~-7 ~ ~-7 ~7 ~6 ~7 minecraft:stone_bricks hollow
@@ -135,6 +137,7 @@ pkill -f forgeclientuserdev || true
 sleep 5
 grep -nE "ERROR|Exception|Caused by|at com\.dunesrelics" client.log | head -150 > "$OUT/client_errors.txt" || true
 grep -n "\[CHAT\]" client.log | tail -60 > "$OUT/client_chat.txt" || true
+grep -n "\[livingworld\]" client.log > "$OUT/villages.txt" || true
 cp run/crash-reports/*.txt "$OUT/" 2>/dev/null || true
 tail -60 client.log > "$OUT/client_tail.txt"
 ls -la "$OUT"

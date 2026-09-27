@@ -126,10 +126,33 @@ def surf_models():
     blockstate("surf", {"variants": {"": {"model": m("block/surf")}}})
 
 
+def pirate_sloop_model():
+    """The sloop, a third of its size (the renderer scales it up 2.5 times), bow to the north."""
+    t = {"hull": "minecraft:block/dark_oak_planks", "deck": "minecraft:block/spruce_planks", "mast": "minecraft:block/dark_oak_log",
+         "sail": "minecraft:block/white_wool", "flag": "minecraft:block/black_wool", "skull": "minecraft:block/white_concrete",
+         "gun": "minecraft:block/black_concrete", "particle": "minecraft:block/dark_oak_planks"}
+    e = [
+        box([-2, 0, -12], [18, 3, 30], "#hull"), box([1, 0, -16], [15, 3, -12], "#hull"),
+        box([-2, 3, -12], [0, 6, 28], "#hull"), box([16, 3, -12], [18, 6, 28], "#hull"),
+        box([1, 3, -16], [15, 6, -14], "#hull"), box([1, 3, -14], [3, 6, -12], "#hull"), box([13, 3, -14], [15, 6, -12], "#hull"),
+        box([-2, 3, 28], [18, 8, 30], "#hull"),
+        box([0, 3, -14], [16, 3.2, 28], "#deck"),
+        box([1, 3, 20], [15, 8, 28], "#hull"), box([0, 8, 19], [16, 9, 29], "#deck"),
+        box([7, 3, 2], [9, 32, 4], "#mast"), box([-4, 27, 2.5], [20, 28, 3.5], "#mast"), box([-2, 11, 2.5], [18, 12, 3.5], "#mast"),
+        box([-3, 12, 3.4], [19, 27, 3.6], "#sail"),
+        box([9, 28, 2.9], [16, 32, 3.1], "#flag"), box([11.5, 29.5, 2.8], [13.5, 31, 3.2], "#skull"),
+        box([-4, 4, -4], [-2, 5.5, -2], "#gun"), box([-4, 4, 8], [-2, 5.5, 10], "#gun"),
+        box([18, 4, -4], [20, 5.5, -2], "#gun"), box([18, 4, 8], [20, 5.5, 10], "#gun"),
+        box([7.5, 4.5, -16], [8.5, 5.5, -14], "#mast"),
+    ]
+    write(os.path.join(ASSETS, "models/entity/pirate_sloop.json"), {"textures": t, "elements": e})
+
+
 def generate_block_assets():
     water_wheel_models()
     windmill_sails_models()
     surf_models()
+    pirate_sloop_model()
 
     # millstone: a stone base (block model) and the runner stone (turned by the block entity renderer)
     base = {"parent": "minecraft:block/block",
@@ -518,6 +541,7 @@ ENTITIES = {
     "shade": ("Shade", "Тень"),
     "cannonball": ("Cannonball", "Пушечное ядро"),
     "village_builder": ("Builder", "Строитель"),
+    "pirate_sloop": ("Pirate Sloop", "Пиратский шлюп"),
     "lumberjack": ("Lumberjack", "Лесоруб"),
     "quarryman": ("Quarryman", "Каменотёс"),
 }
@@ -695,6 +719,13 @@ EXTRA = {
     "villager.dunesrelics.request.waiting": ("Not yet? I'll wait.", "Ещё не всё? Я подожду."),
     "villager.dunesrelics.request.thanks": ("Thank you! Here, %s emeralds.", "Спасибо! Держи изумруды: %s."),
     "villager.dunesrelics.news": ("Have you heard? %s", "Слыхал? %s"),
+    "entity.dunesrelics.pirate_captain.duel": ("%s: \"A duel! You and me, %s, one on one, and may the best blade win!\"",
+                                               "%s: «Дуэль! Ты и я, %s, один на один, и пусть победит лучший клинок!»"),
+    "entity.dunesrelics.pirate_captain.cheat": ("%s: \"No fair! All hands, get them!\"", "%s: «Нечестно! Все на них!»"),
+    "entity.dunesrelics.pirate_captain.surrender": ("The pirates throw down their arms: their captain lost a fair duel.",
+                                                    "Пираты бросают оружие: их капитан проиграл в честной дуэли."),
+    "chronicle.dunesrelics.duel": ("%s beat a pirate captain in a fair duel.", "%s одолел капитана пиратов в честной дуэли."),
+    "chronicle.dunesrelics.sloop_sunk": ("%s sank a pirate sloop.", "%s потопил пиратский шлюп."),
     "chronicle.dunesrelics.wedding": ("A wedding in %s: %s and %s.", "Свадьба в деревне %s: %s и %s."),
     "chronicle.dunesrelics.birth": ("A new little one, %s, in %s.", "Пополнение в деревне %2$s: малыш %1$s."),
     "name.dunesrelics.cow.0": ("Daisy", "Бурёнка"),
@@ -711,6 +742,11 @@ EXTRA = {
     "commands.dunesrelics.livingworld.tide": ("Tide: %s (-1 low water, 1 high water)", "Прилив: %s (-1 отлив, 1 прилив)"),
     "commands.dunesrelics.livingworld.reacted": ("The world lived through %s more mornings.", "Прошло утр: %s."),
     "commands.dunesrelics.livingworld.hamlet": ("A hamlet was founded here: %s.", "Здесь основан хутор: %s."),
+    "commands.dunesrelics.livingworld.village": (
+        "%s: %s villagers; builders %s, lumberjacks %s, quarrymen %s; wood %s, stone %s; houses %s, projects %s;"
+        " building: %s; to repair: %s; roads: %s",
+        "%s: жителей %s; строителей %s, лесорубов %s, каменотёсов %s; дерево %s, камень %s; домов %s, построек %s;"
+        " строится: %s; ремонт: %s; дорог: %s"),
     "commands.dunesrelics.livingworld.no_room": ("There is no room for a hamlet here (it needs flat, natural, unbuilt ground).",
                                                  "Здесь нет места для хутора (нужна ровная нетронутая земля без построек)."),
     "commands.dunesrelics.livingworld.stage": ("This region now counts as stage %s.", "Этот регион теперь на стадии %s."),

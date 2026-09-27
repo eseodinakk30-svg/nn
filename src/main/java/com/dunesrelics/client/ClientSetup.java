@@ -32,6 +32,7 @@ import com.dunesrelics.client.model.ShadeModel;
 import com.dunesrelics.client.world.MillstoneRenderer;
 import com.dunesrelics.client.world.PirateGunnerRenderer;
 import com.dunesrelics.client.world.PirateRenderer;
+import com.dunesrelics.client.world.PirateSloopRenderer;
 import com.dunesrelics.client.world.ShadeRenderer;
 import com.dunesrelics.client.world.TravelerRenderer;
 import com.dunesrelics.client.world.TricornModel;
@@ -75,6 +76,7 @@ public final class ClientSetup {
         event.registerEntityRenderer(ModEntities.PIRATE_CAPTAIN.get(), PirateRenderer::captain);
         event.registerEntityRenderer(ModEntities.PIRATE_GUNNER.get(), PirateGunnerRenderer::new);
         event.registerEntityRenderer(ModEntities.TRAVELER.get(), TravelerRenderer::new);
+        event.registerEntityRenderer(ModEntities.PIRATE_SLOOP.get(), PirateSloopRenderer::new);
         event.registerEntityRenderer(ModEntities.VILLAGE_BUILDER.get(), WorkerRenderer::new);
         event.registerEntityRenderer(ModEntities.LUMBERJACK.get(), WorkerRenderer::new);
         event.registerEntityRenderer(ModEntities.QUARRYMAN.get(), WorkerRenderer::new);
@@ -106,6 +108,7 @@ public final class ClientSetup {
     public static void registerModels(ModelEvent.RegisterAdditional event) {
         event.register(WaterWheelRenderer.WHEEL);
         event.register(WindmillSailsRenderer.SAILS);
+        event.register(PirateSloopRenderer.MODEL);
         event.register(MillstoneRenderer.RUNNER);
     }
 

@@ -3,6 +3,7 @@ package com.dunesrelics.worldgen.structure;
 import com.dunesrelics.DunesRelics;
 import com.dunesrelics.block.entity.CannonBlockEntity;
 import com.dunesrelics.block.world.CannonBlock;
+import com.dunesrelics.entity.world.PirateSloop;
 import com.dunesrelics.registry.ModEntities;
 import com.dunesrelics.registry.ModStructures;
 import com.dunesrelics.registry.WorldBlocks;
@@ -10,6 +11,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
@@ -189,6 +191,7 @@ public class PirateShipPiece extends StructurePiece {
             }
         }
         this.spawnCrew(level, chunkBox);
+        this.spawnSloop(level, chunkBox);
     }
 
     /** The raised stern with the captain's cabin inside and a ladder up to it. */
@@ -312,6 +315,31 @@ public class PirateShipPiece extends StructurePiece {
         this.spawn(level, box, ModEntities.PIRATE_GUNNER.get(), at(2, -2, 5));
         this.spawn(level, box, ModEntities.PIRATE_GUNNER.get(), at(24, 0, 1));
         this.spawn(level, box, ModEntities.PIRATE_CAPTAIN.get(), at(3, 1, 1));
+    }
+
+    /** A sloop rides at anchor off the ship's starboard side, with a boat crew aboard. */
+    private void spawnSloop(WorldGenLevel level, BoundingBox box) {
+        BlockPos pos = this.at(LENGTH / 2, 9, -2);
+        if (!box.isInside(pos) || !level.getFluidState(pos.below()).is(FluidTags.WATER)) {
+            return;
+        }
+        PirateSloop sloop = ModEntities.PIRATE_SLOOP.get().create(level.getLevel());
+        if (sloop == null) {
+            return;
+        }
+        sloop.moveTo(pos.getX() + 0.5D, pos.getY() - 0.4D, pos.getZ() + 0.5D, this.bow.toYRot(), 0.0F);
+        sloop.setHome(pos);
+        for (int i = 0; i < 3; i++) {
+            EntityType<? extends Mob> type = i == 2 ? ModEntities.PIRATE_GUNNER.get() : ModEntities.PIRATE.get();
+            Mob pirate = type.create(level.getLevel());
+            if (pirate != null) {
+                pirate.moveTo(sloop.getX(), sloop.getY(), sloop.getZ(), 0.0F, 0.0F);
+                pirate.finalizeSpawn(level, level.getCurrentDifficultyAt(pos), MobSpawnType.STRUCTURE, null, null);
+                pirate.setPersistenceRequired();
+                pirate.startRiding(sloop, true);
+            }
+        }
+        level.addFreshEntityWithPassengers(sloop);
     }
 
     private void spawn(WorldGenLevel level, BoundingBox box, EntityType<? extends Mob> type, BlockPos pos) {
