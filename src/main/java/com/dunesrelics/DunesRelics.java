@@ -8,8 +8,12 @@ import com.dunesrelics.registry.ModFeatures;
 import com.dunesrelics.registry.ModItems;
 import com.dunesrelics.registry.ModLootModifiers;
 import com.dunesrelics.registry.ModParticles;
+import com.dunesrelics.registry.ModStructures;
+import com.dunesrelics.registry.VolcanicBlocks;
+import com.dunesrelics.registry.VolcanicItems;
 import com.dunesrelics.worldgen.ModRegion;
 import com.dunesrelics.worldgen.ModSurfaceRules;
+import com.dunesrelics.worldgen.VolcanicRegion;
 import com.mojang.logging.LogUtils;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -28,10 +32,14 @@ public class DunesRelics {
     public DunesRelics() {
         IEventBus modBus = FMLJavaModLoadingContext.get().getModEventBus();
 
+        VolcanicBlocks.init();
+        VolcanicItems.init();
         ModBlocks.BLOCKS.register(modBus);
         ModItems.ITEMS.register(modBus);
         ModEntities.ENTITIES.register(modBus);
         ModFeatures.FEATURES.register(modBus);
+        ModStructures.STRUCTURE_TYPES.register(modBus);
+        ModStructures.STRUCTURE_PIECES.register(modBus);
         ModParticles.PARTICLES.register(modBus);
         ModLootModifiers.LOOT_MODIFIERS.register(modBus);
         ModCreativeTabs.TABS.register(modBus);
@@ -42,9 +50,12 @@ public class DunesRelics {
     private void commonSetup(FMLCommonSetupEvent event) {
         event.enqueueWork(() -> {
             Regions.register(new ModRegion(id("overworld"), 4));
+            Regions.register(new VolcanicRegion(id("volcanic"), 3));
             SurfaceRuleManager.addSurfaceRules(SurfaceRuleManager.RuleCategory.OVERWORLD, MODID, ModSurfaceRules.makeRules());
             ModBlocks.registerFlowerPots();
+            VolcanicBlocks.registerFlowerPots();
             ModItems.registerCompostables();
+            VolcanicItems.registerCompostables();
             ModBrewing.register();
         });
     }

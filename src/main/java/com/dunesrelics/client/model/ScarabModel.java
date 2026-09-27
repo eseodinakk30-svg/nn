@@ -31,6 +31,7 @@ public class ScarabModel<T extends Scarab> extends HierarchicalModel<T> {
     private final ModelPart leftHindLeg;
 
     public ScarabModel(ModelPart root) {
+        
         this.root = root;
         this.body = root.getChild("body");
         this.head = root.getChild("head");

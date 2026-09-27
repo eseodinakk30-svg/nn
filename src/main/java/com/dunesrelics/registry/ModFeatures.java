@@ -2,6 +2,10 @@ package com.dunesrelics.registry;
 
 import com.dunesrelics.DunesRelics;
 import com.dunesrelics.worldgen.feature.AncientRuinFeature;
+import com.dunesrelics.worldgen.feature.BasaltPillarsFeature;
+import com.dunesrelics.worldgen.feature.FumaroleFeature;
+import com.dunesrelics.worldgen.feature.HotSpringFeature;
+import com.dunesrelics.worldgen.feature.RuinedForgeFeature;
 import com.dunesrelics.worldgen.feature.OasisFeature;
 import com.dunesrelics.worldgen.feature.ObeliskFeature;
 import com.dunesrelics.worldgen.feature.PalmTreeFeature;
@@ -25,6 +29,19 @@ public final class ModFeatures {
             () -> new ObeliskFeature(NoneFeatureConfiguration.CODEC));
     public static final RegistryObject<Feature<NoneFeatureConfiguration>> OASIS = FEATURES.register("oasis",
             () -> new OasisFeature(NoneFeatureConfiguration.CODEC));
+
+    public static final RegistryObject<Feature<NoneFeatureConfiguration>> BASALT_PILLARS = FEATURES.register("basalt_pillars",
+            () -> new BasaltPillarsFeature(NoneFeatureConfiguration.CODEC));
+    public static final RegistryObject<Feature<NoneFeatureConfiguration>> FUMAROLE = FEATURES.register("fumarole",
+            () -> new FumaroleFeature(NoneFeatureConfiguration.CODEC));
+    public static final RegistryObject<Feature<NoneFeatureConfiguration>> HOT_SPRING = FEATURES.register("hot_spring",
+            () -> new HotSpringFeature(NoneFeatureConfiguration.CODEC));
+    public static final RegistryObject<Feature<NoneFeatureConfiguration>> RUINED_FORGE = FEATURES.register("ruined_forge",
+            () -> new RuinedForgeFeature(NoneFeatureConfiguration.CODEC));
+
+    /** The ember tree, grown by ember saplings: a plain vanilla tree configuration in data/.../configured_feature. */
+    public static final ResourceKey<ConfiguredFeature<?, ?>> EMBER_TREE_KEY =
+            ResourceKey.create(Registries.CONFIGURED_FEATURE, DunesRelics.id("ember_tree"));
 
     /** The configured palm tree, grown by palm saplings. Defined in data/dunesrelics/worldgen/configured_feature. */
     public static final ResourceKey<ConfiguredFeature<?, ?>> PALM_TREE_KEY =

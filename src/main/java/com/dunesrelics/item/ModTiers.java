@@ -8,7 +8,9 @@ import java.util.function.Supplier;
 
 public enum ModTiers implements Tier {
     /** Iron mining level, more durable and easier to enchant than iron. */
-    BRONZE(2, 400, 6.5F, 2.0F, 16, () -> Ingredient.of(ModItems.BRONZE_INGOT.get()));
+    BRONZE(2, 400, 6.5F, 2.0F, 16, () -> Ingredient.of(ModItems.BRONZE_INGOT.get())),
+    /** Diamond mining level: slightly less durable than diamond, but faster, sharper and more enchantable. */
+    FIRE_OPAL(3, 1200, 8.5F, 3.0F, 20, () -> Ingredient.of(com.dunesrelics.registry.VolcanicItems.FIRE_OPAL.get()));
 
     private final int level;
     private final int uses;

@@ -32,6 +32,7 @@ import net.minecraft.world.entity.ai.goal.TemptGoal;
 import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -51,6 +52,13 @@ public class Meerkat extends Animal {
 
     private float standAnim;
     private float standAnimO;
+    @Nullable
+    private java.util.UUID trusted;
+    private int alarmTicks;
+    private int alarmCooldown;
+    @Nullable
+    private BlockPos jukebox;
+    private boolean dancing;
 
     public Meerkat(EntityType<? extends Meerkat> type, Level level) {
         super(type, level);
@@ -98,7 +106,97 @@ public class Meerkat extends Animal {
     }
 
     public boolean isStanding() {
-        return this.entityData.get(STANDING);
+        return this.entityData.get(STANDING) || this.dancing;
+    }
+
+    /** True while music plays at a jukebox nearby (client side only, like dancing parrots). */
+    public boolean isDancing() {
+        return this.dancing;
+    }
+
+    @Override
+    public void setRecordPlayingNearby(BlockPos pos, boolean playing) {
+        this.jukebox = pos;
+        this.dancing = playing;
+    }
+
+    /**
+     * Meerkats love scorpions. Feed one a scorpion stinger and it will trust you: whenever you are nearby it keeps
+     * watch, and when monsters approach it stands up, sounds the alarm and makes them glow.
+     */
+    @Override
+    public InteractionResult mobInteract(Player player, net.minecraft.world.InteractionHand hand) {
+        ItemStack held = player.getItemInHand(hand);
+        if (held.is(ModItems.SCORPION_STINGER.get()) && !this.isBaby()) {
+            if (!this.level().isClientSide) {
+                this.usePlayerItem(player, hand, held);
+                this.trusted = player.getUUID();
+                this.heal(4.0F);
+                ((ServerLevel) this.level()).sendParticles(net.minecraft.core.particles.ParticleTypes.HEART,
+                        this.getX(), this.getY() + 0.7D, this.getZ(), 4, 0.3D, 0.3D, 0.3D, 0.0D);
+                this.playSound(SoundEvents.FOX_EAT, 1.0F, 1.5F);
+            }
+            return InteractionResult.sidedSuccess(this.level().isClientSide);
+        }
+        return super.mobInteract(player, hand);
+    }
+
+    public boolean trusts(Player player) {
+        return player.getUUID().equals(this.trusted);
+    }
+
+    @Override
+    public void aiStep() {
+        super.aiStep();
+        if (this.dancing && (this.jukebox == null || !this.jukebox.closerToCenterThan(this.position(), 3.46D)
+                || !this.level().getBlockState(this.jukebox).is(net.minecraft.world.level.block.Blocks.JUKEBOX))) {
+            this.dancing = false;
+            this.jukebox = null;
+        }
+        if (this.level().isClientSide) {
+            return;
+        }
+        if (this.alarmCooldown > 0) {
+            this.alarmCooldown--;
+        }
+        if (this.alarmTicks > 0 && --this.alarmTicks == 0) {
+            this.setStanding(false);
+        }
+        if (this.trusted == null || this.tickCount % 20 != 0) {
+            return;
+        }
+        Player friend = this.level().getPlayerByUUID(this.trusted);
+        if (friend == null || friend.distanceToSqr(this) > 24 * 24) {
+            return;
+        }
+        java.util.List<net.minecraft.world.entity.Mob> threats = this.level().getEntitiesOfClass(net.minecraft.world.entity.Mob.class,
+                this.getBoundingBox().inflate(16.0D), e -> e instanceof net.minecraft.world.entity.monster.Enemy && e.isAlive());
+        if (threats.isEmpty()) {
+            return;
+        }
+        for (net.minecraft.world.entity.Mob threat : threats) {
+            threat.addEffect(new MobEffectInstance(MobEffects.GLOWING, 100, 0, false, false));
+        }
+        this.setStanding(true);
+        this.alarmTicks = 40;
+        if (this.alarmCooldown == 0) {
+            this.playSound(SoundEvents.FOX_SCREECH, 1.0F, 1.6F);
+            this.alarmCooldown = 100;
+        }
+    }
+
+    @Override
+    public void addAdditionalSaveData(net.minecraft.nbt.CompoundTag tag) {
+        super.addAdditionalSaveData(tag);
+        if (this.trusted != null) {
+            tag.putUUID("Trusted", this.trusted);
+        }
+    }
+
+    @Override
+    public void readAdditionalSaveData(net.minecraft.nbt.CompoundTag tag) {
+        super.readAdditionalSaveData(tag);
+        this.trusted = tag.hasUUID("Trusted") ? tag.getUUID("Trusted") : null;
     }
 
     public void setStanding(boolean standing) {

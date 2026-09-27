@@ -24,16 +24,67 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import com.dunesrelics.registry.ModItems;
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemUtils;
+import net.minecraft.world.item.Items;
 
 /**
  * A desert scorpion. Like spiders, scorpions only hunt in the dark (or in the gloom of a sandstorm) and leave
  * you alone in daylight unless provoked. Their sting is venomous; they are immune to poison themselves.
  */
 public class Scorpion extends Monster {
+    /** Ticks until this scorpion's venom sac refills. */
+    private int venomCooldown;
+
     public Scorpion(EntityType<? extends Scorpion> type, Level level) {
         super(type, level);
         this.xpReward = 6;
+    }
+
+    /** Hold a glass bottle up to a scorpion to milk its venom... if you dare. */
+    @Override
+    protected InteractionResult mobInteract(Player player, InteractionHand hand) {
+        ItemStack held = player.getItemInHand(hand);
+        if (!held.is(Items.GLASS_BOTTLE)) {
+            return super.mobInteract(player, hand);
+        }
+        if (this.venomCooldown > 0) {
+            return InteractionResult.PASS;
+        }
+        if (!this.level().isClientSide) {
+            player.setItemInHand(hand, ItemUtils.createFilledResult(held, player, new ItemStack(ModItems.SCORPION_VENOM.get())));
+            this.playSound(SoundEvents.BOTTLE_FILL, 1.0F, 0.8F);
+            this.venomCooldown = 6000;
+            if (!player.getAbilities().instabuild) {
+                this.setTarget(player);
+            }
+        }
+        return InteractionResult.sidedSuccess(this.level().isClientSide);
+    }
+
+    @Override
+    public void aiStep() {
+        super.aiStep();
+        if (this.venomCooldown > 0) {
+            this.venomCooldown--;
+        }
+    }
+
+    @Override
+    public void addAdditionalSaveData(CompoundTag tag) {
+        super.addAdditionalSaveData(tag);
+        tag.putInt("VenomCooldown", this.venomCooldown);
+    }
+
+    @Override
+    public void readAdditionalSaveData(CompoundTag tag) {
+        super.readAdditionalSaveData(tag);
+        this.venomCooldown = tag.getInt("VenomCooldown");
     }
 
     public static AttributeSupplier.Builder createAttributes() {

@@ -1,6 +1,11 @@
 package com.dunesrelics.entity;
 
+import com.dunesrelics.registry.ModItems;
 import com.dunesrelics.sandstorm.Sandstorm;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Items;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -30,9 +35,46 @@ import org.jetbrains.annotations.Nullable;
  * its blows leave you weakened, and sandstorms spur it on.
  */
 public class Mummy extends Zombie {
+    private boolean unwrapped;
+
     public Mummy(EntityType<? extends Mummy> type, Level level) {
         super(type, level);
         this.xpReward = 8;
+    }
+
+    /** Shears unwind some of a mummy's linen wrappings. It does not appreciate it. */
+    @Override
+    protected InteractionResult mobInteract(Player player, InteractionHand hand) {
+        ItemStack held = player.getItemInHand(hand);
+        if (!held.is(Items.SHEARS) || this.unwrapped) {
+            return super.mobInteract(player, hand);
+        }
+        if (!this.level().isClientSide) {
+            this.unwrapped = true;
+            int count = 1 + this.random.nextInt(2);
+            for (int i = 0; i < count; i++) {
+                this.spawnAtLocation(ModItems.LINEN.get(), 1);
+            }
+            this.playSound(SoundEvents.SHEEP_SHEAR, 1.0F, 0.8F);
+            held.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(hand));
+            if (!player.getAbilities().instabuild) {
+                this.setTarget(player);
+                this.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 200, 0));
+            }
+        }
+        return InteractionResult.sidedSuccess(this.level().isClientSide);
+    }
+
+    @Override
+    public void addAdditionalSaveData(CompoundTag tag) {
+        super.addAdditionalSaveData(tag);
+        tag.putBoolean("Unwrapped", this.unwrapped);
+    }
+
+    @Override
+    public void readAdditionalSaveData(CompoundTag tag) {
+        super.readAdditionalSaveData(tag);
+        this.unwrapped = tag.getBoolean("Unwrapped");
     }
 
     public static AttributeSupplier.Builder createAttributes() {

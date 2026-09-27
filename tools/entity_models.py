@@ -20,7 +20,8 @@ TEX_DIR = os.path.join(ROOT, "src/main/resources/assets/dunesrelics/textures/ent
 
 
 class Cube:
-    def __init__(self, u, v, x, y, z, w, h, d, painter, mirror=False):
+    def __init__(self, u, v, x, y, z, w, h, d, painter, mirror=False, glow=None):
+        self.glow = glow
         self.u, self.v = u, v
         self.x, self.y, self.z = x, y, z
         self.w, self.h, self.d = w, h, d
@@ -58,7 +59,7 @@ def camel(name):
     return head + "".join(p.capitalize() for p in rest)
 
 
-def java_model(class_name, layer, parts, tex_w, tex_h, fields_doc, anim, extra_imports=()):
+def java_model(class_name, layer, parts, tex_w, tex_h, fields_doc, anim, extra_imports=(), translucent=False):
     lines = []
     for p in parts:
         builder = "CubeListBuilder.create()"
@@ -104,6 +105,7 @@ public class {class_name}<T extends {layer[1].split(".")[-1]}> extends Hierarchi
 {fields}
 
     public {class_name}(ModelPart root) {{
+        {"super(net.minecraft.client.renderer.RenderType::entityTranslucent);" if translucent else ""}
         this.root = root;
 {ctor}
     }}
@@ -129,17 +131,20 @@ public class {class_name}<T extends {layer[1].split(".")[-1]}> extends Hierarchi
 """
 
 
-def paint(parts, tex_w, tex_h):
+def paint(parts, tex_w, tex_h, glow=False):
     img = Image.new("RGBA", (tex_w, tex_h), (0, 0, 0, 0))
     px = img.load()
     for p in parts:
         for c in p.cubes:
+            painter = c.glow if glow else c.painter
+            if painter is None:
+                continue
             for face, (fx, fy, fw, fh) in c.faces().items():
                 for j in range(int(fh)):
                     for i in range(int(fw)):
                         x, y = int(fx) + i, int(fy) + j
                         if 0 <= x < tex_w and 0 <= y < tex_h:
-                            color = c.painter(face, i, j, int(fw), int(fh))
+                            color = painter(face, i, j, int(fw), int(fh))
                             if color is not None:
                                 px[x, y] = color if len(color) == 4 else (*color, 255)
     return img
@@ -452,7 +457,15 @@ def meerkat():
         this.head.yRot = netHeadYaw * Mth.DEG_TO_RAD;
         this.rightFrontLeg.xRot += 1.1F * stand;
         this.leftFrontLeg.xRot += 1.1F * stand;
-        this.tail.xRot += 0.9F * stand;"""
+        this.tail.xRot += 0.9F * stand;
+
+        // Dancing to a jukebox: sway and bob the head.
+        if (entity.isDancing()) {
+            this.body.zRot = Mth.sin(ageInTicks * 0.4F) * 0.15F;
+            this.head.zRot = Mth.sin(ageInTicks * 0.8F) * 0.3F;
+            this.rightFrontLeg.zRot = Mth.sin(ageInTicks * 0.8F) * 0.5F;
+            this.leftFrontLeg.zRot = -Mth.sin(ageInTicks * 0.8F) * 0.5F;
+        }"""
     return "MeerkatModel", ("meerkat", "com.dunesrelics.entity.Meerkat"), parts, 64, 32, \
         "Meerkat: a slender, striped desert mongoose that rears up to keep a lookout.", anim
 
@@ -559,11 +572,16 @@ def vulture():
 def main():
     os.makedirs(JAVA_DIR, exist_ok=True)
     os.makedirs(TEX_DIR, exist_ok=True)
-    for build in (scorpion, scarab, meerkat, vulture):
-        class_name, layer, parts, tw, th, doc, anim = build()
+    import volcanic_models
+    for build in (scorpion, scarab, meerkat, vulture) + volcanic_models.MODELS:
+        result = build()
+        class_name, layer, parts, tw, th, doc, anim = result[:7]
+        translucent = len(result) > 7 and result[7]
         with open(os.path.join(JAVA_DIR, class_name + ".java"), "w") as out:
-            out.write(java_model(class_name, layer, parts, tw, th, doc, anim, ["import " + layer[1] + ";"]))
+            out.write(java_model(class_name, layer, parts, tw, th, doc, anim, ["import " + layer[1] + ";"], translucent))
         paint(parts, tw, th).save(os.path.join(TEX_DIR, layer[0] + ".png"))
+        if any(c.glow for p in parts for c in p.cubes):
+            paint(parts, tw, th, glow=True).save(os.path.join(TEX_DIR, layer[0] + "_glow.png"))
         print("generated", class_name)
 
 

@@ -154,15 +154,15 @@ public final class ModBlocks {
                 .requiresCorrectToolForDrops().strength(hardness, 6.0F).sound(sound);
     }
 
-    private static RegistryObject<Block> stairs(String name, RegistryObject<Block> base) {
+    public static RegistryObject<Block> stairs(String name, RegistryObject<Block> base) {
         return register(name, () -> new StairBlock(() -> base.get().defaultBlockState(), BlockBehaviour.Properties.copy(base.get())));
     }
 
-    private static <T extends Block> RegistryObject<T> register(String name, Supplier<T> block) {
+    public static <T extends Block> RegistryObject<T> register(String name, Supplier<T> block) {
         return registerWithItem(name, block, b -> new BlockItem(b, new Item.Properties()));
     }
 
-    private static <T extends Block> RegistryObject<T> registerWithItem(String name, Supplier<T> block, Function<T, Item> item) {
+    public static <T extends Block> RegistryObject<T> registerWithItem(String name, Supplier<T> block, Function<T, Item> item) {
         RegistryObject<T> object = BLOCKS.register(name, block);
         ModItems.ITEMS.register(name, () -> item.apply(object.get()));
         return object;

@@ -32,6 +32,7 @@ public class MeerkatModel<T extends Meerkat> extends HierarchicalModel<T> {
     private final ModelPart leftHindLeg;
 
     public MeerkatModel(ModelPart root) {
+        
         this.root = root;
         this.body = root.getChild("body");
         this.head = this.body.getChild("head");
@@ -96,5 +97,13 @@ public class MeerkatModel<T extends Meerkat> extends HierarchicalModel<T> {
         this.rightFrontLeg.xRot += 1.1F * stand;
         this.leftFrontLeg.xRot += 1.1F * stand;
         this.tail.xRot += 0.9F * stand;
+
+        // Dancing to a jukebox: sway and bob the head.
+        if (entity.isDancing()) {
+            this.body.zRot = Mth.sin(ageInTicks * 0.4F) * 0.15F;
+            this.head.zRot = Mth.sin(ageInTicks * 0.8F) * 0.3F;
+            this.rightFrontLeg.zRot = Mth.sin(ageInTicks * 0.8F) * 0.5F;
+            this.leftFrontLeg.zRot = -Mth.sin(ageInTicks * 0.8F) * 0.5F;
+        }
     }
 }

@@ -36,6 +36,9 @@ public final class ModItems {
     public static final RegistryObject<Item> LINEN = ITEMS.register("linen", () -> new Item(new Item.Properties()));
     public static final RegistryObject<Item> SCORPION_STINGER = ITEMS.register("scorpion_stinger", () -> new Item(new Item.Properties()));
     public static final RegistryObject<Item> VULTURE_FEATHER = ITEMS.register("vulture_feather", () -> new Item(new Item.Properties()));
+    /** Milked from a scorpion with a glass bottle. */
+    public static final RegistryObject<Item> SCORPION_VENOM = ITEMS.register("scorpion_venom",
+            () -> new Item(new Item.Properties().craftRemainder(net.minecraft.world.item.Items.GLASS_BOTTLE).stacksTo(16)));
 
     // Bronze tools and armor
     public static final RegistryObject<Item> BRONZE_KHOPESH = ITEMS.register("bronze_khopesh",

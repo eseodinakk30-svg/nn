@@ -19,6 +19,9 @@ public final class ModBrewing {
         add(Potions.AWKWARD, Ingredient.of(ModItems.VULTURE_FEATHER.get()), Potions.SLOW_FALLING);
         // Aloe: an alternative Fire Resistance ingredient.
         add(Potions.AWKWARD, Ingredient.of(ModItems.ALOE_LEAF.get()), Potions.FIRE_RESISTANCE);
+        // Fresh scorpion venom brews straight into a strong poison; fire peppers give fire resistance.
+        add(Potions.AWKWARD, Ingredient.of(ModItems.SCORPION_VENOM.get()), Potions.STRONG_POISON);
+        add(Potions.AWKWARD, Ingredient.of(VolcanicItems.FIRE_PEPPER.get()), Potions.LONG_FIRE_RESISTANCE);
     }
 
     private static void add(Potion input, Ingredient ingredient, Potion output) {

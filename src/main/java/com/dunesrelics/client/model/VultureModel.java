@@ -35,6 +35,7 @@ public class VultureModel<T extends Vulture> extends HierarchicalModel<T> {
     private final ModelPart rightLeg;
 
     public VultureModel(ModelPart root) {
+        
         this.root = root;
         this.body = root.getChild("body");
         this.ruff = this.body.getChild("ruff");

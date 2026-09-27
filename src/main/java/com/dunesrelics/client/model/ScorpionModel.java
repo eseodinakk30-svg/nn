@@ -42,6 +42,7 @@ public class ScorpionModel<T extends Scorpion> extends HierarchicalModel<T> {
     private final ModelPart leftHindLeg;
 
     public ScorpionModel(ModelPart root) {
+        
         this.root = root;
         this.body = root.getChild("body");
         this.head = root.getChild("head");

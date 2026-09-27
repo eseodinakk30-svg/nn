@@ -1,12 +1,23 @@
 package com.dunesrelics.client;
 
 import com.dunesrelics.DunesRelics;
+import com.dunesrelics.client.model.CinderWraithModel;
+import com.dunesrelics.client.model.LavaCrabModel;
+import com.dunesrelics.client.model.MagmaTitanModel;
+import com.dunesrelics.client.model.MagmalingModel;
 import com.dunesrelics.client.model.MeerkatModel;
+import com.dunesrelics.client.model.SalamanderModel;
 import com.dunesrelics.client.model.ScarabModel;
 import com.dunesrelics.client.model.ScorpionModel;
 import com.dunesrelics.client.model.VultureModel;
 import com.dunesrelics.client.particle.SandGustParticle;
+import com.dunesrelics.client.renderer.CinderWraithRenderer;
+import com.dunesrelics.client.renderer.LavaCrabRenderer;
+import com.dunesrelics.client.renderer.MagmaTitanRenderer;
+import com.dunesrelics.client.renderer.MagmalingRenderer;
 import com.dunesrelics.client.renderer.MeerkatRenderer;
+import com.dunesrelics.client.renderer.SalamanderRenderer;
+import com.dunesrelics.client.renderer.VolcanicBombRenderer;
 import com.dunesrelics.client.renderer.MummyRenderer;
 import com.dunesrelics.client.renderer.ScarabRenderer;
 import com.dunesrelics.client.renderer.ScorpionRenderer;
@@ -31,6 +42,12 @@ public final class ClientSetup {
         event.registerEntityRenderer(ModEntities.SCARAB.get(), ScarabRenderer::new);
         event.registerEntityRenderer(ModEntities.MEERKAT.get(), MeerkatRenderer::new);
         event.registerEntityRenderer(ModEntities.VULTURE.get(), VultureRenderer::new);
+        event.registerEntityRenderer(ModEntities.MAGMA_TITAN.get(), MagmaTitanRenderer::new);
+        event.registerEntityRenderer(ModEntities.SALAMANDER.get(), SalamanderRenderer::new);
+        event.registerEntityRenderer(ModEntities.LAVA_CRAB.get(), LavaCrabRenderer::new);
+        event.registerEntityRenderer(ModEntities.MAGMALING.get(), MagmalingRenderer::new);
+        event.registerEntityRenderer(ModEntities.CINDER_WRAITH.get(), CinderWraithRenderer::new);
+        event.registerEntityRenderer(ModEntities.VOLCANIC_BOMB.get(), VolcanicBombRenderer::new);
     }
 
     @SubscribeEvent
@@ -39,6 +56,11 @@ public final class ClientSetup {
         event.registerLayerDefinition(ScarabModel.LAYER_LOCATION, ScarabModel::createBodyLayer);
         event.registerLayerDefinition(MeerkatModel.LAYER_LOCATION, MeerkatModel::createBodyLayer);
         event.registerLayerDefinition(VultureModel.LAYER_LOCATION, VultureModel::createBodyLayer);
+        event.registerLayerDefinition(MagmaTitanModel.LAYER_LOCATION, MagmaTitanModel::createBodyLayer);
+        event.registerLayerDefinition(SalamanderModel.LAYER_LOCATION, SalamanderModel::createBodyLayer);
+        event.registerLayerDefinition(LavaCrabModel.LAYER_LOCATION, LavaCrabModel::createBodyLayer);
+        event.registerLayerDefinition(MagmalingModel.LAYER_LOCATION, MagmalingModel::createBodyLayer);
+        event.registerLayerDefinition(CinderWraithModel.LAYER_LOCATION, CinderWraithModel::createBodyLayer);
     }
 
     @SubscribeEvent

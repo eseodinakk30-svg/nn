@@ -15,7 +15,12 @@ public enum ModArmorMaterials implements ArmorMaterial {
             () -> Ingredient.of(ModItems.BRONZE_INGOT.get())),
     /** Amber goggles barely protect, but let you see through sandstorms. */
     AMBER_GOGGLES("amber_goggles", 10, new int[]{1, 1, 1, 1}, 12, SoundEvents.ARMOR_EQUIP_LEATHER, 0.0F, 0.0F,
-            () -> Ingredient.of(ModItems.AMBER.get()));
+            () -> Ingredient.of(ModItems.AMBER.get())),
+    FIRE_OPAL("fire_opal", 30, new int[]{3, 6, 8, 3}, 20, SoundEvents.ARMOR_EQUIP_DIAMOND, 1.5F, 0.05F,
+            () -> Ingredient.of(com.dunesrelics.registry.VolcanicItems.FIRE_OPAL.get())),
+    /** Salamander boots let you walk over lava. */
+    SALAMANDER("salamander", 20, new int[]{2, 2, 2, 2}, 15, SoundEvents.ARMOR_EQUIP_LEATHER, 0.0F, 0.0F,
+            () -> Ingredient.of(com.dunesrelics.registry.VolcanicItems.SALAMANDER_SCALE.get()));
 
     /** Durability per slot, indexed boots, leggings, chestplate, helmet (same as vanilla). */
     private static final int[] HEALTH_PER_SLOT = new int[]{13, 15, 16, 11};

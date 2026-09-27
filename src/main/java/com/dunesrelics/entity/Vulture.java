@@ -41,6 +41,9 @@ import java.util.EnumSet;
  */
 public class Vulture extends PathfinderMob {
     private static final float SCAVENGE_HEALTH = 8.0F;
+    /** Players who fed this vulture: it will not hunt them any more. */
+    private final java.util.Set<java.util.UUID> friends = new java.util.HashSet<>();
+    private int feedCooldown;
 
     public Vulture(EntityType<? extends Vulture> type, Level level) {
         super(type, level);
@@ -80,7 +83,7 @@ public class Vulture extends PathfinderMob {
         this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 16.0F));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this).setAlertOthers());
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, 10, true, false,
-                e -> e.getHealth() <= SCAVENGE_HEALTH));
+                e -> e.getHealth() <= SCAVENGE_HEALTH && !this.friends.contains(e.getUUID())));
     }
 
     @Override
@@ -88,6 +91,57 @@ public class Vulture extends PathfinderMob {
                                                   @Nullable SpawnGroupData groupData, @Nullable CompoundTag tag) {
         this.setNoGravity(true);
         return super.finalizeSpawn(level, difficulty, reason, groupData, tag);
+    }
+
+    /** Throw a vulture some rotten flesh: it drops a feather and stops seeing you as a meal. */
+    @Override
+    protected net.minecraft.world.InteractionResult mobInteract(Player player, net.minecraft.world.InteractionHand hand) {
+        net.minecraft.world.item.ItemStack held = player.getItemInHand(hand);
+        if (!held.is(net.minecraft.world.item.Items.ROTTEN_FLESH) || this.feedCooldown > 0) {
+            return super.mobInteract(player, hand);
+        }
+        if (!this.level().isClientSide) {
+            if (!player.getAbilities().instabuild) {
+                held.shrink(1);
+            }
+            this.friends.add(player.getUUID());
+            if (this.getTarget() == player) {
+                this.setTarget(null);
+            }
+            this.spawnAtLocation(com.dunesrelics.registry.ModItems.VULTURE_FEATHER.get());
+            this.feedCooldown = 1200;
+            this.playSound(SoundEvents.PARROT_EAT, 1.0F, 0.6F);
+            ((net.minecraft.server.level.ServerLevel) this.level()).sendParticles(net.minecraft.core.particles.ParticleTypes.HEART,
+                    this.getX(), this.getY() + 0.8D, this.getZ(), 3, 0.3D, 0.3D, 0.3D, 0.0D);
+        }
+        return net.minecraft.world.InteractionResult.sidedSuccess(this.level().isClientSide);
+    }
+
+    @Override
+    public void aiStep() {
+        super.aiStep();
+        if (this.feedCooldown > 0) {
+            this.feedCooldown--;
+        }
+    }
+
+    @Override
+    public void addAdditionalSaveData(CompoundTag tag) {
+        super.addAdditionalSaveData(tag);
+        net.minecraft.nbt.ListTag list = new net.minecraft.nbt.ListTag();
+        for (java.util.UUID friend : this.friends) {
+            list.add(net.minecraft.nbt.NbtUtils.createUUID(friend));
+        }
+        tag.put("Friends", list);
+    }
+
+    @Override
+    public void readAdditionalSaveData(CompoundTag tag) {
+        super.readAdditionalSaveData(tag);
+        this.friends.clear();
+        for (net.minecraft.nbt.Tag entry : tag.getList("Friends", net.minecraft.nbt.Tag.TAG_INT_ARRAY)) {
+            this.friends.add(net.minecraft.nbt.NbtUtils.loadUUID(entry));
+        }
     }
 
     @Override

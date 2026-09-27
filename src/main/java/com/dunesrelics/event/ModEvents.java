@@ -7,6 +7,11 @@ import com.dunesrelics.entity.Pharaoh;
 import com.dunesrelics.entity.Scarab;
 import com.dunesrelics.entity.Scorpion;
 import com.dunesrelics.entity.Vulture;
+import com.dunesrelics.entity.volcanic.CinderWraith;
+import com.dunesrelics.entity.volcanic.LavaCrab;
+import com.dunesrelics.entity.volcanic.MagmaTitan;
+import com.dunesrelics.entity.volcanic.Magmaling;
+import com.dunesrelics.entity.volcanic.Salamander;
 import com.dunesrelics.registry.ModEntities;
 import net.minecraft.world.entity.SpawnPlacements;
 import net.minecraft.world.entity.monster.Monster;
@@ -28,6 +33,11 @@ public final class ModEvents {
         event.put(ModEntities.SCARAB.get(), Scarab.createAttributes().build());
         event.put(ModEntities.MEERKAT.get(), Meerkat.createAttributes().build());
         event.put(ModEntities.VULTURE.get(), Vulture.createAttributes().build());
+        event.put(ModEntities.MAGMA_TITAN.get(), MagmaTitan.createAttributes().build());
+        event.put(ModEntities.SALAMANDER.get(), Salamander.createAttributes().build());
+        event.put(ModEntities.LAVA_CRAB.get(), LavaCrab.createAttributes().build());
+        event.put(ModEntities.MAGMALING.get(), Magmaling.createAttributes().build());
+        event.put(ModEntities.CINDER_WRAITH.get(), CinderWraith.createAttributes().build());
     }
 
     @SubscribeEvent
@@ -42,5 +52,13 @@ public final class ModEvents {
                 Meerkat::checkMeerkatSpawnRules, SpawnPlacementRegisterEvent.Operation.REPLACE);
         event.register(ModEntities.VULTURE.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
                 Vulture::checkVultureSpawnRules, SpawnPlacementRegisterEvent.Operation.REPLACE);
+        event.register(ModEntities.SALAMANDER.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                (type, level, reason, pos, random) -> !level.getBlockState(pos.below()).isAir(), SpawnPlacementRegisterEvent.Operation.REPLACE);
+        event.register(ModEntities.LAVA_CRAB.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                LavaCrab::checkCrabSpawnRules, SpawnPlacementRegisterEvent.Operation.REPLACE);
+        event.register(ModEntities.MAGMALING.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                Monster::checkMonsterSpawnRules, SpawnPlacementRegisterEvent.Operation.REPLACE);
+        event.register(ModEntities.CINDER_WRAITH.get(), SpawnPlacements.Type.NO_RESTRICTIONS, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                Monster::checkMonsterSpawnRules, SpawnPlacementRegisterEvent.Operation.REPLACE);
     }
 }
