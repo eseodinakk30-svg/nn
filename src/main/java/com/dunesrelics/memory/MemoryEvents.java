@@ -25,6 +25,7 @@ import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
+import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
@@ -108,6 +109,20 @@ public final class MemoryEvents {
         }
         if (time % 40 == 0 && rules.getBoolean(ModGameRules.TIDES)) {
             Tides.tickShore(level, memory, level.random);
+        }
+        if (time % 100 == 0 && rules.getBoolean(ModGameRules.VILLAGE_GROWTH)) {
+            // the villages near players: surveyed, checked for damage, and given builders
+            if (time % 600 == 0) {
+                VillageLife.discoverVillages(level, memory, day);
+            }
+            Set<Long> looked = new HashSet<>();
+            for (ServerPlayer player : level.players()) {
+                for (WorldMemory.VillageRecord record : memory.villages()) {
+                    if (record.bell.distSqr(player.blockPosition()) < 128 * 128 && looked.add(record.bell.asLong())) {
+                        Construction.tickVillage(level, memory, record);
+                    }
+                }
+            }
         }
         if (memory.lastDay < 0) {
             memory.lastDay = day;

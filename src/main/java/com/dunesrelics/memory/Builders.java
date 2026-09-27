@@ -1,8 +1,12 @@
 package com.dunesrelics.memory;
 
+import com.dunesrelics.block.world.WindmillSailsBlock;
+import com.dunesrelics.registry.WorldBlocks;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BiomeTags;
 import net.minecraft.tags.BlockTags;
@@ -14,9 +18,13 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.CropBlock;
 import net.minecraft.world.level.block.DoorBlock;
 import net.minecraft.world.level.block.FenceGateBlock;
+import net.minecraft.world.level.block.LadderBlock;
 import net.minecraft.world.level.block.LanternBlock;
 import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.StairBlock;
+import net.minecraft.world.level.block.StandingSignBlock;
+import net.minecraft.world.level.block.entity.SignBlockEntity;
+import net.minecraft.world.level.block.entity.SignText;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BedPart;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -25,6 +33,7 @@ import net.minecraft.world.level.block.state.properties.Half;
 import net.minecraft.world.level.block.state.properties.SlabType;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraftforge.common.Tags;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
 
@@ -36,6 +45,9 @@ import java.util.Arrays;
 public final class Builders {
     public static final int FAIL = Integer.MIN_VALUE;
     private static final int FLAGS = Block.UPDATE_ALL;
+    /** While a building is being recorded as a blueprint, the blocks go here instead of into the world. */
+    @Nullable
+    private static Blueprint recording;
 
     private Builders() {}
 
@@ -147,24 +159,56 @@ public final class Builders {
                 int ground = groundY(level, min.getX() + dx, min.getZ() + dz);
                 for (int yy = Math.min(ground + 1, y); yy <= y; yy++) {
                     pos.set(min.getX() + dx, yy, min.getZ() + dz);
-                    level.setBlock(pos, fill, FLAGS);
+                    put(level, pos, fill);
                 }
                 for (int yy = y + 1; yy <= y + clear; yy++) {
                     pos.set(min.getX() + dx, yy, min.getZ() + dz);
                     if (!level.getBlockState(pos).isAir()) {
-                        level.setBlock(pos, Blocks.AIR.defaultBlockState(), FLAGS);
+                        put(level, pos, Blocks.AIR.defaultBlockState());
                     }
                 }
                 for (int yy = ground; yy > y; yy--) {
                     pos.set(min.getX() + dx, yy, min.getZ() + dz);
-                    level.setBlock(pos, Blocks.AIR.defaultBlockState(), FLAGS);
+                    put(level, pos, Blocks.AIR.defaultBlockState());
                 }
             }
         }
     }
 
     private static void set(ServerLevel level, BlockPos pos, BlockState state) {
-        level.setBlock(pos, Block.updateFromNeighbourShapes(state, level, pos), FLAGS);
+        if (recording != null) {
+            recording.record(pos, state);
+        } else {
+            level.setBlock(pos, Block.updateFromNeighbourShapes(state, level, pos), FLAGS);
+        }
+    }
+
+    /** Every block the builders place goes through here, so a building can be recorded instead of placed. */
+    private static void put(ServerLevel level, BlockPos pos, BlockState state) {
+        if (recording != null) {
+            recording.record(pos, state);
+        } else {
+            level.setBlock(pos, state, FLAGS);
+        }
+    }
+
+    /**
+     * Runs {@code build} and returns the blocks it would have placed, in the order a builder lays them, without
+     * changing the world. Villagers then build it block by block (see {@link Construction}).
+     */
+    public static Blueprint record(ServerLevel level, String project, Runnable build) {
+        Blueprint blueprint = new Blueprint(project);
+        recording = blueprint;
+        try {
+            build.run();
+        } finally {
+            recording = null;
+        }
+        return blueprint.finish(level);
+    }
+
+    public static boolean isRecording() {
+        return recording != null;
     }
 
     private static BlockState stairs(Block stairs, Direction facing, boolean upsideDown) {
@@ -225,19 +269,19 @@ public final class Builders {
         }
         // door
         BlockState door = p.door().defaultBlockState().setValue(DoorBlock.FACING, back);
-        level.setBlock(local(origin, front, w, d, 3, 1, 0), door.setValue(DoorBlock.HALF, DoubleBlockHalf.LOWER), FLAGS);
-        level.setBlock(local(origin, front, w, d, 3, 2, 0), door.setValue(DoorBlock.HALF, DoubleBlockHalf.UPPER), FLAGS);
+        put(level, local(origin, front, w, d, 3, 1, 0), door.setValue(DoorBlock.HALF, DoubleBlockHalf.LOWER));
+        put(level, local(origin, front, w, d, 3, 2, 0), door.setValue(DoorBlock.HALF, DoubleBlockHalf.UPPER));
         // bed along the left wall, head towards the back
         BlockState bed = Blocks.RED_BED.defaultBlockState().setValue(BedBlock.FACING, back);
-        level.setBlock(local(origin, front, w, d, 1, 1, 2), bed.setValue(BedBlock.PART, BedPart.FOOT), FLAGS);
-        level.setBlock(local(origin, front, w, d, 1, 1, 3), bed.setValue(BedBlock.PART, BedPart.HEAD), FLAGS);
+        put(level, local(origin, front, w, d, 1, 1, 2), bed.setValue(BedBlock.PART, BedPart.FOOT));
+        put(level, local(origin, front, w, d, 1, 1, 3), bed.setValue(BedBlock.PART, BedPart.HEAD));
         // workstation and a lantern hanging from the ceiling
         BlockState station = workstation.defaultBlockState();
         if (station.hasProperty(BlockStateProperties.HORIZONTAL_FACING)) {
             station = station.setValue(BlockStateProperties.HORIZONTAL_FACING, front);
         }
         set(level, local(origin, front, w, d, 5, 1, 3), station);
-        level.setBlock(local(origin, front, w, d, 3, 3, 2), Blocks.LANTERN.defaultBlockState().setValue(LanternBlock.HANGING, true), FLAGS);
+        put(level, local(origin, front, w, d, 3, 3, 2), Blocks.LANTERN.defaultBlockState().setValue(LanternBlock.HANGING, true));
         BlockPos step = local(origin, front, w, d, 3, 0, 0).relative(front);
         pathAt(level, step.getX(), step.getZ());
         return step;
@@ -252,12 +296,12 @@ public final class Builders {
         BlockPos base = new BlockPos(x, y, z);
         for (int h = 1; h <= 3; h++) {
             if (!level.getBlockState(base.above(h)).isAir()) {
-                level.setBlock(base.above(h), Blocks.AIR.defaultBlockState(), FLAGS);
+                put(level, base.above(h), Blocks.AIR.defaultBlockState());
             }
         }
         set(level, base.above(1), p.fence());
         set(level, base.above(2), p.fence());
-        level.setBlock(base.above(3), Blocks.LANTERN.defaultBlockState(), FLAGS);
+        put(level, base.above(3), Blocks.LANTERN.defaultBlockState());
         return true;
     }
 
@@ -269,13 +313,13 @@ public final class Builders {
             for (int v = 0; v < 3; v++) {
                 BlockPos at = origin.offset(u, 0, v);
                 boolean center = u == 1 && v == 1;
-                level.setBlock(at.below(), center ? Blocks.WATER.defaultBlockState() : p.foundation(), FLAGS);
-                level.setBlock(at, center ? Blocks.WATER.defaultBlockState() : Blocks.COBBLESTONE_WALL.defaultBlockState(), FLAGS);
+                put(level, at.below(), center ? Blocks.WATER.defaultBlockState() : p.foundation());
+                put(level, at, center ? Blocks.WATER.defaultBlockState() : Blocks.COBBLESTONE_WALL.defaultBlockState());
                 if (u != 1 && v != 1) {
                     set(level, at.above(), p.fence());
                     set(level, at.above(2), p.fence());
                 }
-                level.setBlock(at.above(3), p.slab().defaultBlockState(), FLAGS);
+                put(level, at.above(3), p.slab().defaultBlockState());
             }
         }
         for (int u = 0; u < 3; u++) {
@@ -298,15 +342,15 @@ public final class Builders {
             for (int v = 0; v < 2; v++) {
                 BlockPos at = origin.offset(u, 0, v);
                 if (v == 0) {
-                    level.setBlock(at.above(), u == 1 ? Blocks.CRAFTING_TABLE.defaultBlockState()
-                            : Blocks.BARREL.defaultBlockState().setValue(BlockStateProperties.FACING, Direction.UP), FLAGS);
+                    put(level, at.above(), u == 1 ? Blocks.CRAFTING_TABLE.defaultBlockState()
+                            : Blocks.BARREL.defaultBlockState().setValue(BlockStateProperties.FACING, Direction.UP));
                 } else if (u != 1) {
                     set(level, at.above(), p.fence());
                 }
                 if (u != 1) {
                     set(level, at.above(2), p.fence());
                 }
-                level.setBlock(at.above(3), canopy.defaultBlockState(), FLAGS);
+                put(level, at.above(3), canopy.defaultBlockState());
             }
         }
     }
@@ -322,16 +366,16 @@ public final class Builders {
             for (int v = 0; v < size; v++) {
                 BlockPos at = origin.offset(u, 0, v);
                 if (u == middle && v == middle) {
-                    level.setBlock(at, Blocks.WATER.defaultBlockState(), FLAGS);
-                    level.setBlock(at.above(), Blocks.OAK_TRAPDOOR.defaultBlockState(), FLAGS);
+                    put(level, at, Blocks.WATER.defaultBlockState());
+                    put(level, at.above(), Blocks.OAK_TRAPDOOR.defaultBlockState());
                     continue;
                 }
-                level.setBlock(at, Blocks.FARMLAND.defaultBlockState().setValue(BlockStateProperties.MOISTURE, 7), FLAGS);
+                put(level, at, Blocks.FARMLAND.defaultBlockState().setValue(BlockStateProperties.MOISTURE, 7));
                 BlockState plant = crop.defaultBlockState();
                 if (crop instanceof CropBlock cropBlock) {
                     plant = cropBlock.getStateForAge(random.nextInt(cropBlock.getMaxAge()));
                 }
-                level.setBlock(at.above(), plant, FLAGS);
+                put(level, at.above(), plant);
             }
         }
     }
@@ -360,18 +404,306 @@ public final class Builders {
         }
         // scarecrow in a corner of the field: a post, a hay body and a pumpkin head
         BlockPos scarecrow = origin.offset(1, 1, 1);
-        level.setBlock(scarecrow, p.fence(), FLAGS);
-        level.setBlock(scarecrow.above(), Blocks.HAY_BLOCK.defaultBlockState(), FLAGS);
-        level.setBlock(scarecrow.above(2), Blocks.CARVED_PUMPKIN.defaultBlockState()
-                .setValue(BlockStateProperties.HORIZONTAL_FACING, gateSide), FLAGS);
+        put(level, scarecrow, p.fence());
+        put(level, scarecrow.above(), Blocks.HAY_BLOCK.defaultBlockState());
+        put(level, scarecrow.above(2), Blocks.CARVED_PUMPKIN.defaultBlockState()
+                .setValue(BlockStateProperties.HORIZONTAL_FACING, gateSide));
         BlockPos composter = origin.offset(7, 1, 7);
-        level.setBlock(composter, Blocks.COMPOSTER.defaultBlockState(), FLAGS);
+        put(level, composter, Blocks.COMPOSTER.defaultBlockState());
+    }
+
+    /** Benches (stairs) around the village bell, turned towards it. Returns false if there was no room for any. */
+    public static boolean benches(ServerLevel level, WorldMemory memory, BlockPos bell, Palette p) {
+        int placed = 0;
+        for (Direction side : Direction.Plane.HORIZONTAL) {
+            for (int along = -1; along <= 1; along += 2) {
+                BlockPos column = bell.relative(side, 4).relative(side.getClockWise(), along);
+                int y = groundY(level, column.getX(), column.getZ());
+                BlockPos ground = new BlockPos(column.getX(), y, column.getZ());
+                if (memory.isProtected(ground) || Math.abs(y - bell.getY()) > 3 || !isGround(level.getBlockState(ground))
+                        || !isOpen(level.getBlockState(ground.above())) || !isOpen(level.getBlockState(ground.above(2)))) {
+                    continue;
+                }
+                // a stair's back faces its FACING direction: away from the bell, so one sits looking at it
+                put(level, ground.above(), stairs(p.stairs(), side, false));
+                placed++;
+            }
+        }
+        return placed > 0;
+    }
+
+    /** A 3 x 3 bed of mixed flowers on fresh grass. */
+    public static boolean flowerBed(ServerLevel level, WorldMemory memory, int x, int z, RandomSource random) {
+        int y = site(level, memory, x, z, 3, 3, 0, 2);
+        if (y == FAIL) {
+            return false;
+        }
+        Block[] flowers = {Blocks.POPPY, Blocks.DANDELION, Blocks.CORNFLOWER, Blocks.AZURE_BLUET, Blocks.OXEYE_DAISY,
+                Blocks.ALLIUM, Blocks.RED_TULIP, Blocks.ORANGE_TULIP, Blocks.PINK_TULIP, Blocks.LILY_OF_THE_VALLEY};
+        for (int u = 0; u < 3; u++) {
+            for (int v = 0; v < 3; v++) {
+                BlockPos at = new BlockPos(x + u, y, z + v);
+                put(level, at, Blocks.GRASS_BLOCK.defaultBlockState());
+                put(level, at.above(), flowers[random.nextInt(flowers.length)].defaultBlockState());
+            }
+        }
+        return true;
+    }
+
+    /**
+     * A lookout tower (3 x 3, {@code min} is its corner): log posts, a ladder up the inside of one wall, a railed
+     * platform and a roof with a lantern.
+     */
+    public static void watchtower(ServerLevel level, BlockPos min, int y, Palette p) {
+        BlockPos origin = new BlockPos(min.getX(), y, min.getZ());
+        levelGround(level, origin, 3, 3, y, p.foundation(), 12);
+        int top = 7;
+        for (int u = 0; u < 3; u++) {
+            for (int v = 0; v < 3; v++) {
+                put(level, origin.offset(u, 0, v), p.foundation());
+            }
+        }
+        for (int h = 1; h < top; h++) {
+            for (int u = 0; u < 3; u += 2) {
+                for (int v = 0; v < 3; v += 2) {
+                    put(level, origin.offset(u, h, v), p.log());
+                }
+            }
+            put(level, origin.offset(1, h, 0), p.planks());
+            put(level, origin.offset(1, h, 1), Blocks.LADDER.defaultBlockState().setValue(LadderBlock.FACING, Direction.SOUTH));
+        }
+        for (int u = 0; u < 3; u++) {
+            for (int v = 0; v < 3; v++) {
+                BlockPos floor = origin.offset(u, top, v);
+                put(level, floor, u == 1 && v == 1
+                        ? Blocks.LADDER.defaultBlockState().setValue(LadderBlock.FACING, Direction.SOUTH) : p.planks());
+                boolean corner = u != 1 && v != 1;
+                if (u != 1 || v != 1) {
+                    set(level, floor.above(), p.fence());
+                }
+                if (corner) {
+                    set(level, floor.above(2), p.fence());
+                }
+                put(level, floor.above(3), p.slab().defaultBlockState());
+            }
+        }
+        put(level, origin.offset(1, top, 0), p.planks());
+        put(level, origin.offset(1, top + 2, 1), Blocks.LANTERN.defaultBlockState().setValue(LanternBlock.HANGING, true));
+    }
+
+    /**
+     * A windmill (5 x 5, {@code min} is its corner): a stone footing, a tower of planks on log corners with a door, a
+     * pitched roof, and sails on the {@code front} wall that turn in the wind.
+     */
+    public static void windmill(ServerLevel level, BlockPos min, int y, Palette p, Direction front) {
+        BlockPos origin = new BlockPos(min.getX(), y, min.getZ());
+        levelGround(level, origin, 5, 5, y, p.foundation(), 14);
+        for (int u = 0; u < 5; u++) {
+            for (int v = 0; v < 5; v++) {
+                put(level, origin.offset(u, 0, v), Blocks.COBBLESTONE.defaultBlockState());
+            }
+        }
+        int height = 8;
+        for (int h = 1; h <= height; h++) {
+            for (int u = 1; u <= 3; u++) {
+                for (int v = 1; v <= 3; v++) {
+                    boolean wall = u == 1 || u == 3 || v == 1 || v == 3;
+                    if (!wall) {
+                        continue;
+                    }
+                    boolean corner = (u == 1 || u == 3) && (v == 1 || v == 3);
+                    BlockState block = h <= 2 ? Blocks.COBBLESTONE.defaultBlockState() : corner ? p.log() : p.planks();
+                    boolean window = h == 5 && !corner;
+                    put(level, origin.offset(u, h, v), window ? Blocks.GLASS_PANE.defaultBlockState() : block);
+                }
+            }
+        }
+        // the door, on the side away from the sails
+        Direction back = front.getOpposite();
+        BlockPos center = origin.offset(2, 0, 2);
+        BlockPos doorAt = center.relative(back);
+        BlockState door = p.door().defaultBlockState().setValue(DoorBlock.FACING, back);
+        put(level, doorAt.above(), door.setValue(DoorBlock.HALF, DoubleBlockHalf.LOWER));
+        put(level, doorAt.above(2), door.setValue(DoorBlock.HALF, DoubleBlockHalf.UPPER));
+        pathAt(level, doorAt.relative(back, 2).getX(), doorAt.relative(back, 2).getZ());
+        // roof: a ring of stairs and a peak
+        for (int u = 1; u <= 3; u++) {
+            for (int v = 1; v <= 3; v++) {
+                BlockPos at = origin.offset(u, height + 1, v);
+                if (u == 2 && v == 2) {
+                    put(level, at, p.planks());
+                    put(level, at.above(), p.slab().defaultBlockState());
+                    continue;
+                }
+                Direction facing = v == 1 ? Direction.SOUTH : v == 3 ? Direction.NORTH : u == 1 ? Direction.EAST : Direction.WEST;
+                put(level, at, stairs(p.stairs(), facing, false));
+            }
+        }
+        // the sails, on the front wall near the top
+        put(level, center.relative(front, 2).above(height - 1),
+                WorldBlocks.WINDMILL_SAILS.get().defaultBlockState().setValue(WindmillSailsBlock.FACING, front));
+    }
+
+    /**
+     * The village storehouse (5 x 5, open at the {@code front}): log posts under a slab roof, barrels and chests
+     * along the back, stacks of logs and a hay bale, where the workers bring what they gather.
+     */
+    public static void storehouse(ServerLevel level, BlockPos min, int y, Palette p, Direction front) {
+        int w = 5;
+        int d = 5;
+        BlockPos origin = new BlockPos(min.getX(), y, min.getZ());
+        levelGround(level, origin, w, d, y, p.foundation(), 6);
+        for (int u = 0; u < w; u++) {
+            for (int v = 0; v < d; v++) {
+                put(level, local(origin, front, w, d, u, 0, v), p.foundation());
+                boolean corner = (u == 0 || u == w - 1) && (v == 0 || v == d - 1);
+                for (int h = 1; h <= 3; h++) {
+                    BlockPos at = local(origin, front, w, d, u, h, v);
+                    if (corner) {
+                        put(level, at, p.log());
+                    } else if (v == d - 1 || (u == 0 || u == w - 1) && h == 3) {
+                        put(level, at, p.planks());
+                    }
+                }
+                put(level, local(origin, front, w, d, u, 4, v), p.slab().defaultBlockState());
+            }
+        }
+        for (int u = 1; u < w - 1; u++) {
+            put(level, local(origin, front, w, d, u, 1, d - 2), u == 2 ? Blocks.CHEST.defaultBlockState()
+                    .setValue(BlockStateProperties.HORIZONTAL_FACING, front) : Blocks.BARREL.defaultBlockState()
+                    .setValue(BlockStateProperties.FACING, Direction.UP));
+        }
+        BlockState pile = p.log().hasProperty(BlockStateProperties.AXIS)
+                ? p.log().setValue(BlockStateProperties.AXIS, front.getClockWise().getAxis()) : p.log();
+        put(level, local(origin, front, w, d, 1, 1, 1), pile);
+        put(level, local(origin, front, w, d, 1, 2, 1), pile);
+        put(level, local(origin, front, w, d, 1, 1, 2), pile);
+        put(level, local(origin, front, w, d, 3, 1, 1), Blocks.HAY_BLOCK.defaultBlockState());
+        put(level, local(origin, front, w, d, 3, 1, 2), Blocks.COBBLESTONE.defaultBlockState());
+    }
+
+    /**
+     * A smithy (5 x 7): a stone workshop open to the {@code front}, with a forge and its chimney, an anvil, a
+     * smithing table and a grindstone.
+     */
+    public static void smithy(ServerLevel level, BlockPos min, int y, Palette p, Direction front) {
+        int w = 5;
+        int d = 7;
+        BlockPos origin = new BlockPos(min.getX(), y, min.getZ());
+        levelGround(level, origin, w, d, y, Blocks.COBBLESTONE.defaultBlockState(), 7);
+        for (int u = 0; u < w; u++) {
+            for (int v = 0; v < d; v++) {
+                put(level, local(origin, front, w, d, u, 0, v), Blocks.COBBLESTONE.defaultBlockState());
+                boolean edgeU = u == 0 || u == w - 1;
+                boolean back = v >= 3;
+                for (int h = 1; h <= 3; h++) {
+                    BlockPos at = local(origin, front, w, d, u, h, v);
+                    if (edgeU && (back || v == 0)) {
+                        put(level, at, h == 2 && back && v == 4 ? Blocks.GLASS_PANE.defaultBlockState() : Blocks.COBBLESTONE.defaultBlockState());
+                    } else if (v == d - 1) {
+                        put(level, at, Blocks.COBBLESTONE.defaultBlockState());
+                    } else if (edgeU) {
+                        put(level, at, h == 3 ? p.log() : Blocks.AIR.defaultBlockState());
+                    }
+                }
+                put(level, local(origin, front, w, d, u, 4, v), v < 3 ? p.slab().defaultBlockState() : Blocks.STONE_BRICK_SLAB.defaultBlockState());
+            }
+        }
+        put(level, local(origin, front, w, d, 2, 1, d - 2), Blocks.BLAST_FURNACE.defaultBlockState()
+                .setValue(BlockStateProperties.HORIZONTAL_FACING, front));
+        put(level, local(origin, front, w, d, 1, 1, d - 2), Blocks.FURNACE.defaultBlockState()
+                .setValue(BlockStateProperties.HORIZONTAL_FACING, front));
+        put(level, local(origin, front, w, d, 3, 1, d - 2), Blocks.LAVA_CAULDRON.defaultBlockState());
+        put(level, local(origin, front, w, d, 1, 1, 3), Blocks.ANVIL.defaultBlockState()
+                .setValue(BlockStateProperties.HORIZONTAL_FACING, front.getClockWise()));
+        put(level, local(origin, front, w, d, 3, 1, 3), Blocks.SMITHING_TABLE.defaultBlockState());
+        put(level, local(origin, front, w, d, 3, 1, 1), Blocks.GRINDSTONE.defaultBlockState());
+        for (int h = 5; h <= 6; h++) {
+            put(level, local(origin, front, w, d, 2, h, d - 2), Blocks.COBBLESTONE.defaultBlockState());
+        }
+        put(level, local(origin, front, w, d, 2, 7, d - 2), Blocks.CAMPFIRE.defaultBlockState());
+    }
+
+    /**
+     * A chapel (5 x 9) with its door to the {@code front}: stone footing, plank walls with tall windows, pews and a
+     * lectern, and a bell tower at the back with a lantern in it.
+     */
+    public static void chapel(ServerLevel level, BlockPos min, int y, Palette p, Direction front) {
+        int w = 5;
+        int d = 9;
+        BlockPos origin = new BlockPos(min.getX(), y, min.getZ());
+        levelGround(level, origin, w, d, y, Blocks.STONE_BRICKS.defaultBlockState(), 12);
+        Direction back = front.getOpposite();
+        for (int u = 0; u < w; u++) {
+            for (int v = 0; v < d; v++) {
+                put(level, local(origin, front, w, d, u, 0, v), Blocks.STONE_BRICKS.defaultBlockState());
+                boolean edgeU = u == 0 || u == w - 1;
+                boolean edgeV = v == 0 || v == d - 1;
+                int height = v >= d - 3 ? 9 : 4;
+                for (int h = 1; h <= height; h++) {
+                    BlockPos at = local(origin, front, w, d, u, h, v);
+                    boolean tower = v >= d - 3;
+                    boolean wall = tower ? u == 0 || u == w - 1 || v == d - 3 || v == d - 1 : edgeU || edgeV;
+                    if (!wall) {
+                        continue;
+                    }
+                    boolean corner = (edgeU || u == 1 && tower || u == 3 && tower) && (edgeV || v == d - 3);
+                    boolean window = !corner && (h == 2 || h == 3) && edgeU && v % 2 == 1 && !tower
+                            || tower && h == 7 && (u == 2 || v == d - 2);
+                    BlockState block = h == 1 ? Blocks.STONE_BRICKS.defaultBlockState() : corner ? p.log() : p.planks();
+                    put(level, at, window ? Blocks.GLASS_PANE.defaultBlockState() : block);
+                }
+                if (v < d - 3) {
+                    put(level, local(origin, front, w, d, u, 5, v), u == 2 ? p.planks() : stairs(p.stairs(), u < 2 ? front.getClockWise() : front.getCounterClockWise(), false));
+                } else {
+                    put(level, local(origin, front, w, d, u, 10, v), u == 2 && v == d - 2 ? p.planks() : p.slab().defaultBlockState());
+                }
+            }
+        }
+        put(level, local(origin, front, w, d, 2, 11, d - 2), Blocks.LANTERN.defaultBlockState());
+        BlockState door = p.door().defaultBlockState().setValue(DoorBlock.FACING, back);
+        put(level, local(origin, front, w, d, 2, 1, 0), door.setValue(DoorBlock.HALF, DoubleBlockHalf.LOWER));
+        put(level, local(origin, front, w, d, 2, 2, 0), door.setValue(DoorBlock.HALF, DoubleBlockHalf.UPPER));
+        for (int v = 2; v <= 4; v += 2) {
+            put(level, local(origin, front, w, d, 1, 1, v), stairs(p.stairs(), back, false));
+            put(level, local(origin, front, w, d, 3, 1, v), stairs(p.stairs(), back, false));
+        }
+        put(level, local(origin, front, w, d, 2, 1, d - 4), Blocks.LECTERN.defaultBlockState()
+                .setValue(BlockStateProperties.HORIZONTAL_FACING, back));
+        put(level, local(origin, front, w, d, 2, 3, d - 4), Blocks.LANTERN.defaultBlockState().setValue(LanternBlock.HANGING, true));
+        BlockPos step = local(origin, front, w, d, 2, 0, 0).relative(front);
+        pathAt(level, step.getX(), step.getZ());
+    }
+
+    /**
+     * A milestone by the road: a signpost naming the village the road leads to and how far it is. Returns false if
+     * there was no room.
+     */
+    public static boolean milestone(ServerLevel level, WorldMemory memory, int x, int z, float towards,
+                                    Component destination, int distance) {
+        int y = site(level, memory, x, z, 1, 1, 0, 3);
+        if (y == FAIL) {
+            return false;
+        }
+        BlockPos post = new BlockPos(x, y + 1, z);
+        put(level, post, Blocks.SPRUCE_FENCE.defaultBlockState());
+        int rotation = Math.floorMod(Math.round(towards / 22.5F), 16);
+        BlockPos signPos = post.above();
+        put(level, signPos, Blocks.SPRUCE_SIGN.defaultBlockState().setValue(StandingSignBlock.ROTATION, rotation));
+        if (!isRecording() && level.getBlockEntity(signPos) instanceof SignBlockEntity sign) {
+            SignText text = sign.getFrontText()
+                    .setMessage(1, destination.copy().withStyle(ChatFormatting.BOLD))
+                    .setMessage(2, Component.translatable("sign.dunesrelics.milestone.distance", distance));
+            sign.setText(text, true);
+            sign.setWaxed(true);
+        }
+        return true;
     }
 
     /** A bell standing on a stone post, which makes a group of houses a village. */
     public static void bell(ServerLevel level, BlockPos ground) {
-        level.setBlock(ground.above(), Blocks.COBBLESTONE.defaultBlockState(), FLAGS);
-        level.setBlock(ground.above(2), Blocks.BELL.defaultBlockState(), FLAGS);
+        put(level, ground.above(), Blocks.COBBLESTONE.defaultBlockState());
+        put(level, ground.above(2), Blocks.BELL.defaultBlockState());
     }
 
     // ------------------------------------------------------------------------------------------ paths
@@ -387,17 +719,17 @@ public final class Builders {
             return false;
         }
         if (top.canBeReplaced() || top.is(BlockTags.FLOWERS) || top.is(BlockTags.SAPLINGS)) {
-            level.removeBlock(pos, false);
+            put(level, pos, Blocks.AIR.defaultBlockState());
             pos = pos.below();
             top = level.getBlockState(pos);
         }
         if (top.is(Blocks.GRASS_BLOCK) || top.is(Blocks.DIRT) || top.is(Blocks.COARSE_DIRT) || top.is(Blocks.PODZOL)
                 || top.is(Blocks.MYCELIUM) || top.is(Blocks.ROOTED_DIRT)) {
-            level.setBlock(pos, Blocks.DIRT_PATH.defaultBlockState(), FLAGS);
+            put(level, pos, Blocks.DIRT_PATH.defaultBlockState());
             return true;
         }
         if (top.is(Blocks.SAND) || top.is(Blocks.RED_SAND)) {
-            level.setBlock(pos, (top.is(Blocks.SAND) ? Blocks.SMOOTH_SANDSTONE : Blocks.SMOOTH_RED_SANDSTONE).defaultBlockState(), FLAGS);
+            put(level, pos, (top.is(Blocks.SAND) ? Blocks.SMOOTH_SANDSTONE : Blocks.SMOOTH_RED_SANDSTONE).defaultBlockState());
             return true;
         }
         return top.is(Blocks.DIRT_PATH) || top.is(Blocks.SMOOTH_SANDSTONE) || top.is(Blocks.SMOOTH_RED_SANDSTONE);

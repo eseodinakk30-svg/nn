@@ -63,11 +63,11 @@ public final class CreativeTabEvents {
         } else if (tab == CreativeModeTabs.FUNCTIONAL_BLOCKS) {
             accept(event, ModBlocks.AMBER_LAMP, ModBlocks.ANCIENT_URN, ModBlocks.SARCOPHAGUS, VolcanicBlocks.VOLCANIC_FORGE,
                     VolcanicBlocks.PUMICE_SPONGE, VolcanicBlocks.MOLTEN_PUMICE_SPONGE, VolcanicBlocks.HEART_OF_THE_VOLCANO,
-                    VolcanicBlocks.VOLCANIC_GLASS, VolcanicBlocks.VOLCANIC_GLASS_PANE, WorldBlocks.WATER_WHEEL,
+                    VolcanicBlocks.VOLCANIC_GLASS, VolcanicBlocks.VOLCANIC_GLASS_PANE, WorldBlocks.WATER_WHEEL, WorldBlocks.WINDMILL_SAILS,
                     WorldBlocks.MILLSTONE, WorldBlocks.WATER_TROUGH, WorldBlocks.CANNON, WorldBlocks.DREAMCATCHER);
         } else if (tab == CreativeModeTabs.REDSTONE_BLOCKS) {
             accept(event, ModBlocks.PALM_DOOR, ModBlocks.PALM_TRAPDOOR, ModBlocks.PALM_FENCE_GATE,
-                    ModBlocks.PALM_BUTTON, ModBlocks.PALM_PRESSURE_PLATE, ModBlocks.AMBER_LAMP, WorldBlocks.WATER_WHEEL,
+                    ModBlocks.PALM_BUTTON, ModBlocks.PALM_PRESSURE_PLATE, ModBlocks.AMBER_LAMP, WorldBlocks.WATER_WHEEL, WorldBlocks.WINDMILL_SAILS,
                     WorldBlocks.CANNON);
         } else if (tab == CreativeModeTabs.TOOLS_AND_UTILITIES) {
             accept(event, ModItems.BRONZE_SHOVEL, ModItems.BRONZE_PICKAXE, ModItems.BRONZE_AXE, ModItems.BRONZE_HOE,
@@ -97,7 +97,8 @@ public final class CreativeTabEvents {
                     VolcanicItems.CINDER_WRAITH_SPAWN_EGG, VolcanicItems.LAVA_CRAB_SPAWN_EGG, VolcanicItems.MAGMA_TITAN_SPAWN_EGG,
                     VolcanicItems.MAGMALING_SPAWN_EGG, VolcanicItems.SALAMANDER_SPAWN_EGG, WorldItems.PIRATE_SPAWN_EGG,
                     WorldItems.PIRATE_GUNNER_SPAWN_EGG, WorldItems.PIRATE_CAPTAIN_SPAWN_EGG, WorldItems.TRAVELER_SPAWN_EGG,
-                    WorldItems.SHADE_SPAWN_EGG);
+                    WorldItems.SHADE_SPAWN_EGG, WorldItems.VILLAGE_BUILDER_SPAWN_EGG,
+                    WorldItems.LUMBERJACK_SPAWN_EGG, WorldItems.QUARRYMAN_SPAWN_EGG);
         }
     }
 

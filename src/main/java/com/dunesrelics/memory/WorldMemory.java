@@ -1,5 +1,6 @@
 package com.dunesrelics.memory;
 
+import it.unimi.dsi.fastutil.ints.IntLinkedOpenHashSet;
 import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.longs.LongOpenHashSet;
 import net.minecraft.core.BlockPos;
@@ -101,6 +102,12 @@ public class WorldMemory extends SavedData {
 
     public Iterable<VillageRecord> villages() {
         return this.villages.values();
+    }
+
+    /** The village whose bell is exactly here, if the world knows it. */
+    @Nullable
+    public VillageRecord villageAt(BlockPos bell) {
+        return this.villages.get(bell.asLong());
     }
 
     // ------------------------------------------------------------------------------------------ chronicle
@@ -312,6 +319,38 @@ public class WorldMemory extends SavedData {
         public int coast;
         @Nullable
         public BlockPos sea;
+        public boolean windmill;
+        public boolean watchtower;
+        public boolean benches;
+        /** Buildings being put up by the village builders; the first one is being worked on. */
+        public final List<Blueprint> sites = new ArrayList<>();
+        /** The village's own buildings as they stood when the builders first looked (plus what they built since). */
+        @Nullable
+        public Blueprint snapshot;
+        public boolean surveyed;
+        /** Entries of the snapshot that are missing from the world, in the order they were noticed. */
+        public final IntLinkedOpenHashSet repairs = new IntLinkedOpenHashSet();
+        public int inspectCursor;
+        public int repairedSinceNote;
+        public long lastBuilderArrival;
+        /** The village's stock of building materials. */
+        public int wood = 32;
+        public int stone = 32;
+        /** Game time the village was last looked after near a player; the time since is lived through at once. */
+        public long lastObserved;
+        public long lastDaughter;
+        public boolean storehouse;
+        public boolean smithy;
+        public boolean chapel;
+        /** The quarry pit (its north-west corner at the surface) and how far the digging has got. */
+        @Nullable
+        public BlockPos quarry;
+        public int quarryNext;
+        /** Bells of the villages a road already leads to. */
+        public final LongOpenHashSet roads = new LongOpenHashSet();
+        /** What the builders are waiting for, if anything (not saved). */
+        @Nullable
+        public Materials.Kind waitingFor;
 
         VillageRecord(BlockPos bell, int name, long founded) {
             this.bell = bell;
@@ -338,6 +377,34 @@ public class WorldMemory extends SavedData {
             if (this.sea != null) {
                 tag.put("Sea", NbtUtils.writeBlockPos(this.sea));
             }
+            tag.putBoolean("Windmill", this.windmill);
+            tag.putBoolean("Watchtower", this.watchtower);
+            tag.putBoolean("Benches", this.benches);
+            ListTag siteList = new ListTag();
+            for (Blueprint site : this.sites) {
+                siteList.add(site.save());
+            }
+            tag.put("Sites", siteList);
+            if (this.snapshot != null) {
+                tag.put("Snapshot", this.snapshot.save());
+            }
+            tag.putBoolean("Surveyed", this.surveyed);
+            tag.putIntArray("Repairs", this.repairs.toIntArray());
+            tag.putInt("InspectCursor", this.inspectCursor);
+            tag.putInt("RepairedSinceNote", this.repairedSinceNote);
+            tag.putLong("LastBuilder", this.lastBuilderArrival);
+            tag.putInt("Wood", this.wood);
+            tag.putInt("Stone", this.stone);
+            tag.putLong("LastObserved", this.lastObserved);
+            tag.putLong("LastDaughter", this.lastDaughter);
+            tag.putBoolean("Storehouse", this.storehouse);
+            tag.putBoolean("Smithy", this.smithy);
+            tag.putBoolean("Chapel", this.chapel);
+            if (this.quarry != null) {
+                tag.put("Quarry", NbtUtils.writeBlockPos(this.quarry));
+            }
+            tag.putInt("QuarryNext", this.quarryNext);
+            tag.put("Roads", new LongArrayTag(this.roads.toLongArray()));
             return tag;
         }
 
@@ -352,6 +419,34 @@ public class WorldMemory extends SavedData {
             record.lastPirateRaid = tag.getLong("LastPirates");
             record.coast = tag.getInt("Coast");
             record.sea = tag.contains("Sea") ? NbtUtils.readBlockPos(tag.getCompound("Sea")) : null;
+            record.windmill = tag.getBoolean("Windmill");
+            record.watchtower = tag.getBoolean("Watchtower");
+            record.benches = tag.getBoolean("Benches");
+            for (Tag t : tag.getList("Sites", Tag.TAG_COMPOUND)) {
+                record.sites.add(Blueprint.load((CompoundTag) t));
+            }
+            record.snapshot = tag.contains("Snapshot") ? Blueprint.load(tag.getCompound("Snapshot")) : null;
+            record.surveyed = tag.getBoolean("Surveyed");
+            for (int i : tag.getIntArray("Repairs")) {
+                record.repairs.add(i);
+            }
+            record.inspectCursor = tag.getInt("InspectCursor");
+            record.repairedSinceNote = tag.getInt("RepairedSinceNote");
+            record.lastBuilderArrival = tag.getLong("LastBuilder");
+            if (tag.contains("Wood")) {
+                record.wood = tag.getInt("Wood");
+                record.stone = tag.getInt("Stone");
+            }
+            record.lastObserved = tag.getLong("LastObserved");
+            record.lastDaughter = tag.getLong("LastDaughter");
+            record.storehouse = tag.getBoolean("Storehouse");
+            record.smithy = tag.getBoolean("Smithy");
+            record.chapel = tag.getBoolean("Chapel");
+            record.quarry = tag.contains("Quarry") ? NbtUtils.readBlockPos(tag.getCompound("Quarry")) : null;
+            record.quarryNext = tag.getInt("QuarryNext");
+            for (long bell : tag.getLongArray("Roads")) {
+                record.roads.add(bell);
+            }
             return record;
         }
     }

@@ -53,6 +53,13 @@ public final class WorldItems {
     public static final RegistryObject<Item> SHADE_SPAWN_EGG = ITEMS.register("shade_spawn_egg",
             () -> new ForgeSpawnEggItem(ModEntities.SHADE, 0x0E0E14, 0xE8E8F0, new Item.Properties()));
 
+    public static final RegistryObject<Item> VILLAGE_BUILDER_SPAWN_EGG = ITEMS.register("village_builder_spawn_egg",
+            () -> new ForgeSpawnEggItem(ModEntities.VILLAGE_BUILDER, 0x8A5A32, 0xE8A020, new Item.Properties()));
+    public static final RegistryObject<Item> LUMBERJACK_SPAWN_EGG = ITEMS.register("lumberjack_spawn_egg",
+            () -> new ForgeSpawnEggItem(ModEntities.LUMBERJACK, 0x8A5A32, 0xB0302A, new Item.Properties()));
+    public static final RegistryObject<Item> QUARRYMAN_SPAWN_EGG = ITEMS.register("quarryman_spawn_egg",
+            () -> new ForgeSpawnEggItem(ModEntities.QUARRYMAN, 0x8A5A32, 0x8C8C8C, new Item.Properties()));
+
     private WorldItems() {}
 
     /** Forces the class to load so its items are added to the deferred register. */

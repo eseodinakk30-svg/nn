@@ -16,6 +16,7 @@ import com.dunesrelics.entity.world.Pirate;
 import com.dunesrelics.entity.world.PirateCaptain;
 import com.dunesrelics.entity.world.PirateGunner;
 import com.dunesrelics.entity.world.Shade;
+import com.dunesrelics.entity.world.VillageWorker;
 import net.minecraft.world.entity.npc.WanderingTrader;
 import com.dunesrelics.registry.ModEntities;
 import net.minecraft.world.entity.SpawnPlacements;
@@ -48,6 +49,9 @@ public final class ModEvents {
         event.put(ModEntities.PIRATE_CAPTAIN.get(), PirateCaptain.createAttributes().build());
         event.put(ModEntities.TRAVELER.get(), WanderingTrader.createMobAttributes().build());
         event.put(ModEntities.SHADE.get(), Shade.createAttributes().build());
+        event.put(ModEntities.VILLAGE_BUILDER.get(), VillageWorker.createAttributes().build());
+        event.put(ModEntities.LUMBERJACK.get(), VillageWorker.createAttributes().build());
+        event.put(ModEntities.QUARRYMAN.get(), VillageWorker.createAttributes().build());
     }
 
     @SubscribeEvent

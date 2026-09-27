@@ -4,6 +4,7 @@ import com.dunesrelics.DunesRelics;
 import com.dunesrelics.block.entity.CannonBlockEntity;
 import com.dunesrelics.block.entity.MillstoneBlockEntity;
 import com.dunesrelics.block.entity.WaterWheelBlockEntity;
+import com.dunesrelics.block.entity.WindmillSailsBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -21,6 +22,10 @@ public final class ModBlockEntities {
     @SuppressWarnings("DataFlowIssue")
     public static final RegistryObject<BlockEntityType<CannonBlockEntity>> CANNON = BLOCK_ENTITIES.register("cannon",
             () -> BlockEntityType.Builder.of(CannonBlockEntity::new, WorldBlocks.CANNON.get()).build(null));
+
+    @SuppressWarnings("DataFlowIssue")
+    public static final RegistryObject<BlockEntityType<WindmillSailsBlockEntity>> WINDMILL_SAILS = BLOCK_ENTITIES.register("windmill_sails",
+            () -> BlockEntityType.Builder.of(WindmillSailsBlockEntity::new, WorldBlocks.WINDMILL_SAILS.get()).build(null));
 
     private ModBlockEntities() {}
 }

@@ -316,11 +316,21 @@ public final class WorldReactions {
         }
         BlockPos min = new BlockPos(spot.getX(), y, spot.getZ());
         Builders.Palette palette = Builders.palette(level.getBiome(min));
-        BlockPos door = Builders.house(level, min, y, Direction.SOUTH, palette, Builders.WORKSTATIONS[random.nextInt(4)]);
-        Builders.field(level, min.offset(8, 0, 1), y, 5, random);
         BlockPos bellGround = new BlockPos(min.getX() + 3, y, min.getZ() + 7);
-        Builders.bell(level, bellGround);
+        BlockPos[] doorStep = new BlockPos[1];
+        Blueprint hamlet = Builders.record(level, "hamlet", () -> {
+            doorStep[0] = Builders.house(level, min, y, Direction.SOUTH, palette, Builders.WORKSTATIONS[random.nextInt(4)]);
+            Builders.field(level, min.offset(8, 0, 1), y, 5, random);
+            Builders.bell(level, bellGround);
+        });
+        Construction.buildNow(level, hamlet);
+        BlockPos door = doorStep[0];
         BlockPos bell = bellGround.above(2);
+        // the new village keeps a record of its first buildings, so its builder will look after them
+        WorldMemory.VillageRecord record = memory.village(bell, level.getDayTime() / 24000L, Names.randomVillage(random));
+        Construction.adopt(record, hamlet);
+        record.surveyed = true;
+        record.houses = Math.max(record.houses, 1);
         VillagerType type = VillagerType.byBiome(level.getBiome(min));
         for (int i = 0; i < 2; i++) {
             Villager villager = EntityType.VILLAGER.create(level);

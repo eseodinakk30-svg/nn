@@ -333,6 +333,160 @@ def tricorn(captain):
     return img
 
 
+# folk layout (FolkModel): a villager head on a body with free arms
+FOLK_HEAD = (0, 0, 8, 10, 8)
+FOLK_NOSE = (24, 0, 2, 4, 2)
+FOLK_HAT = (32, 0, 8, 10, 8)
+FOLK_BODY = (16, 20, 8, 12, 6)
+FOLK_COAT = (0, 38, 8, 18, 6)
+FOLK_ARM = (44, 22, 4, 12, 4)
+FOLK_LEG = (0, 22, 4, 12, 4)
+
+
+def folk_face(skin, beard=None, eyes=(40, 90, 60)):
+    def head(face, i, j, w, h):
+        if face == "front":
+            if j == 4 and i in (1, 2, 5, 6):
+                return (240, 240, 240) if i in (1, 6) else eyes
+            if j == 3 and 1 <= i <= 6:
+                return (70, 50, 36)
+            if beard and j >= 7 and 1 <= i <= 6:
+                return beard.c(1 + (i + j) % 2)
+        return skin.c(1 + int(hashed(i, j, len(face), 11) * 2))
+    return head
+
+
+def builder_skin():
+    img = Image.new("RGBA", (64, 64), (0, 0, 0, 0))
+    skin = Palette("#8e6a52", "#a07a5e", "#b08a6a")
+    hat = Palette("#c88a10", "#e0a020", "#f0b830", "#f8cc50")
+    shirt = Palette("#3a4a64", "#465878", "#52648a")
+    apron = Palette("#5a3a22", "#6a4628", "#7a5230")
+    trousers = Palette("#3a3024", "#463a2c", "#524434")
+    fill(img, FOLK_HEAD, folk_face(skin, beard=Palette("#4a3424", "#5a4030")))
+    fill(img, FOLK_NOSE, lambda f, i, j, w, h: skin.c(1))
+
+    def hard_hat(face, i, j, w, h):
+        # a hard hat: the crown of the hat layer, with a brim line and a lamp-less ridge on top
+        if face == "top":
+            return hat.c(3 if 3 <= i <= 4 else 2)
+        if face == "bottom":
+            return None
+        if j <= 2:
+            return hat.c(1) if j == 2 else hat.c(2 + (i % 3 == 0))
+        if j == 3 and face in ("front", "back", "left", "right"):
+            return hat.c(0)
+        return None
+
+    fill(img, FOLK_HAT, hard_hat)
+    fill(img, FOLK_BODY, lambda f, i, j, w, h: shirt.c(1 + int(hashed(i, j, 3, 5) * 2)))
+
+    def apron_coat(face, i, j, w, h):
+        if face in ("top", "bottom"):
+            return None
+        if j in (10, 11):
+            # the tool belt all round, with a hammer and a trowel hanging at the sides
+            if face == "front" and i in (1, 6) and j == 11:
+                return (150, 150, 158)
+            return (40, 28, 18) if j == 10 else (58, 40, 24)
+        if face == "front" and j >= 2:
+            if j < 16:
+                return apron.c(1 + int(hashed(i, j, 9, 2) * 2))
+            return None
+        return None
+
+    fill(img, FOLK_COAT, apron_coat)
+
+    def arm(face, i, j, w, h):
+        if j >= 7:
+            return skin.c(1 + (i + j) % 2)
+        if j == 6:
+            return shirt.c(0)
+        return shirt.c(1 + int(hashed(i, j, len(face), 4) * 2))
+
+    fill(img, FOLK_ARM, arm)
+
+    def leg(face, i, j, w, h):
+        if j >= 9:
+            return (46, 30, 20) if j < 11 else (30, 20, 14)
+        return trousers.c(1 + int(hashed(i, j, len(face), 6) * 2))
+
+    fill(img, FOLK_LEG, leg)
+    return img
+
+
+def worker_skin(kind):
+    """Lumberjack: a red checked shirt, a knitted cap and braces. Quarryman: dusty greys and a leather helmet."""
+    img = Image.new("RGBA", (64, 64), (0, 0, 0, 0))
+    skin = Palette("#8e6a52", "#a07a5e", "#b08a6a")
+    if kind == "lumberjack":
+        shirt_a, shirt_b = Palette("#8a1e1a", "#a02824", "#b43430"), Palette("#1e1e22", "#2a2a2e", "#36363a")
+        cap = Palette("#2e4a2a", "#3a5c34", "#466c3e")
+        trousers = Palette("#2a3a52", "#344660", "#3e526e")
+        beard = Palette("#5a3a1e", "#6a4624")
+    else:
+        shirt_a = shirt_b = Palette("#6a6a6a", "#7a7a78", "#8a8a86")
+        cap = Palette("#4a3220", "#5a3e28", "#6a4a30")
+        trousers = Palette("#4a4640", "#56524a", "#625e56")
+        beard = Palette("#3a3a3a", "#4a4a4a")
+    fill(img, FOLK_HEAD, folk_face(skin, beard=beard))
+    fill(img, FOLK_NOSE, lambda f, i, j, w, h: skin.c(1))
+
+    def hat(face, i, j, w, h):
+        if face == "top":
+            return cap.c(1 + (i + j) % 2)
+        if face == "bottom":
+            return None
+        if kind == "lumberjack":
+            if j <= 2:
+                return cap.c(0) if j == 2 else cap.c(1 + (i % 2))
+            return None
+        # quarryman: a leather helmet with a candle lamp at the front
+        if j <= 3:
+            if face == "front" and j <= 1 and 3 <= i <= 4:
+                return (250, 220, 120) if j == 0 else (230, 230, 220)
+            return cap.c(0) if j == 3 else cap.c(1 + (i % 2))
+        return None
+
+    fill(img, FOLK_HAT, hat)
+
+    def shirt(face, i, j, w, h):
+        if kind == "lumberjack":
+            checked = (i // 2 + j // 2) % 2 == 0
+            pal = shirt_a if checked else shirt_b
+            if face in ("front", "back") and i in (1, w - 2) and j <= 10:
+                return (40, 30, 22)  # braces
+            return pal.c(1 + int(hashed(i, j, 3, 7) * 2)) if checked else shirt_a.c(0)
+        dust = hashed(i, j, len(face), 5)
+        return shirt_a.c(1 + int(dust * 2)) if dust < 0.8 else (150, 146, 140)
+
+    fill(img, FOLK_BODY, shirt)
+
+    def belt(face, i, j, w, h):
+        if face in ("top", "bottom"):
+            return None
+        if j in (10, 11):
+            return (40, 28, 18) if j == 10 else (58, 40, 24)
+        return None
+
+    fill(img, FOLK_COAT, belt)
+
+    def arm(face, i, j, w, h):
+        if j >= 9:
+            return skin.c(1 + (i + j) % 2)
+        return shirt(face, i, j, w, h)
+
+    fill(img, FOLK_ARM, arm)
+
+    def leg(face, i, j, w, h):
+        if j >= 9:
+            return (46, 30, 20) if j < 11 else (30, 20, 14)
+        return trousers.c(1 + int(hashed(i, j, len(face), 6) * 2))
+
+    fill(img, FOLK_LEG, leg)
+    return img
+
+
 def main():
     import entity_models
     for build in MODELS:
@@ -351,6 +505,9 @@ def main():
     armor = os.path.join(os.path.dirname(TEX_DIR), "models/armor")
     os.makedirs(armor, exist_ok=True)
     tricorn(True).save(os.path.join(armor, "captain_hat.png"))
+    builder_skin().save(os.path.join(TEX_DIR, "village_builder.png"))
+    worker_skin("lumberjack").save(os.path.join(TEX_DIR, "lumberjack.png"))
+    worker_skin("quarryman").save(os.path.join(TEX_DIR, "quarryman.png"))
     print("generated living world skins")
 
 

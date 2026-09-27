@@ -6,8 +6,12 @@ import com.dunesrelics.block.world.CannonBlock;
 import com.dunesrelics.block.world.WaterTroughBlock;
 import com.dunesrelics.block.world.WaterWheelBlock;
 import com.dunesrelics.entity.world.Shade;
+import com.dunesrelics.entity.world.VillageWorker;
+import com.dunesrelics.memory.Blueprint;
 import com.dunesrelics.memory.Builders;
+import com.dunesrelics.memory.Construction;
 import com.dunesrelics.memory.VillageLife;
+import com.dunesrelics.memory.WorldMemory;
 import com.dunesrelics.registry.ModEntities;
 import com.dunesrelics.registry.WorldBlocks;
 import com.dunesrelics.registry.WorldItems;
@@ -227,6 +231,87 @@ public final class LivingWorldGameTests {
         helper.assertTrue(flowers.getCount() == 5, "the villager took a fourth flower");
         helper.assertTrue(villager.getPersistentData().contains(VillageLife.NAME), "the villager has no name");
         helper.succeed();
+    }
+
+    @GameTest(template = ARENA)
+    public static void blueprintsAreLaidFromTheGroundUp(GameTestHelper helper) {
+        fill(helper, 1, 1, Blocks.GRASS_BLOCK);
+        ServerLevel level = helper.getLevel();
+        BlockPos min = helper.absolutePos(new BlockPos(4, 1, 4));
+        Blueprint house = Builders.record(level, "house",
+                () -> Builders.house(level, min, min.getY(), Direction.SOUTH, Builders.OAK, Blocks.BARREL));
+        helper.assertTrue(house.size() > 100, "the house blueprint is too small: " + house.size());
+        helper.assertBlockPresent(Blocks.GRASS_BLOCK, new BlockPos(4, 1, 4));
+        helper.assertTrue(count(helper, Blocks.RED_BED) == 0, "recording a blueprint built something");
+        int lastY = Integer.MIN_VALUE;
+        for (int i = 0; i < house.size(); i++) {
+            if (house.state(i).isAir()) {
+                continue;
+            }
+            helper.assertTrue(house.pos(i).getY() >= lastY, "the blueprint is not laid course by course");
+            lastY = house.pos(i).getY();
+        }
+        Construction.buildNow(level, house);
+        helper.assertTrue(count(helper, Blocks.RED_BED) == 2, "the bed is not whole");
+        helper.assertTrue(count(helper, Blocks.OAK_DOOR) == 2, "the door is not whole");
+        helper.succeed();
+    }
+
+    @GameTest(template = ARENA, timeoutTicks = 2400)
+    public static void builderPutsUpAWellBlockByBlock(GameTestHelper helper) {
+        fill(helper, 0, 2, Blocks.GRASS_BLOCK);
+        ServerLevel level = helper.getLevel();
+        helper.setBlock(new BlockPos(4, 3, 4), Blocks.BELL);
+        BlockPos bell = helper.absolutePos(new BlockPos(4, 3, 4));
+        WorldMemory.VillageRecord record = WorldMemory.get(level).village(bell, 0L, 0);
+        record.surveyed = true;
+        BlockPos corner = helper.absolutePos(new BlockPos(12, 2, 12));
+        Blueprint well = Builders.record(level, "well", () -> Builders.well(level, corner, corner.getY(), Builders.OAK));
+        helper.assertTrue(well.size() > 20, "the well blueprint is too small: " + well.size());
+        record.sites.add(well);
+        VillageWorker builder = helper.spawn(ModEntities.VILLAGE_BUILDER.get(), new BlockPos(7, 3, 7));
+        builder.setHomeBell(bell);
+        helper.succeedWhen(() -> {
+            helper.assertTrue(record.sites.isEmpty(), "the builder has not finished the well: " + well.next + " of " + well.size());
+            helper.assertBlockPresent(Blocks.COBBLESTONE_WALL, new BlockPos(12, 2, 12));
+            helper.assertTrue(helper.getBlockState(new BlockPos(13, 2, 13)).is(Blocks.WATER), "there is no water in the well");
+        });
+    }
+
+    @GameTest(template = ARENA, timeoutTicks = 2400)
+    public static void builderRepairsWhatWasDestroyedButNotWhatAPlayerChanged(GameTestHelper helper) {
+        fill(helper, 1, 1, Blocks.GRASS_BLOCK);
+        ServerLevel level = helper.getLevel();
+        helper.setBlock(new BlockPos(3, 2, 3), Blocks.BELL);
+        BlockPos bell = helper.absolutePos(new BlockPos(3, 2, 3));
+        WorldMemory.VillageRecord record = WorldMemory.get(level).village(bell, 0L, 1);
+        BlockPos min = helper.absolutePos(new BlockPos(10, 1, 10));
+        Blueprint house = Builders.record(level, "house",
+                () -> Builders.house(level, min, min.getY(), Direction.SOUTH, Builders.OAK, Blocks.BARREL));
+        Construction.buildNow(level, house);
+        Construction.adopt(record, house);
+        record.surveyed = true;
+        // a creeper's work, and a player who put a stone block into one of the holes
+        BlockPos[] holes = {new BlockPos(10, 2, 11), new BlockPos(10, 3, 11), new BlockPos(10, 4, 12), new BlockPos(11, 5, 10),
+                new BlockPos(12, 5, 10), new BlockPos(16, 2, 12)};
+        BlockState[] was = new BlockState[holes.length];
+        for (int i = 0; i < holes.length; i++) {
+            was[i] = helper.getBlockState(holes[i]);
+            helper.assertFalse(was[i].isAir(), "nothing to break at " + holes[i]);
+            helper.setBlock(holes[i], Blocks.AIR);
+        }
+        helper.setBlock(holes[0], Blocks.STONE);
+        Construction.inspect(level, record, 100000);
+        helper.assertTrue(record.repairs.size() == holes.length - 1, "found " + record.repairs.size() + " holes to repair");
+        VillageWorker builder = helper.spawn(ModEntities.VILLAGE_BUILDER.get(), new BlockPos(5, 2, 5));
+        builder.setHomeBell(bell);
+        helper.succeedWhen(() -> {
+            helper.assertTrue(record.repairs.isEmpty(), record.repairs.size() + " holes are still open");
+            for (int i = 1; i < holes.length; i++) {
+                helper.assertTrue(helper.getBlockState(holes[i]).is(was[i].getBlock()), "not repaired: " + holes[i]);
+            }
+            helper.assertBlockPresent(Blocks.STONE, holes[0]);
+        });
     }
 
     @GameTest(template = ARENA, timeoutTicks = 200)

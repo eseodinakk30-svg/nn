@@ -34,7 +34,10 @@ import com.dunesrelics.client.world.PirateRenderer;
 import com.dunesrelics.client.world.ShadeRenderer;
 import com.dunesrelics.client.world.TravelerRenderer;
 import com.dunesrelics.client.world.TricornModel;
+import com.dunesrelics.client.world.FolkModel;
 import com.dunesrelics.client.world.WaterWheelRenderer;
+import com.dunesrelics.client.world.WorkerRenderer;
+import com.dunesrelics.client.world.WindmillSailsRenderer;
 import com.dunesrelics.item.world.TideClockItem;
 import net.minecraft.client.renderer.BiomeColors;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
@@ -71,9 +74,13 @@ public final class ClientSetup {
         event.registerEntityRenderer(ModEntities.PIRATE_CAPTAIN.get(), PirateRenderer::captain);
         event.registerEntityRenderer(ModEntities.PIRATE_GUNNER.get(), PirateGunnerRenderer::new);
         event.registerEntityRenderer(ModEntities.TRAVELER.get(), TravelerRenderer::new);
+        event.registerEntityRenderer(ModEntities.VILLAGE_BUILDER.get(), WorkerRenderer::new);
+        event.registerEntityRenderer(ModEntities.LUMBERJACK.get(), WorkerRenderer::new);
+        event.registerEntityRenderer(ModEntities.QUARRYMAN.get(), WorkerRenderer::new);
         event.registerEntityRenderer(ModEntities.SHADE.get(), ShadeRenderer::new);
         event.registerEntityRenderer(ModEntities.CANNONBALL.get(), context -> new ThrownItemRenderer<>(context, 1.5F, false));
         event.registerBlockEntityRenderer(ModBlockEntities.WATER_WHEEL.get(), WaterWheelRenderer::new);
+        event.registerBlockEntityRenderer(ModBlockEntities.WINDMILL_SAILS.get(), WindmillSailsRenderer::new);
         event.registerBlockEntityRenderer(ModBlockEntities.MILLSTONE.get(), MillstoneRenderer::new);
     }
 
@@ -89,6 +96,7 @@ public final class ClientSetup {
         event.registerLayerDefinition(MagmalingModel.LAYER_LOCATION, MagmalingModel::createBodyLayer);
         event.registerLayerDefinition(CinderWraithModel.LAYER_LOCATION, CinderWraithModel::createBodyLayer);
         event.registerLayerDefinition(ShadeModel.LAYER_LOCATION, ShadeModel::createBodyLayer);
+        event.registerLayerDefinition(FolkModel.LAYER, FolkModel::createBodyLayer);
         event.registerLayerDefinition(TricornModel.ILLAGER_HAT, TricornModel::createIllagerHat);
         event.registerLayerDefinition(TricornModel.ARMOR_HAT, TricornModel::createArmorHat);
     }
@@ -96,6 +104,7 @@ public final class ClientSetup {
     @SubscribeEvent
     public static void registerModels(ModelEvent.RegisterAdditional event) {
         event.register(WaterWheelRenderer.WHEEL);
+        event.register(WindmillSailsRenderer.SAILS);
         event.register(MillstoneRenderer.RUNNER);
     }
 

@@ -19,6 +19,7 @@ import com.dunesrelics.entity.world.PirateCaptain;
 import com.dunesrelics.entity.world.PirateGunner;
 import com.dunesrelics.entity.world.Shade;
 import com.dunesrelics.entity.world.Traveler;
+import com.dunesrelics.entity.world.VillageWorker;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraftforge.registries.DeferredRegister;
@@ -86,6 +87,15 @@ public final class ModEntities {
     public static final RegistryObject<EntityType<Cannonball>> CANNONBALL = ENTITIES.register("cannonball",
             () -> EntityType.Builder.<Cannonball>of(Cannonball::new, MobCategory.MISC).sized(0.4F, 0.4F).clientTrackingRange(8)
                     .updateInterval(10).build(DunesRelics.id("cannonball").toString()));
+
+    public static final RegistryObject<EntityType<VillageWorker>> VILLAGE_BUILDER = worker("village_builder", VillageWorker.Job.BUILDER);
+    public static final RegistryObject<EntityType<VillageWorker>> LUMBERJACK = worker("lumberjack", VillageWorker.Job.LUMBERJACK);
+    public static final RegistryObject<EntityType<VillageWorker>> QUARRYMAN = worker("quarryman", VillageWorker.Job.QUARRYMAN);
+
+    private static RegistryObject<EntityType<VillageWorker>> worker(String name, VillageWorker.Job job) {
+        return ENTITIES.register(name, () -> EntityType.Builder.<VillageWorker>of((type, level) -> new VillageWorker(type, level, job),
+                MobCategory.CREATURE).sized(0.6F, 1.95F).clientTrackingRange(10).build(DunesRelics.id(name).toString()));
+    }
 
     private ModEntities() {}
 }

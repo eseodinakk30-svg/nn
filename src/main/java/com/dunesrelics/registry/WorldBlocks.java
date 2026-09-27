@@ -8,6 +8,7 @@ import com.dunesrelics.block.world.SeashellBlock;
 import com.dunesrelics.block.world.WaterTroughBlock;
 import com.dunesrelics.block.world.WaterWheelBlock;
 import com.dunesrelics.block.world.WetSandBlock;
+import com.dunesrelics.block.world.WindmillSailsBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
@@ -25,6 +26,9 @@ public final class WorldBlocks {
     public static final RegistryObject<Block> WATER_WHEEL = register("water_wheel", () -> new WaterWheelBlock(
             BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).instrument(NoteBlockInstrument.BASS).strength(2.0F)
                     .sound(SoundType.WOOD).noOcclusion().ignitedByLava().forceSolidOn()));
+    public static final RegistryObject<Block> WINDMILL_SAILS = register("windmill_sails", () -> new WindmillSailsBlock(
+            BlockBehaviour.Properties.of().mapColor(MapColor.WOOL).instrument(NoteBlockInstrument.BASS).strength(1.5F)
+                    .sound(SoundType.WOOD).noOcclusion().ignitedByLava()));
     public static final RegistryObject<Block> MILLSTONE = register("millstone", () -> new MillstoneBlock(
             BlockBehaviour.Properties.of().mapColor(MapColor.STONE).instrument(NoteBlockInstrument.BASEDRUM)
                     .requiresCorrectToolForDrops().strength(2.5F, 6.0F).sound(SoundType.STONE).noOcclusion()));

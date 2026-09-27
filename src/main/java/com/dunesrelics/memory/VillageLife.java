@@ -1,6 +1,7 @@
 package com.dunesrelics.memory;
 
 import com.dunesrelics.entity.world.PirateCrew;
+import com.dunesrelics.entity.world.VillageWorker;
 import com.dunesrelics.registry.ModTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -16,8 +17,10 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.ai.behavior.BehaviorUtils;
 import net.minecraft.world.entity.ai.gossip.GossipType;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
@@ -25,6 +28,7 @@ import net.minecraft.world.entity.ai.village.poi.PoiManager;
 import net.minecraft.world.entity.ai.village.poi.PoiTypes;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.npc.VillagerProfession;
+import net.minecraft.world.entity.npc.VillagerType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.raid.Raider;
 import net.minecraft.world.entity.schedule.Activity;
@@ -42,6 +46,7 @@ import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.AABB;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.HashSet;
 import java.util.List;
@@ -428,82 +433,257 @@ public final class VillageLife {
             if (villagers.isEmpty()) {
                 continue;
             }
-            float chance = 0.3F + Math.min(record.prosperity, 40) * 0.01F;
+            expand(level, memory, record, day, villagers.size());
+            float chance = 0.5F + Math.min(record.prosperity, 50) * 0.01F;
             if (!force && level.random.nextFloat() >= chance) {
+                continue;
+            }
+            // one building at a time for each builder the village has
+            long builders = level.getEntitiesOfClass(VillageWorker.class, new AABB(record.bell).inflate(96.0D),
+                    w -> w.getJob() == VillageWorker.Job.BUILDER && record.bell.equals(w.getHomeBell())).size();
+            if (record.sites.size() >= Math.max(1L, builders)) {
                 continue;
             }
             String project = grow(level, memory, record, villagers.size(), level.random);
             if (project != null) {
                 record.lastGrowthDay = day;
                 record.projects++;
-                memory.record(day, "chronicle.dunesrelics.village." + project, "#" + record.nameKey());
                 memory.setDirty();
             }
         }
     }
 
-    /** Picks and builds a project for a village; returns its name, or null if no spot was found today. */
-    public static String grow(ServerLevel level, WorldMemory memory, WorldMemory.VillageRecord record, int villagers, RandomSource random) {
-        long beds = level.getPoiManager().getCountInRange(h -> h.is(PoiTypes.HOME), record.bell, 48, PoiManager.Occupancy.ANY);
-        String project;
-        if (beds <= villagers && record.houses < 10) {
-            project = "house";
-        } else {
-            int roll = random.nextInt(100);
-            project = roll < 30 ? "lamp" : roll < 55 ? "field" : roll < 70 && !record.well ? "well" : roll < 85 ? "stall"
-                    : record.houses < 10 ? "house" : "lamp";
+    /** A family moves into an empty bed: a new villager comes to the bell. Returns false if there is no free bed. */
+    public static boolean settle(ServerLevel level, WorldMemory.VillageRecord record) {
+        if (!level.isLoaded(record.bell)) {
+            return false;
         }
+        long beds = level.getPoiManager().getCountInRange(h -> h.is(PoiTypes.HOME), record.bell, 64, PoiManager.Occupancy.ANY);
+        int villagers = level.getEntitiesOfClass(Villager.class, new AABB(record.bell).inflate(64.0D)).size();
+        if (beds <= villagers) {
+            return false;
+        }
+        Villager villager = EntityType.VILLAGER.create(level);
+        if (villager == null) {
+            return false;
+        }
+        BlockPos spot = record.bell.relative(Direction.Plane.HORIZONTAL.getRandomDirection(level.random), 2);
+        int y = level.getHeight(net.minecraft.world.level.levelgen.Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, spot.getX(), spot.getZ());
+        villager.setVillagerData(villager.getVillagerData().setType(VillagerType.byBiome(level.getBiome(record.bell))));
+        villager.moveTo(spot.getX() + 0.5D, y, spot.getZ() + 0.5D, level.random.nextFloat() * 360.0F, 0.0F);
+        villager.finalizeSpawn(level, level.getCurrentDifficultyAt(spot), MobSpawnType.BREEDING, null, null);
+        level.addFreshEntity(villager);
+        return true;
+    }
+
+    /**
+     * A village reaching out: a road to the nearest village it is not yet joined to (within 320 blocks), and once it
+     * has sixteen villagers, every six days some of them leave to found a hamlet of their own a little way off.
+     */
+    public static void expand(ServerLevel level, WorldMemory memory, WorldMemory.VillageRecord record, long day, int villagers) {
+        WorldMemory.VillageRecord neighbour = null;
+        double best = 320.0D * 320.0D;
+        for (WorldMemory.VillageRecord other : memory.villages()) {
+            double d = other.bell.distSqr(record.bell);
+            if (other != record && d < best && d > 32 * 32 && !record.roads.contains(other.bell.asLong())) {
+                best = d;
+                neighbour = other;
+            }
+        }
+        if (neighbour != null && level.isLoaded(neighbour.bell)) {
+            Roads.build(level, memory, record, neighbour, day);
+        }
+        if (villagers >= 16 && day - record.lastDaughter >= 6) {
+            record.lastDaughter = day;
+            for (int attempt = 0; attempt < 12; attempt++) {
+                double angle = level.random.nextDouble() * Math.PI * 2.0D;
+                double distance = 80.0D + level.random.nextDouble() * 60.0D;
+                BlockPos spot = record.bell.offset((int) (Math.cos(angle) * distance), 0, (int) (Math.sin(angle) * distance));
+                if (!level.isLoaded(spot) || memory.nearestVillage(spot, 64.0D) != null) {
+                    continue;
+                }
+                BlockPos bell = WorldReactions.buildHamlet(level, memory, spot, level.random);
+                if (bell == null) {
+                    continue;
+                }
+                WorldMemory.VillageRecord daughter = memory.village(bell, day, Names.randomVillage(level.random));
+                memory.record(day, "chronicle.dunesrelics.daughter", "#" + record.nameKey(), "#" + daughter.nameKey());
+                Roads.build(level, memory, record, daughter, day);
+                break;
+            }
+            memory.setDirty();
+        }
+    }
+
+    /**
+     * What the village needs most: beds first, then water, a storehouse for its workers, flour, a smithy, safety, a
+     * chapel, and after that a nicer place to live. There is no end to it: a village keeps growing as long as it has
+     * room around it.
+     */
+    public static String chooseProject(ServerLevel level, WorldMemory.VillageRecord record, int villagers, RandomSource random) {
+        long beds = level.getPoiManager().getCountInRange(h -> h.is(PoiTypes.HOME), record.bell, 48 + record.houses * 2,
+                PoiManager.Occupancy.ANY);
+        if (beds <= villagers + 1) {
+            return "house";
+        }
+        if (!record.well) {
+            return "well";
+        }
+        if (!record.storehouse && record.houses >= 1) {
+            return "storehouse";
+        }
+        if (!record.windmill && record.projects >= 2) {
+            return "windmill";
+        }
+        if (!record.smithy && record.houses >= 4) {
+            return "smithy";
+        }
+        if (!record.watchtower && (record.lastPirateRaid > 0 || record.projects >= 4)) {
+            return "watchtower";
+        }
+        if (!record.chapel && record.houses >= 7) {
+            return "chapel";
+        }
+        if (!record.benches && random.nextBoolean()) {
+            return "benches";
+        }
+        int roll = random.nextInt(100);
+        return roll < 20 ? "lamp" : roll < 35 ? "field" : roll < 50 ? "stall" : roll < 65 ? "flowers" : "house";
+    }
+
+    /** Picks a project the village needs and draws up its blueprint; returns the project, or null if there is no room today. */
+    public static String grow(ServerLevel level, WorldMemory memory, WorldMemory.VillageRecord record, int villagers, RandomSource random) {
+        String project = chooseProject(level, record, villagers, random);
+        Blueprint blueprint = plan(level, memory, record, project, random);
+        if (blueprint == null) {
+            return null;
+        }
+        record.sites.add(blueprint);
+        return project;
+    }
+
+    /**
+     * Finds a spot for a project near the village and records its blueprint (nothing is built yet: the builders do
+     * that). Returns null if no spot was found.
+     */
+    @Nullable
+    public static Blueprint plan(ServerLevel level, WorldMemory memory, WorldMemory.VillageRecord record, String project,
+                                 RandomSource random) {
         Builders.Palette palette = Builders.palette(level.getBiome(record.bell));
         for (int attempt = 0; attempt < 30; attempt++) {
             double angle = random.nextDouble() * Math.PI * 2.0D;
-            double distance = 10.0D + random.nextDouble() * 30.0D;
+            // the village spreads out as it grows
+            double distance = (project.equals("windmill") || project.equals("watchtower") ? 20.0D : 10.0D)
+                    + random.nextDouble() * 30.0D + record.houses * 1.5D + attempt * 0.5D;
             int x = record.bell.getX() + (int) (Math.cos(angle) * distance);
             int z = record.bell.getZ() + (int) (Math.sin(angle) * distance);
-            switch (project) {
-                case "house" -> {
-                    Direction front = Direction.fromYRot(Math.toDegrees(Math.atan2(record.bell.getZ() - z, record.bell.getX() - x)) - 90.0D);
-                    int sx = front.getAxis() == Direction.Axis.Z ? 7 : 5;
-                    int sz = front.getAxis() == Direction.Axis.Z ? 5 : 7;
-                    int y = Builders.site(level, memory, x, z, sx, sz, 2, 7);
-                    if (y == Builders.FAIL) {
-                        continue;
-                    }
-                    Block station = Builders.WORKSTATIONS[random.nextInt(Builders.WORKSTATIONS.length)];
-                    BlockPos door = Builders.house(level, new BlockPos(x, y, z), y, front, palette, station);
-                    Builders.path(level, memory, door, record.bell, 48);
-                    record.houses++;
-                    return project;
+            boolean[] ok = {false};
+            Blueprint blueprint = Builders.record(level, project, () -> ok[0] = draw(level, memory, record, project, palette, x, z, random));
+            if (ok[0] && blueprint.size() > 0) {
+                switch (project) {
+                    case "house" -> record.houses++;
+                    case "well" -> record.well = true;
+                    case "windmill" -> record.windmill = true;
+                    case "watchtower" -> record.watchtower = true;
+                    case "benches" -> record.benches = true;
+                    case "storehouse" -> record.storehouse = true;
+                    case "smithy" -> record.smithy = true;
+                    case "chapel" -> record.chapel = true;
+                    default -> { }
                 }
-                case "lamp" -> {
-                    if (Builders.lampPost(level, memory, x, z, palette)) {
-                        return project;
-                    }
-                }
-                case "well" -> {
-                    int y = Builders.site(level, memory, x, z, 3, 3, 1, 5);
-                    if (y != Builders.FAIL) {
-                        Builders.well(level, new BlockPos(x, y, z), y, palette);
-                        record.well = true;
-                        return project;
-                    }
-                }
-                case "stall" -> {
-                    int y = Builders.site(level, memory, x, z, 3, 2, 1, 4);
-                    if (y != Builders.FAIL) {
-                        Builders.stall(level, new BlockPos(x, y, z), y, palette, random);
-                        return project;
-                    }
-                }
-                default -> {
-                    int y = Builders.site(level, memory, x, z, 5, 5, 1, 3);
-                    if (y != Builders.FAIL) {
-                        Builders.field(level, new BlockPos(x, y, z), y, 5, random);
-                        return project;
-                    }
-                }
+                return blueprint;
             }
         }
         return null;
+    }
+
+    /** Draws one project at (x, z); returns false if the spot does not suit it. */
+    private static boolean draw(ServerLevel level, WorldMemory memory, WorldMemory.VillageRecord record, String project,
+                                Builders.Palette palette, int x, int z, RandomSource random) {
+        Direction towardsBell = Direction.fromYRot(Math.toDegrees(Math.atan2(record.bell.getZ() - z, record.bell.getX() - x)) - 90.0D);
+        switch (project) {
+            case "house" -> {
+                int sx = towardsBell.getAxis() == Direction.Axis.Z ? 7 : 5;
+                int sz = towardsBell.getAxis() == Direction.Axis.Z ? 5 : 7;
+                int y = Builders.site(level, memory, x, z, sx, sz, 2, 7);
+                if (y == Builders.FAIL) {
+                    return false;
+                }
+                Block station = Builders.WORKSTATIONS[random.nextInt(Builders.WORKSTATIONS.length)];
+                BlockPos door = Builders.house(level, new BlockPos(x, y, z), y, towardsBell, palette, station);
+                Builders.path(level, memory, door, record.bell, 48);
+                return true;
+            }
+            case "lamp" -> {
+                return Builders.lampPost(level, memory, x, z, palette);
+            }
+            case "well" -> {
+                int y = Builders.site(level, memory, x, z, 3, 3, 1, 5);
+                if (y == Builders.FAIL) {
+                    return false;
+                }
+                Builders.well(level, new BlockPos(x, y, z), y, palette);
+                return true;
+            }
+            case "stall" -> {
+                int y = Builders.site(level, memory, x, z, 3, 2, 1, 4);
+                if (y == Builders.FAIL) {
+                    return false;
+                }
+                Builders.stall(level, new BlockPos(x, y, z), y, palette, random);
+                return true;
+            }
+            case "windmill" -> {
+                int y = Builders.site(level, memory, x, z, 5, 5, 1, 12);
+                if (y == Builders.FAIL) {
+                    return false;
+                }
+                // the sails face away from the village, where the wind comes over the fields
+                Builders.windmill(level, new BlockPos(x, y, z), y, palette, towardsBell.getOpposite());
+                return true;
+            }
+            case "watchtower" -> {
+                int y = Builders.site(level, memory, x, z, 3, 3, 1, 11);
+                if (y == Builders.FAIL) {
+                    return false;
+                }
+                Builders.watchtower(level, new BlockPos(x, y, z), y, palette);
+                return true;
+            }
+            case "benches" -> {
+                return Builders.benches(level, memory, record.bell, palette);
+            }
+            case "storehouse", "smithy", "chapel" -> {
+                int w = 5;
+                int d = project.equals("storehouse") ? 5 : project.equals("smithy") ? 7 : 9;
+                int sx = towardsBell.getAxis() == Direction.Axis.Z ? w : d;
+                int sz = towardsBell.getAxis() == Direction.Axis.Z ? d : w;
+                int y = Builders.site(level, memory, x, z, sx, sz, 2, project.equals("chapel") ? 12 : 8);
+                if (y == Builders.FAIL) {
+                    return false;
+                }
+                BlockPos min = new BlockPos(x, y, z);
+                switch (project) {
+                    case "storehouse" -> Builders.storehouse(level, min, y, palette, towardsBell);
+                    case "smithy" -> Builders.smithy(level, min, y, palette, towardsBell);
+                    default -> Builders.chapel(level, min, y, palette, towardsBell);
+                }
+                BlockPos door = Builders.local(min, towardsBell, w, d, 2, 0, 0).relative(towardsBell);
+                Builders.path(level, memory, door, record.bell, 48);
+                return true;
+            }
+            case "flowers" -> {
+                return Builders.flowerBed(level, memory, x, z, random);
+            }
+            default -> {
+                int y = Builders.site(level, memory, x, z, 5, 5, 1, 3);
+                if (y == Builders.FAIL) {
+                    return false;
+                }
+                Builders.field(level, new BlockPos(x, y, z), y, 5, random);
+                return true;
+            }
+        }
     }
 
     /** Trading makes a village prosper, and it grows faster. */

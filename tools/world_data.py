@@ -75,8 +75,47 @@ def water_wheel_models():
         "firstperson_righthand": {"rotation": [0, 45, 0], "scale": [0.3, 0.3, 0.3]}}})
 
 
+def windmill_sails_models():
+    """The hub on the tower (block model, facing north) and the blades the block entity renderer turns around it.
+    The blades are drawn at half size (radius 1.5 blocks) and scaled up twice by the renderer."""
+    block_model("windmill_sails", {"parent": "minecraft:block/block", "textures": {"log": LOG, "wood": SPRUCE, "particle": SPRUCE},
+                                   "elements": [box([7, 7, 3], [9, 9, 16], "#log"), box([5.5, 5.5, 1], [10.5, 10.5, 3.5], "#wood")]})
+    blockstate("windmill_sails", {"variants": {
+        "facing=%s,wind=%d" % (f, w): ({"model": m("block/windmill_sails"), "y": r} if r else {"model": m("block/windmill_sails")})
+        for f, r in (("north", 0), ("east", 90), ("south", 180), ("west", 270)) for w in range(4)}})
+
+    def turned(frm, to, quarter):
+        """A box rotated a quarter turn at a time around the hub (8, 8) in the plane of the sails."""
+        (x1, y1, z1), (x2, y2, z2) = frm, to
+        for _ in range(quarter):
+            x1, y1, x2, y2 = 16 - y2, x1, 16 - y1, x2
+        return [x1, y1, z1], [x2, y2, z2]
+
+    arm = [(([7.25, 8, 1.25], [8.75, 32, 2.75]), "#spar")]
+    for bar in (12, 18.5, 25, 31):
+        arm.append((([8.75, bar, 1.5], [14, bar + 1, 2.5]), "#frame"))
+    arm.append((([13, 12, 1.5], [14, 32, 2.5]), "#frame"))
+    arm.append((([8.75, 12.5, 1.9], [13, 31.5, 2.1]), "#cloth"))
+    elements = [box([6, 6, 0.5], [10, 10, 3], "#spar")]
+    for quarter in range(4):
+        for (frm, to), texture in arm:
+            a, b = turned(frm, to, quarter)
+            elements.append(box(a, b, texture))
+    block_model("windmill_sails_blades", {"parent": "minecraft:block/block",
+                                          "textures": {"spar": LOG, "frame": SPRUCE, "cloth": "minecraft:block/white_wool",
+                                                       "particle": "minecraft:block/white_wool"},
+                                          "elements": elements})
+    item_model("windmill_sails", {"parent": m("block/windmill_sails_blades"), "display": {
+        "gui": {"rotation": [0, 0, 0], "scale": [0.4, 0.4, 0.4], "translation": [0, 0, 0]},
+        "ground": {"scale": [0.25, 0.25, 0.25]},
+        "fixed": {"rotation": [0, 180, 0], "scale": [0.45, 0.45, 0.45]},
+        "thirdperson_righthand": {"rotation": [75, 45, 0], "scale": [0.3, 0.3, 0.3], "translation": [0, 2.5, 0]},
+        "firstperson_righthand": {"rotation": [0, 45, 0], "scale": [0.3, 0.3, 0.3]}}})
+
+
 def generate_block_assets():
     water_wheel_models()
+    windmill_sails_models()
 
     # millstone: a stone base (block model) and the runner stone (turned by the block entity renderer)
     base = {"parent": "minecraft:block/block",
@@ -187,14 +226,14 @@ def generate_item_models():
         overrides.append({"predicate": {m("tide"): f / 8.0}, "model": m("item/tide_clock_%02d" % f)})
     item_model("tide_clock", {"parent": "minecraft:item/generated", "textures": {"layer0": m("item/tide_clock_04")},
                               "overrides": overrides})
-    for mob in ("pirate", "pirate_gunner", "pirate_captain", "traveler", "shade"):
+    for mob in ("pirate", "pirate_gunner", "pirate_captain", "traveler", "shade", "village_builder", "lumberjack", "quarryman"):
         item_model(mob + "_spawn_egg", {"parent": "minecraft:item/template_spawn_egg"})
 
 
 # ================================================================================================ loot
 
 def generate_loot():
-    for name in ("water_wheel", "millstone", "water_trough", "cannon", "dreamcatcher", "seashell"):
+    for name in ("water_wheel", "millstone", "water_trough", "cannon", "dreamcatcher", "seashell", "windmill_sails"):
         self_drop(name)
     loot("blocks/wet_sand", {"type": "minecraft:block", "pools": [pool([{
         "type": "minecraft:alternatives", "children": [item_entry(m("wet_sand"), conditions=[SILK]),
@@ -285,6 +324,8 @@ def milling(name, ingredient, result, count=1, time=100):
 
 
 def generate_recipes():
+    shaped("windmill_sails", ["WSW", "SPS", "WSW"], {"W": "#minecraft:wool", "S": "minecraft:stick", "P": "#minecraft:planks"},
+           m("windmill_sails"), 1, "redstone")
     shaped("water_wheel", ["PSP", "SLS", "PSP"], {"P": "#minecraft:planks", "S": "minecraft:stick", "L": "#minecraft:logs"},
            m("water_wheel"), 1, "redstone")
     shaped("millstone", ["TTT", "CIC", "CCC"], {"T": "minecraft:smooth_stone_slab", "C": "minecraft:cobblestone",
@@ -323,7 +364,7 @@ def generate_recipes():
 def generate_tags():
     mm = lambda names: [m(n) for n in names]
     tag("blocks", "minecraft", "mineable/pickaxe", mm(["millstone", "cannon"]))
-    tag("blocks", "minecraft", "mineable/axe", mm(["water_wheel", "water_trough"]))
+    tag("blocks", "minecraft", "mineable/axe", mm(["water_wheel", "water_trough", "windmill_sails"]))
     tag("blocks", "minecraft", "mineable/shovel", mm(["wet_sand"]))
     tag("blocks", "minecraft", "needs_stone_tool", mm(["cannon"]))
     tag("items", MOD, "villager_gifts", ["#minecraft:small_flowers", "minecraft:bread", "minecraft:cake", "minecraft:cookie",
@@ -417,6 +458,7 @@ def generate_misc_data():
 
 BLOCKS = {
     "water_wheel": ("Water Wheel", "Водяное колесо"),
+    "windmill_sails": ("Windmill Sails", "Крылья ветряной мельницы"),
     "millstone": ("Millstone", "Жернова"),
     "water_trough": ("Water Trough", "Жёлоб для воды"),
     "wet_sand": ("Wet Sand", "Мокрый песок"),
@@ -442,6 +484,9 @@ ITEMS = {
     "pirate_captain_spawn_egg": ("Pirate Captain Spawn Egg", "Яйцо призыва капитана пиратов"),
     "traveler_spawn_egg": ("Traveler Spawn Egg", "Яйцо призыва путника"),
     "shade_spawn_egg": ("Shade Spawn Egg", "Яйцо призыва Тени"),
+    "village_builder_spawn_egg": ("Builder Spawn Egg", "Яйцо призыва строителя"),
+    "lumberjack_spawn_egg": ("Lumberjack Spawn Egg", "Яйцо призыва лесоруба"),
+    "quarryman_spawn_egg": ("Quarryman Spawn Egg", "Яйцо призыва каменотёса"),
 }
 
 ENTITIES = {
@@ -451,6 +496,9 @@ ENTITIES = {
     "traveler": ("Traveler", "Путник"),
     "shade": ("Shade", "Тень"),
     "cannonball": ("Cannonball", "Пушечное ядро"),
+    "village_builder": ("Builder", "Строитель"),
+    "lumberjack": ("Lumberjack", "Лесоруб"),
+    "quarryman": ("Quarryman", "Каменотёс"),
 }
 
 ADVANCEMENTS = {
@@ -567,6 +615,47 @@ EXTRA = {
     "chronicle.dunesrelics.village.field": ("%s ploughed a new field.", "В деревне %s распахали новое поле."),
     "chronicle.dunesrelics.village.well": ("%s dug a well.", "В деревне %s выкопали колодец."),
     "chronicle.dunesrelics.village.stall": ("%s opened a market stall.", "В деревне %s открылась рыночная лавка."),
+    "chronicle.dunesrelics.village.windmill": ("%s built a windmill.", "В деревне %s построили ветряную мельницу."),
+    "chronicle.dunesrelics.village.watchtower": ("%s put up a watchtower.", "В деревне %s поставили сторожевую башню."),
+    "chronicle.dunesrelics.village.benches": ("%s put benches round the bell.", "В деревне %s поставили лавочки у колокола."),
+    "chronicle.dunesrelics.village.flowers": ("%s planted a flower bed.", "В деревне %s разбили клумбу."),
+    "chronicle.dunesrelics.village.repaired": ("%s rebuilt what had been destroyed.", "Деревня %s отстроила разрушенное."),
+    "project.dunesrelics.house": ("a house", "дом"),
+    "project.dunesrelics.lamp": ("a lamp post", "фонарь"),
+    "project.dunesrelics.well": ("a well", "колодец"),
+    "project.dunesrelics.stall": ("a market stall", "рыночный прилавок"),
+    "project.dunesrelics.field": ("a field", "поле"),
+    "project.dunesrelics.windmill": ("a windmill", "ветряная мельница"),
+    "project.dunesrelics.watchtower": ("a watchtower", "сторожевая башня"),
+    "project.dunesrelics.benches": ("benches", "лавочки"),
+    "project.dunesrelics.flowers": ("a flower bed", "клумба"),
+    "project.dunesrelics.hamlet": ("a hamlet", "хутор"),
+    "entity.dunesrelics.village_worker.idle": ("Looking for a village that needs a pair of hands.",
+                                                "Ищу деревню, где нужны рабочие руки."),
+    "entity.dunesrelics.village_worker.repairing": ("Putting back what was destroyed: %s blocks to go.",
+                                                     "Чиню разрушенное: осталось блоков — %s."),
+    "entity.dunesrelics.village_worker.building": ("Building %s for %s: %s blocks to go.",
+                                                    "Строю для деревни %2$s: %1$s, осталось блоков — %3$s."),
+    "entity.dunesrelics.village_worker.resting": ("%s has all it needs for now.", "Сейчас у деревни %s всё есть."),
+    "entity.dunesrelics.village_worker.waiting_wood": ("Waiting for the lumberjacks: we are out of wood.",
+                                                        "Жду лесорубов: кончилось дерево."),
+    "entity.dunesrelics.village_worker.waiting_stone": ("Waiting for the quarrymen: we are out of stone.",
+                                                         "Жду каменотёсов: кончился камень."),
+    "entity.dunesrelics.village_worker.lumber": ("The village has %s wood in store.", "На складе деревни дерева: %s."),
+    "entity.dunesrelics.village_worker.quarry": ("The village has %s stone in store.", "На складе деревни камня: %s."),
+    "chronicle.dunesrelics.worker_arrived.builder": ("The builder %s settled in %s.", "В деревню %2$s пришёл строитель %1$s."),
+    "chronicle.dunesrelics.worker_arrived.lumberjack": ("The lumberjack %s settled in %s.", "В деревню %2$s пришёл лесоруб %1$s."),
+    "chronicle.dunesrelics.worker_arrived.quarryman": ("The quarryman %s settled in %s.", "В деревню %2$s пришёл каменотёс %1$s."),
+    "chronicle.dunesrelics.village.quarry": ("The quarrymen of %s opened a quarry.", "Каменотёсы деревни %s открыли карьер."),
+    "chronicle.dunesrelics.village.storehouse": ("%s built a storehouse.", "В деревне %s построили склад."),
+    "chronicle.dunesrelics.village.smithy": ("%s built a smithy.", "В деревне %s построили кузницу."),
+    "chronicle.dunesrelics.village.chapel": ("%s built a chapel.", "В деревне %s построили часовню."),
+    "chronicle.dunesrelics.daughter": ("Settlers from %s founded the hamlet of %s.", "Переселенцы из деревни %s основали хутор %s."),
+    "chronicle.dunesrelics.road": ("A road now joins %s and %s.", "Деревни %s и %s соединила дорога."),
+    "project.dunesrelics.storehouse": ("a storehouse", "склад"),
+    "project.dunesrelics.smithy": ("a smithy", "кузница"),
+    "project.dunesrelics.chapel": ("a chapel", "часовня"),
+    "sign.dunesrelics.milestone.distance": ("%s m", "%s м"),
     "commands.dunesrelics.livingworld.status": (
         "Region: %s blocks placed, %s days here, stage %s; trail %s blocks, farm %s, hamlet %s",
         "Регион: поставлено блоков %s, дней здесь %s, стадия %s; тропа %s блоков, ферма %s, хутор %s"),

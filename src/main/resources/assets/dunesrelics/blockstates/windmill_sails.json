@@ -1,0 +1,64 @@
+{
+  "variants": {
+    "facing=north,wind=0": {
+      "model": "dunesrelics:block/windmill_sails"
+    },
+    "facing=north,wind=1": {
+      "model": "dunesrelics:block/windmill_sails"
+    },
+    "facing=north,wind=2": {
+      "model": "dunesrelics:block/windmill_sails"
+    },
+    "facing=north,wind=3": {
+      "model": "dunesrelics:block/windmill_sails"
+    },
+    "facing=east,wind=0": {
+      "model": "dunesrelics:block/windmill_sails",
+      "y": 90
+    },
+    "facing=east,wind=1": {
+      "model": "dunesrelics:block/windmill_sails",
+      "y": 90
+    },
+    "facing=east,wind=2": {
+      "model": "dunesrelics:block/windmill_sails",
+      "y": 90
+    },
+    "facing=east,wind=3": {
+      "model": "dunesrelics:block/windmill_sails",
+      "y": 90
+    },
+    "facing=south,wind=0": {
+      "model": "dunesrelics:block/windmill_sails",
+      "y": 180
+    },
+    "facing=south,wind=1": {
+      "model": "dunesrelics:block/windmill_sails",
+      "y": 180
+    },
+    "facing=south,wind=2": {
+      "model": "dunesrelics:block/windmill_sails",
+      "y": 180
+    },
+    "facing=south,wind=3": {
+      "model": "dunesrelics:block/windmill_sails",
+      "y": 180
+    },
+    "facing=west,wind=0": {
+      "model": "dunesrelics:block/windmill_sails",
+      "y": 270
+    },
+    "facing=west,wind=1": {
+      "model": "dunesrelics:block/windmill_sails",
+      "y": 270
+    },
+    "facing=west,wind=2": {
+      "model": "dunesrelics:block/windmill_sails",
+      "y": 270
+    },
+    "facing=west,wind=3": {
+      "model": "dunesrelics:block/windmill_sails",
+      "y": 270
+    }
+  }
+}
