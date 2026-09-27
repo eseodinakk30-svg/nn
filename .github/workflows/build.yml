@@ -35,26 +35,6 @@ jobs:
           echo "---- warnings / errors from the mod ----"
           grep -nE "dunesrelics" gametest.log | grep -E "WARN|ERROR|Exception|Failed|Couldn't|Missing" || true
 
-      - name: Showcase (runs the game and takes screenshots)
-        if: github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[showcase]')
-        continue-on-error: true
-        timeout-minutes: 25
-        run: |
-          sudo apt-get update -qq
-          sudo apt-get install -y -qq xvfb imagemagick xdotool libgl1-mesa-dri > /dev/null
-          ./ci/showcase.sh
-
-      - name: Commit screenshots
-        if: github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[showcase]')
-        continue-on-error: true
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add ci/screenshots
-          git commit -m "CI showcase screenshots for ${GITHUB_SHA::7} [skip ci]" || exit 0
-          git pull --rebase origin ${GITHUB_REF_NAME}
-          git push origin HEAD:${GITHUB_REF_NAME}
-
       - uses: actions/upload-artifact@v4
         with:
           name: dunesrelics
@@ -73,5 +53,25 @@ jobs:
           git add dist
           if git diff --cached --quiet; then echo "jar unchanged"; exit 0; fi
           git commit -m "Build jar for ${GITHUB_SHA::7} [skip ci]"
+          git pull --rebase origin ${GITHUB_REF_NAME}
+          git push origin HEAD:${GITHUB_REF_NAME}
+
+      - name: Showcase (runs the game and takes screenshots)
+        if: github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[showcase]')
+        continue-on-error: true
+        timeout-minutes: 25
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq xvfb imagemagick xdotool libgl1-mesa-dri > /dev/null
+          ./ci/showcase.sh
+
+      - name: Commit screenshots
+        if: github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[showcase]')
+        continue-on-error: true
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add ci/screenshots
+          git commit -m "CI showcase screenshots for ${GITHUB_SHA::7} [skip ci]" || exit 0
           git pull --rebase origin ${GITHUB_REF_NAME}
           git push origin HEAD:${GITHUB_REF_NAME}
