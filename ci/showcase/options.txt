@@ -1,0 +1,11 @@
+version:3465
+pauseOnLostFocus:false
+onboardAccessibility:false
+tutorialStep:none
+joinedFirstServer:true
+skipMultiplayerWarning:true
+renderDistance:6
+simulationDistance:6
+guiScale:2
+narrator:0
+soundCategory_master:0.0

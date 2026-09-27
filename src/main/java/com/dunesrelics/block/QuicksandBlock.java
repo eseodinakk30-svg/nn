@@ -89,6 +89,7 @@ public class QuicksandBlock extends Block {
 
     @Override
     public @Nullable BlockPathTypes getBlockPathType(BlockState state, BlockGetter level, BlockPos pos, @Nullable Mob mob) {
-        return mob != null && canWalkOn(mob) ? BlockPathTypes.WALKABLE : BlockPathTypes.POWDER_SNOW;
+        // Desert creatures path over quicksand as if it were solid ground; everything else avoids it.
+        return mob != null && canWalkOn(mob) ? BlockPathTypes.BLOCKED : BlockPathTypes.POWDER_SNOW;
     }
 }

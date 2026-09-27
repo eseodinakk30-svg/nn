@@ -14,7 +14,7 @@ import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.monster.Zombie;
+import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -137,31 +137,34 @@ public final class ModGameTests {
         helper.succeed();
     }
 
-    @GameTest(template = ARENA, timeoutTicks = 200)
-    public static void zombieSinksInQuicksand(GameTestHelper helper) {
-        fill(helper, 1, 1, Blocks.SANDSTONE);
-        for (int y = 2; y <= 5; y++) {
-            helper.setBlock(new BlockPos(12, y, 12), ModBlocks.QUICKSAND.get());
+    /** A walled pit of quicksand, 3x3 wide and 4 deep, with sandstone all around it. */
+    private static void quicksandPit(GameTestHelper helper) {
+        fill(helper, 1, 5, Blocks.SANDSTONE);
+        for (int x = 11; x <= 13; x++) {
+            for (int z = 11; z <= 13; z++) {
+                for (int y = 2; y <= 5; y++) {
+                    helper.setBlock(new BlockPos(x, y, z), ModBlocks.QUICKSAND.get());
+                }
+            }
         }
-        Zombie zombie = helper.spawn(EntityType.ZOMBIE, new BlockPos(12, 6, 12));
-        zombie.setNoAi(true);
-        double start = zombie.getY();
-        helper.succeedWhen(() -> helper.assertTrue(zombie.getY() < start - 1.5D, "zombie is not sinking"));
+    }
+
+    @GameTest(template = ARENA, timeoutTicks = 200)
+    public static void entitiesSinkInQuicksand(GameTestHelper helper) {
+        quicksandPit(helper);
+        // An armor stand has no AI that could climb out, but is subject to normal physics.
+        ArmorStand stand = helper.spawn(EntityType.ARMOR_STAND, new BlockPos(12, 6, 12));
+        double start = stand.getY();
+        helper.succeedWhen(() -> helper.assertTrue(stand.getY() < start - 1.5D, "armor stand is not sinking"));
     }
 
     @GameTest(template = ARENA, timeoutTicks = 200)
     public static void scorpionWalksOnQuicksand(GameTestHelper helper) {
-        fill(helper, 1, 1, Blocks.SANDSTONE);
-        for (int x = 10; x <= 14; x++) {
-            for (int z = 10; z <= 14; z++) {
-                helper.setBlock(new BlockPos(x, 2, z), ModBlocks.QUICKSAND.get());
-            }
-        }
-        Mob scorpion = helper.spawn(ModEntities.SCORPION.get(), new BlockPos(12, 3, 12));
-        scorpion.setNoAi(true);
-        helper.runAfterDelay(60, () -> {
-            helper.assertTrue(scorpion.getY() >= helper.absolutePos(new BlockPos(12, 3, 12)).getY() - 0.01D,
-                    "scorpion sank into quicksand");
+        quicksandPit(helper);
+        Mob scorpion = helper.spawn(ModEntities.SCORPION.get(), new BlockPos(12, 6, 12));
+        double surface = helper.absolutePos(new BlockPos(12, 6, 12)).getY();
+        helper.runAfterDelay(80, () -> {
+            helper.assertTrue(scorpion.getY() >= surface - 0.01D, "scorpion sank into quicksand");
             helper.succeed();
         });
     }

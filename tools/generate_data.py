@@ -630,16 +630,16 @@ def generate_recipes():
         cooking("bronze_nugget_from_bronze_" + gear, m("bronze_" + gear), m("bronze_nugget"), 0.1, ("smelting", "blasting"))
 
     # food & remedies
-    shapeless("honeyed_dates", [m("dates"), m("dates"), m("dates"), "minecraft:honey_bottle"], m("honeyed_dates"), 3, "food")
-    shapeless("flatbread", ["minecraft:wheat", "minecraft:wheat", m("dates")], m("flatbread"), 1, "food")
+    shapeless("honeyed_dates", [m("dates"), m("dates"), m("dates"), "minecraft:honey_bottle"], m("honeyed_dates"), 3)
+    shapeless("flatbread", ["minecraft:wheat", "minecraft:wheat", m("dates")], m("flatbread"), 1)
     shapeless("bandage", [m("linen"), m("linen"), m("aloe_leaf")], m("bandage"), 2)
 
     # misc
     shapeless("quicksand", ["minecraft:sand", "minecraft:sand", "minecraft:sand", "minecraft:sand",
                             "minecraft:water_bucket"], m("quicksand"), 4, B)
-    shaped("ancient_urn", ["T T", "T T", " T "], {"T": "minecraft:terracotta"}, m("ancient_urn"), 1, "decorations")
+    shaped("ancient_urn", ["T T", "T T", " T "], {"T": "minecraft:terracotta"}, m("ancient_urn"), 1, "building")
     shaped("sarcophagus", ["GPG", "PLP", "PPP"], {"G": "minecraft:gold_ingot", "P": m("polished_limestone"),
-                                                 "L": m("linen")}, m("sarcophagus"), 1, "decorations")
+                                                 "L": m("linen")}, m("sarcophagus"), 1, "building")
     shapeless("pink_dye_from_desert_rose", [m("desert_rose")], "minecraft:pink_dye", 1)
     shapeless("brown_dye_from_cattail", [m("cattail")], "minecraft:brown_dye", 1)
     shaped("pharaoh_armor_trim_smithing_template", ["DTD", "DLD", "DDD"],

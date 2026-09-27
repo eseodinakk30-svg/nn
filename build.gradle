@@ -38,6 +38,10 @@ minecraft {
 
         client {
             property 'forge.enabledGameTestNamespaces', mod_id
+            // CI showcase: ./gradlew runClient -PquickPlay=<world> opens that world straight away.
+            if (project.hasProperty('quickPlay')) {
+                args '--quickPlaySingleplayer', project.property('quickPlay'), '--width', '1280', '--height', '720'
+            }
         }
 
         server {
