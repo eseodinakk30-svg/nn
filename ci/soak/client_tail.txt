@@ -1,0 +1,60 @@
+[17:06:35] [Server thread/INFO] [minecraft/IntegratedServer]: Changing view distance to 8, from 10
+[17:06:35] [Server thread/INFO] [minecraft/IntegratedServer]: Changing simulation distance to 6, from 0
+[17:06:35] [Render thread/WARN] [io.ne.ut.in.SystemPropertyUtil/]: Unable to parse the boolean system property 'java.net.preferIPv6Addresses':system - using the default value: false
+[17:06:36] [Netty Local Client IO #0/INFO] [ne.mi.ne.NetworkHooks/]: Connected to a modded server.
+[17:06:36] [Server thread/INFO] [minecraft/PlayerList]: Dev[local:E:d65946f7] logged in with entity id 246 at (-36.5, 77.0, 1.5)
+[17:06:36] [Server thread/INFO] [minecraft/MinecraftServer]: Dev joined the game
+[17:06:38] [Server thread/WARN] [minecraft/MinecraftServer]: Can't keep up! Is the server overloaded? Running 2462ms or 49 ticks behind
+[17:06:38] [Render thread/INFO] [minecraft/AdvancementList]: Loaded 19 advancements
+[17:06:58] [Server thread/INFO] [minecraft/MinecraftServer]: [Not Secure] [Server] soak_shot 01_flank
+[17:06:58] [Render thread/INFO] [minecraft/ChatComponent]: [System] [CHAT] [Server] soak_shot 01_flank
+[17:07:08] [Server thread/INFO] [minecraft/MinecraftServer]: Dev has made the advancement [Hot Ground]
+[17:07:08] [Render thread/INFO] [minecraft/ChatComponent]: [System] [CHAT] Dev has made the advancement [Hot Ground]
+[17:07:08] [Render thread/INFO] [minecraft/AdvancementList]: Loaded 23 advancements
+[17:07:28] [Server thread/INFO] [minecraft/MinecraftServer]: [Not Secure] [Server] soak_shot 02_crater
+[17:07:28] [Render thread/INFO] [minecraft/ChatComponent]: [System] [CHAT] [Server] soak_shot 02_crater
+[17:07:58] [Server thread/INFO] [minecraft/MinecraftServer]: [Not Secure] [Server] soak_shot 03_chamber
+[17:07:58] [Render thread/INFO] [minecraft/ChatComponent]: [System] [CHAT] [Server] soak_shot 03_chamber
+[17:08:33] [Server thread/INFO] [minecraft/MinecraftServer]: [Not Secure] [Server] soak_shot 04_titan
+[17:08:33] [Render thread/INFO] [minecraft/ChatComponent]: [System] [CHAT] [Server] soak_shot 04_titan
+[17:08:38] [Render thread/INFO] [minecraft/AdvancementList]: Loaded 24 advancements
+[17:09:08] [Server thread/INFO] [minecraft/MinecraftServer]: [Not Secure] [Server] soak_shot 05_eruption
+[17:09:08] [Render thread/INFO] [minecraft/ChatComponent]: [System] [CHAT] [Server] soak_shot 05_eruption
+[17:09:18] [Server thread/INFO] [minecraft/MinecraftServer]: [Not Secure] [Server] soak_done
+[17:09:18] [Render thread/INFO] [minecraft/ChatComponent]: [System] [CHAT] [Server] soak_done
+[17:09:20] [Server thread/INFO] [minecraft/MinecraftServer]: Stopping server
+[17:09:20] [Server thread/INFO] [minecraft/MinecraftServer]: Saving players
+[17:09:20] [Server thread/INFO] [minecraft/ServerGamePacketListenerImpl]: Dev lost connection: Disconnected
+[17:09:20] [Server thread/INFO] [minecraft/MinecraftServer]: Dev left the game
+[17:09:20] [Server thread/INFO] [minecraft/ServerGamePacketListenerImpl]: Stopping singleplayer server as player logged out
+[17:09:20] [Server thread/INFO] [minecraft/MinecraftServer]: Saving worlds
+[17:09:22] [Server thread/INFO] [minecraft/MinecraftServer]: Saving chunks for level 'ServerLevel[world]'/minecraft:overworld
+[17:09:23] [Server thread/INFO] [minecraft/MinecraftServer]: Saving chunks for level 'ServerLevel[world]'/minecraft:the_nether
+[17:09:23] [Server thread/INFO] [minecraft/MinecraftServer]: Saving chunks for level 'ServerLevel[world]'/minecraft:the_end
+[17:09:23] [Server thread/INFO] [minecraft/MinecraftServer]: ThreadedAnvilChunkStorage (soak): All chunks are saved
+[17:09:23] [Server thread/INFO] [minecraft/MinecraftServer]: ThreadedAnvilChunkStorage (DIM-1): All chunks are saved
+[17:09:23] [Server thread/INFO] [minecraft/MinecraftServer]: ThreadedAnvilChunkStorage (DIM1): All chunks are saved
+[17:09:23] [Server thread/INFO] [minecraft/MinecraftServer]: ThreadedAnvilChunkStorage: All dimensions are saved
+
+> Task :runClient FAILED
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':runClient'.
+> Process 'command '/usr/lib/jvm/temurin-17-jdk-amd64/bin/java'' finished with non-zero exit value 143
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights.
+> Get more help at https://help.gradle.org.
+
+Deprecated Gradle features were used in this build, making it incompatible with Gradle 9.0.
+
+You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+
+For more on this, please refer to https://docs.gradle.org/8.8/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+
+BUILD FAILED in 3m 30s
+10 actionable tasks: 3 executed, 7 up-to-date
