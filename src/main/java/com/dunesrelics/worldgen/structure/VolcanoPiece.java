@@ -79,6 +79,11 @@ public class VolcanoPiece extends StructurePiece {
         this.tunnel = Direction.from2DDataValue(Math.floorMod(this.seed >> 12, 4));
     }
 
+    /** The middle of the crater's lava lake, where eruptions burst out. */
+    public BlockPos craterTop() {
+        return new BlockPos(this.cx, this.lavaY + 1, this.cz);
+    }
+
     private static int radius(int seed) {
         return 34 + Math.floorMod(seed, 12);
     }

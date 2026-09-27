@@ -17,6 +17,17 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import com.dunesrelics.registry.ModStructures;
+import com.dunesrelics.worldgen.structure.VolcanoPiece;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.levelgen.structure.StructurePiece;
+import net.minecraft.world.level.levelgen.structure.StructureStart;
+
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Weather of the volcanic biomes (tagged {@code dunesrelics:has_ashfall}), which never see rain:
@@ -44,6 +55,7 @@ public final class VolcanicWeather {
             return;
         }
         RandomSource random = level.random;
+        erupt(level, random);
         for (ServerPlayer player : level.players()) {
             BlockPos pos = player.blockPosition();
             if (level.getGameTime() % 40 == 0 && player.isInWater() && isAshfallBiome(level, pos)
@@ -53,11 +65,60 @@ public final class VolcanicWeather {
             if (!level.isRaining() || player.isSpectator() || !isAshfallBiome(level, pos)) {
                 continue;
             }
-            if (level.isThundering() && random.nextFloat() < 0.5F) {
+            if (level.isThundering() && random.nextFloat() < 0.35F) {
                 launchBomb(level, player, random);
             }
             if (random.nextFloat() < 0.35F) {
                 settleAsh(level, pos, random);
+            }
+        }
+    }
+
+    /**
+     * Volcanoes near players smoke all the time; while it rains they smoke harder, and in a thunderstorm they erupt:
+     * lava fountains out of the crater and bombs fly from it onto the flanks.
+     */
+    private static void erupt(ServerLevel level, RandomSource random) {
+        Set<Long> done = new HashSet<>();
+        for (ServerPlayer player : level.players()) {
+            for (StructureStart start : level.structureManager().startsForStructure(new ChunkPos(player.blockPosition()),
+                    structure -> structure.type() == ModStructures.VOLCANO.get())) {
+                if (start.getPieces().isEmpty() || !(start.getPieces().get(0) instanceof VolcanoPiece piece)) {
+                    continue;
+                }
+                BlockPos crater = piece.craterTop();
+                if (!done.add(crater.asLong()) || !level.isLoaded(crater)) {
+                    continue;
+                }
+                boolean erupting = level.isThundering();
+                boolean raining = level.isRaining();
+                for (ServerPlayer viewer : level.players()) {
+                    if (viewer.blockPosition().distSqr(crater) > 256 * 256) {
+                        continue;
+                    }
+                    level.sendParticles(viewer, ParticleTypes.CAMPFIRE_SIGNAL_SMOKE, true, crater.getX() + 0.5D, crater.getY() + 1.0D,
+                            crater.getZ() + 0.5D, erupting ? 6 : raining ? 3 : 1, 1.5D, 0.5D, 1.5D, 0.02D);
+                    if (erupting) {
+                        level.sendParticles(viewer, ParticleTypes.LAVA, true, crater.getX() + 0.5D, crater.getY() + 1.0D,
+                                crater.getZ() + 0.5D, 30, 2.0D, 1.0D, 2.0D, 0.5D);
+                        level.sendParticles(viewer, ParticleTypes.FLAME, true, crater.getX() + 0.5D, crater.getY() + 2.0D,
+                                crater.getZ() + 0.5D, 20, 1.5D, 3.0D, 1.5D, 0.15D);
+                        level.sendParticles(viewer, ParticleTypes.LARGE_SMOKE, true, crater.getX() + 0.5D, crater.getY() + 4.0D,
+                                crater.getZ() + 0.5D, 25, 2.5D, 4.0D, 2.5D, 0.08D);
+                    }
+                }
+                if (!erupting) {
+                    continue;
+                }
+                level.playSound(null, crater, SoundEvents.GENERIC_EXPLODE, SoundSource.WEATHER, 6.0F, 0.35F + random.nextFloat() * 0.15F);
+                int bombs = 1 + random.nextInt(3);
+                for (int i = 0; i < bombs; i++) {
+                    VolcanicBomb bomb = new VolcanicBomb(level, crater.getX() + 0.5D, crater.getY() + 2.0D, crater.getZ() + 0.5D);
+                    double angle = random.nextDouble() * Math.PI * 2.0D;
+                    double speed = 0.35D + random.nextDouble() * 0.6D;
+                    bomb.setDeltaMovement(Math.cos(angle) * speed, 1.1D + random.nextDouble() * 0.6D, Math.sin(angle) * speed);
+                    level.addFreshEntity(bomb);
+                }
             }
         }
     }

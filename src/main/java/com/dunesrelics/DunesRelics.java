@@ -1,5 +1,6 @@
 package com.dunesrelics;
 
+import com.dunesrelics.registry.ModBlockEntities;
 import com.dunesrelics.registry.ModBlocks;
 import com.dunesrelics.registry.ModBrewing;
 import com.dunesrelics.registry.ModCreativeTabs;
@@ -7,10 +8,15 @@ import com.dunesrelics.registry.ModEntities;
 import com.dunesrelics.registry.ModFeatures;
 import com.dunesrelics.registry.ModItems;
 import com.dunesrelics.registry.ModLootModifiers;
+import com.dunesrelics.registry.ModGameRules;
 import com.dunesrelics.registry.ModParticles;
+import com.dunesrelics.registry.ModPoiTypes;
+import com.dunesrelics.registry.ModRecipes;
 import com.dunesrelics.registry.ModStructures;
 import com.dunesrelics.registry.VolcanicBlocks;
 import com.dunesrelics.registry.VolcanicItems;
+import com.dunesrelics.registry.WorldBlocks;
+import com.dunesrelics.registry.WorldItems;
 import com.dunesrelics.worldgen.ModRegion;
 import com.dunesrelics.worldgen.ModSurfaceRules;
 import com.dunesrelics.worldgen.VolcanicRegion;
@@ -34,6 +40,9 @@ public class DunesRelics {
 
         VolcanicBlocks.init();
         VolcanicItems.init();
+        WorldBlocks.init();
+        WorldItems.init();
+        ModGameRules.init();
         ModBlocks.BLOCKS.register(modBus);
         ModItems.ITEMS.register(modBus);
         ModEntities.ENTITIES.register(modBus);
@@ -43,6 +52,10 @@ public class DunesRelics {
         ModParticles.PARTICLES.register(modBus);
         ModLootModifiers.LOOT_MODIFIERS.register(modBus);
         ModCreativeTabs.TABS.register(modBus);
+        ModBlockEntities.BLOCK_ENTITIES.register(modBus);
+        ModRecipes.TYPES.register(modBus);
+        ModRecipes.SERIALIZERS.register(modBus);
+        ModPoiTypes.POI_TYPES.register(modBus);
 
         modBus.addListener(this::commonSetup);
     }

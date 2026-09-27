@@ -13,6 +13,12 @@ import com.dunesrelics.entity.volcanic.MagmaTitan;
 import com.dunesrelics.entity.volcanic.Magmaling;
 import com.dunesrelics.entity.volcanic.Salamander;
 import com.dunesrelics.entity.volcanic.VolcanicBomb;
+import com.dunesrelics.entity.world.Cannonball;
+import com.dunesrelics.entity.world.Pirate;
+import com.dunesrelics.entity.world.PirateCaptain;
+import com.dunesrelics.entity.world.PirateGunner;
+import com.dunesrelics.entity.world.Shade;
+import com.dunesrelics.entity.world.Traveler;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraftforge.registries.DeferredRegister;
@@ -60,6 +66,26 @@ public final class ModEntities {
     public static final RegistryObject<EntityType<VolcanicBomb>> VOLCANIC_BOMB = ENTITIES.register("volcanic_bomb",
             () -> EntityType.Builder.<VolcanicBomb>of(VolcanicBomb::new, MobCategory.MISC).sized(0.5F, 0.5F).clientTrackingRange(8)
                     .updateInterval(10).build(DunesRelics.id("volcanic_bomb").toString()));
+
+    // ---------------------------------------------------------------- Living World
+    public static final RegistryObject<EntityType<Pirate>> PIRATE = ENTITIES.register("pirate",
+            () -> EntityType.Builder.of(Pirate::new, MobCategory.MONSTER).sized(0.6F, 1.95F).clientTrackingRange(8)
+                    .build(DunesRelics.id("pirate").toString()));
+    public static final RegistryObject<EntityType<PirateGunner>> PIRATE_GUNNER = ENTITIES.register("pirate_gunner",
+            () -> EntityType.Builder.of(PirateGunner::new, MobCategory.MONSTER).sized(0.6F, 1.95F).clientTrackingRange(8)
+                    .build(DunesRelics.id("pirate_gunner").toString()));
+    public static final RegistryObject<EntityType<PirateCaptain>> PIRATE_CAPTAIN = ENTITIES.register("pirate_captain",
+            () -> EntityType.Builder.of(PirateCaptain::new, MobCategory.MONSTER).sized(0.7F, 2.2F).clientTrackingRange(10)
+                    .build(DunesRelics.id("pirate_captain").toString()));
+    public static final RegistryObject<EntityType<Traveler>> TRAVELER = ENTITIES.register("traveler",
+            () -> EntityType.Builder.of(Traveler::new, MobCategory.CREATURE).sized(0.6F, 1.95F).clientTrackingRange(10)
+                    .build(DunesRelics.id("traveler").toString()));
+    public static final RegistryObject<EntityType<Shade>> SHADE = ENTITIES.register("shade",
+            () -> EntityType.Builder.of(Shade::new, MobCategory.MONSTER).sized(0.6F, 2.6F).clientTrackingRange(10)
+                    .build(DunesRelics.id("shade").toString()));
+    public static final RegistryObject<EntityType<Cannonball>> CANNONBALL = ENTITIES.register("cannonball",
+            () -> EntityType.Builder.<Cannonball>of(Cannonball::new, MobCategory.MISC).sized(0.4F, 0.4F).clientTrackingRange(8)
+                    .updateInterval(10).build(DunesRelics.id("cannonball").toString()));
 
     private ModEntities() {}
 }

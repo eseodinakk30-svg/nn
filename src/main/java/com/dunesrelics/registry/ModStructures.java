@@ -1,6 +1,8 @@
 package com.dunesrelics.registry;
 
 import com.dunesrelics.DunesRelics;
+import com.dunesrelics.worldgen.structure.PirateShipPiece;
+import com.dunesrelics.worldgen.structure.PirateShipStructure;
 import com.dunesrelics.worldgen.structure.VolcanoPiece;
 import com.dunesrelics.worldgen.structure.VolcanoStructure;
 import net.minecraft.core.registries.Registries;
@@ -17,6 +19,11 @@ public final class ModStructures {
             () -> () -> VolcanoStructure.CODEC);
     public static final RegistryObject<StructurePieceType> VOLCANO_PIECE = STRUCTURE_PIECES.register("volcano",
             () -> (StructurePieceType.ContextlessType) VolcanoPiece::new);
+
+    public static final RegistryObject<StructureType<PirateShipStructure>> PIRATE_SHIP = STRUCTURE_TYPES.register("pirate_ship",
+            () -> () -> PirateShipStructure.CODEC);
+    public static final RegistryObject<StructurePieceType> PIRATE_SHIP_PIECE = STRUCTURE_PIECES.register("pirate_ship",
+            () -> (StructurePieceType.ContextlessType) PirateShipPiece::new);
 
     private ModStructures() {}
 }

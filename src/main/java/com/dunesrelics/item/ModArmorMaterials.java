@@ -20,7 +20,10 @@ public enum ModArmorMaterials implements ArmorMaterial {
             () -> Ingredient.of(com.dunesrelics.registry.VolcanicItems.FIRE_OPAL.get())),
     /** Salamander boots let you walk over lava. */
     SALAMANDER("salamander", 20, new int[]{2, 2, 2, 2}, 15, SoundEvents.ARMOR_EQUIP_LEATHER, 0.0F, 0.0F,
-            () -> Ingredient.of(com.dunesrelics.registry.VolcanicItems.SALAMANDER_SCALE.get()));
+            () -> Ingredient.of(com.dunesrelics.registry.VolcanicItems.SALAMANDER_SCALE.get())),
+    /** The pirate captain's tricorn: little protection, but it brings luck. */
+    PIRATE("pirate", 12, new int[]{1, 2, 3, 2}, 25, SoundEvents.ARMOR_EQUIP_LEATHER, 0.0F, 0.0F,
+            () -> Ingredient.of(net.minecraft.world.item.Items.LEATHER));
 
     /** Durability per slot, indexed boots, leggings, chestplate, helmet (same as vanilla). */
     private static final int[] HEALTH_PER_SLOT = new int[]{13, 15, 16, 11};

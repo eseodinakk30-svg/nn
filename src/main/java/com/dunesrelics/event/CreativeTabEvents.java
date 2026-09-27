@@ -5,6 +5,8 @@ import com.dunesrelics.registry.ModBlocks;
 import com.dunesrelics.registry.ModItems;
 import com.dunesrelics.registry.VolcanicBlocks;
 import com.dunesrelics.registry.VolcanicItems;
+import com.dunesrelics.registry.WorldBlocks;
+import com.dunesrelics.registry.WorldItems;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.CreativeModeTabs;
@@ -56,38 +58,46 @@ public final class CreativeTabEvents {
                     VolcanicBlocks.FIRE_OPAL_ORE, VolcanicBlocks.DEEPSLATE_FIRE_OPAL_ORE, VolcanicBlocks.SULFUR_ORE,
                     VolcanicBlocks.SULFUR_CLUSTER, VolcanicBlocks.EMBER_LOG, VolcanicBlocks.EMBER_LEAVES,
                     VolcanicBlocks.EMBER_SAPLING, VolcanicBlocks.ASH_GRASS, VolcanicBlocks.FIREBLOSSOM,
-                    VolcanicBlocks.LAVA_LILY, VolcanicBlocks.STEAM_VENT);
+                    VolcanicBlocks.LAVA_LILY, VolcanicBlocks.STEAM_VENT, WorldBlocks.WET_SAND, WorldBlocks.SEASHELL,
+                    WorldBlocks.CLAM);
         } else if (tab == CreativeModeTabs.FUNCTIONAL_BLOCKS) {
             accept(event, ModBlocks.AMBER_LAMP, ModBlocks.ANCIENT_URN, ModBlocks.SARCOPHAGUS, VolcanicBlocks.VOLCANIC_FORGE,
                     VolcanicBlocks.PUMICE_SPONGE, VolcanicBlocks.MOLTEN_PUMICE_SPONGE, VolcanicBlocks.HEART_OF_THE_VOLCANO,
-                    VolcanicBlocks.VOLCANIC_GLASS, VolcanicBlocks.VOLCANIC_GLASS_PANE);
+                    VolcanicBlocks.VOLCANIC_GLASS, VolcanicBlocks.VOLCANIC_GLASS_PANE, WorldBlocks.WATER_WHEEL,
+                    WorldBlocks.MILLSTONE, WorldBlocks.WATER_TROUGH, WorldBlocks.CANNON, WorldBlocks.DREAMCATCHER);
         } else if (tab == CreativeModeTabs.REDSTONE_BLOCKS) {
             accept(event, ModBlocks.PALM_DOOR, ModBlocks.PALM_TRAPDOOR, ModBlocks.PALM_FENCE_GATE,
-                    ModBlocks.PALM_BUTTON, ModBlocks.PALM_PRESSURE_PLATE, ModBlocks.AMBER_LAMP);
+                    ModBlocks.PALM_BUTTON, ModBlocks.PALM_PRESSURE_PLATE, ModBlocks.AMBER_LAMP, WorldBlocks.WATER_WHEEL,
+                    WorldBlocks.CANNON);
         } else if (tab == CreativeModeTabs.TOOLS_AND_UTILITIES) {
             accept(event, ModItems.BRONZE_SHOVEL, ModItems.BRONZE_PICKAXE, ModItems.BRONZE_AXE, ModItems.BRONZE_HOE,
                     ModItems.SCEPTER_OF_SANDS, VolcanicItems.FIRE_OPAL_SHOVEL, VolcanicItems.FIRE_OPAL_PICKAXE,
-                    VolcanicItems.FIRE_OPAL_AXE, VolcanicItems.FIRE_OPAL_HOE, VolcanicItems.VOLCANIC_ASH, VolcanicItems.LAVA_CRAB_BUCKET);
+                    VolcanicItems.FIRE_OPAL_AXE, VolcanicItems.FIRE_OPAL_HOE, VolcanicItems.VOLCANIC_ASH, VolcanicItems.LAVA_CRAB_BUCKET,
+                    WorldItems.TIDE_CLOCK, WorldItems.WORLD_CHRONICLE, WorldItems.MESSAGE_IN_A_BOTTLE);
         } else if (tab == CreativeModeTabs.COMBAT) {
             accept(event, ModItems.BRONZE_KHOPESH, ModItems.BRONZE_AXE, ModItems.BRONZE_HELMET,
                     ModItems.BRONZE_CHESTPLATE, ModItems.BRONZE_LEGGINGS, ModItems.BRONZE_BOOTS,
                     ModItems.AMBER_GOGGLES, VolcanicItems.FIRE_OPAL_SWORD, VolcanicItems.MAGMA_HAMMER,
                     VolcanicItems.FIRE_OPAL_HELMET, VolcanicItems.FIRE_OPAL_CHESTPLATE, VolcanicItems.FIRE_OPAL_LEGGINGS,
-                    VolcanicItems.FIRE_OPAL_BOOTS, VolcanicItems.SALAMANDER_BOOTS);
+                    VolcanicItems.FIRE_OPAL_BOOTS, VolcanicItems.SALAMANDER_BOOTS, WorldItems.CUTLASS, WorldItems.CAPTAIN_HAT,
+                    WorldItems.CANNONBALL);
         } else if (tab == CreativeModeTabs.FOOD_AND_DRINKS) {
             accept(event, ModItems.DATES, ModItems.HONEYED_DATES, ModItems.FLATBREAD, ModItems.ALOE_LEAF,
                     ModItems.BANDAGE, VolcanicItems.FIRE_PEPPER, VolcanicItems.CRAB_MEAT, VolcanicItems.COOKED_CRAB_MEAT,
-                    VolcanicItems.SPICY_STEW);
+                    VolcanicItems.SPICY_STEW, WorldItems.DOUGH);
         } else if (tab == CreativeModeTabs.INGREDIENTS) {
             accept(event, ModItems.AMBER, ModItems.BRONZE_NUGGET, ModItems.BRONZE_INGOT, ModItems.LINEN,
                     ModItems.SCORPION_STINGER, ModItems.SCORPION_VENOM, ModItems.VULTURE_FEATHER,
                     ModItems.PHARAOH_ARMOR_TRIM_SMITHING_TEMPLATE, VolcanicItems.FIRE_OPAL, VolcanicItems.SULFUR,
-                    VolcanicItems.SALAMANDER_SCALE, VolcanicItems.EMBER_CORE, VolcanicItems.TITAN_ARMOR_TRIM_SMITHING_TEMPLATE);
+                    VolcanicItems.SALAMANDER_SCALE, VolcanicItems.EMBER_CORE, VolcanicItems.TITAN_ARMOR_TRIM_SMITHING_TEMPLATE,
+                    WorldItems.FLOUR, WorldItems.PEARL, WorldItems.GLOOM_DUST, WorldItems.CANNONBALL);
         } else if (tab == CreativeModeTabs.SPAWN_EGGS) {
             accept(event, ModItems.MEERKAT_SPAWN_EGG, ModItems.MUMMY_SPAWN_EGG, ModItems.PHARAOH_SPAWN_EGG,
                     ModItems.SCARAB_SPAWN_EGG, ModItems.SCORPION_SPAWN_EGG, ModItems.VULTURE_SPAWN_EGG,
                     VolcanicItems.CINDER_WRAITH_SPAWN_EGG, VolcanicItems.LAVA_CRAB_SPAWN_EGG, VolcanicItems.MAGMA_TITAN_SPAWN_EGG,
-                    VolcanicItems.MAGMALING_SPAWN_EGG, VolcanicItems.SALAMANDER_SPAWN_EGG);
+                    VolcanicItems.MAGMALING_SPAWN_EGG, VolcanicItems.SALAMANDER_SPAWN_EGG, WorldItems.PIRATE_SPAWN_EGG,
+                    WorldItems.PIRATE_GUNNER_SPAWN_EGG, WorldItems.PIRATE_CAPTAIN_SPAWN_EGG, WorldItems.TRAVELER_SPAWN_EGG,
+                    WorldItems.SHADE_SPAWN_EGG);
         }
     }
 

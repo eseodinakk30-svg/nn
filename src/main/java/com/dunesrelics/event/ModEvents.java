@@ -12,6 +12,11 @@ import com.dunesrelics.entity.volcanic.LavaCrab;
 import com.dunesrelics.entity.volcanic.MagmaTitan;
 import com.dunesrelics.entity.volcanic.Magmaling;
 import com.dunesrelics.entity.volcanic.Salamander;
+import com.dunesrelics.entity.world.Pirate;
+import com.dunesrelics.entity.world.PirateCaptain;
+import com.dunesrelics.entity.world.PirateGunner;
+import com.dunesrelics.entity.world.Shade;
+import net.minecraft.world.entity.npc.WanderingTrader;
 import com.dunesrelics.registry.ModEntities;
 import net.minecraft.world.entity.SpawnPlacements;
 import net.minecraft.world.entity.monster.Monster;
@@ -38,6 +43,11 @@ public final class ModEvents {
         event.put(ModEntities.LAVA_CRAB.get(), LavaCrab.createAttributes().build());
         event.put(ModEntities.MAGMALING.get(), Magmaling.createAttributes().build());
         event.put(ModEntities.CINDER_WRAITH.get(), CinderWraith.createAttributes().build());
+        event.put(ModEntities.PIRATE.get(), Pirate.createAttributes().build());
+        event.put(ModEntities.PIRATE_GUNNER.get(), PirateGunner.createAttributes().build());
+        event.put(ModEntities.PIRATE_CAPTAIN.get(), PirateCaptain.createAttributes().build());
+        event.put(ModEntities.TRAVELER.get(), WanderingTrader.createMobAttributes().build());
+        event.put(ModEntities.SHADE.get(), Shade.createAttributes().build());
     }
 
     @SubscribeEvent
@@ -59,6 +69,12 @@ public final class ModEvents {
         event.register(ModEntities.MAGMALING.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
                 Monster::checkMonsterSpawnRules, SpawnPlacementRegisterEvent.Operation.REPLACE);
         event.register(ModEntities.CINDER_WRAITH.get(), SpawnPlacements.Type.NO_RESTRICTIONS, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                Monster::checkMonsterSpawnRules, SpawnPlacementRegisterEvent.Operation.REPLACE);
+        event.register(ModEntities.SHADE.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                Shade::checkShadeSpawnRules, SpawnPlacementRegisterEvent.Operation.REPLACE);
+        event.register(ModEntities.PIRATE.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                Monster::checkMonsterSpawnRules, SpawnPlacementRegisterEvent.Operation.REPLACE);
+        event.register(ModEntities.PIRATE_GUNNER.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
                 Monster::checkMonsterSpawnRules, SpawnPlacementRegisterEvent.Operation.REPLACE);
     }
 }
