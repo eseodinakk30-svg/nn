@@ -1553,15 +1553,17 @@ def mummy(pharaoh=False):
     rng = random.Random(401 if not pharaoh else 402)
 
     def wraps(face, i, j, w, h, offset=0):
-        """Linen bandages wound around the body, with dark gaps between some wraps."""
-        k = (j + offset + (i // 3 if face in ("front", "back") else i // 2)) % 4
+        """Linen bandages wound around the body in slanted strips, with thin seams and the odd dark gap."""
         if face in ("top", "bottom"):
-            return LINEN.c(2 + rng.choice([0, 1])) if (i + j) % 3 else LINEN.c(1)
+            return LINEN.c(2 + ((i + j + offset) % 3 == 0))
+        slant = i // 3 if face in ("front", "back") else (i + 1) // 3
+        k = (j + offset + slant) % 3
         if k == 0:
-            return LINEN.c(1) if rng.random() < 0.85 else hex_rgb("#3a2c20")
+            # seam between two strips; now and then the wrapping has slipped, showing the dark body
+            return hex_rgb("#4a3a2a") if rng.random() < 0.12 else LINEN.c(1)
         if k == 1:
-            return LINEN.c(4)
-        return LINEN.c(3 if rng.random() < 0.7 else 2)
+            return LINEN.c(4) if rng.random() < 0.8 else LINEN.c(3)
+        return LINEN.c(3) if rng.random() < 0.75 else LINEN.c(2)
 
     def head(face, i, j, w, h):
         if pharaoh and face == "front":
