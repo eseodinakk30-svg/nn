@@ -388,7 +388,7 @@ public class VillageWorker extends AbstractVillager {
 
         @Override
         public boolean canUse() {
-            if (this.worker.isTrading() || this.worker.tickCount % 20 != 0 || !isWorkTime(this.worker.level())
+            if (this.worker.isTrading() || this.worker.getRandom().nextInt(10) != 0 || !isWorkTime(this.worker.level())
                     || !(this.worker.level() instanceof ServerLevel level)) {
                 return false;
             }
@@ -472,7 +472,7 @@ public class VillageWorker extends AbstractVillager {
 
         @Override
         public boolean canUse() {
-            if (this.worker.isTrading() || this.worker.tickCount % 40 != 0 || !isWorkTime(this.worker.level())
+            if (this.worker.isTrading() || this.worker.getRandom().nextInt(20) != 0 || !isWorkTime(this.worker.level())
                     || !(this.worker.level() instanceof ServerLevel level)) {
                 return false;
             }
@@ -550,7 +550,7 @@ public class VillageWorker extends AbstractVillager {
 
         @Override
         public boolean canUse() {
-            if (this.worker.isTrading() || this.worker.tickCount % 40 != 0 || !isWorkTime(this.worker.level())
+            if (this.worker.isTrading() || this.worker.getRandom().nextInt(20) != 0 || !isWorkTime(this.worker.level())
                     || !(this.worker.level() instanceof ServerLevel level)) {
                 return false;
             }
@@ -659,7 +659,7 @@ public class VillageWorker extends AbstractVillager {
         @Override
         public boolean canUse() {
             BlockPos bell = this.worker.homeBell;
-            if (bell == null || this.worker.tickCount % 40 != 0) {
+            if (bell == null || this.worker.getRandom().nextInt(20) != 0) {
                 return false;
             }
             double range = isWorkTime(this.worker.level()) ? 60.0D : 6.0D;

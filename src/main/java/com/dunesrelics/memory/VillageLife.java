@@ -155,6 +155,10 @@ public final class VillageLife {
         villager.getLookControl().setLookAt(player);
         if (lastSeen >= 0 && day - lastSeen >= 3 && reputation >= 0) {
             say(villager, player, "villager.dunesrelics.missed", player.getDisplayName());
+        } else if (reputation >= 0 && Requests.maybeAsk(level, WorldMemory.get(level), villager, player, level.random)) {
+            // asked a favour instead of passing the time of day
+        } else if (reputation >= 0 && level.random.nextInt(4) == 0 && tellNews(level, villager, player, day)) {
+            // told the latest news
         } else {
             say(villager, player, "villager.dunesrelics.greet." + tier + "." + traitKey(villager), player.getDisplayName());
         }
@@ -164,6 +168,17 @@ public final class VillageLife {
         } else if (reputation < -20) {
             level.broadcastEntityEvent(villager, (byte) 13);
         }
+    }
+
+    /** "Have you heard? Pirates landed near Pine Shore!" (something from the chronicle of the last three days). */
+    private static boolean tellNews(ServerLevel level, Villager villager, ServerPlayer player, long day) {
+        List<Chronicle.Entry> recent = WorldMemory.get(level).chronicle().stream().filter(e -> e.day() >= day - 3).toList();
+        if (recent.isEmpty()) {
+            return false;
+        }
+        Chronicle.Entry entry = recent.get(level.random.nextInt(recent.size()));
+        say(villager, player, "villager.dunesrelics.news", entry.text());
+        return true;
     }
 
     private static void maybeGiveGift(ServerLevel level, Villager villager, ServerPlayer player, long day, int reputation) {
@@ -684,6 +699,38 @@ public final class VillageLife {
                 return true;
             }
         }
+    }
+
+    public static final String SPOUSE = "dr_spouse";
+
+    /**
+     * A child is born in a village: the chronicle notes it, and if its parents were not yet married, there is a
+     * wedding first (the bell rings, and the village celebrates).
+     */
+    public static void family(ServerLevel level, Villager a, Villager b, Villager child) {
+        ensureIdentity(a);
+        ensureIdentity(b);
+        ensureIdentity(child);
+        WorldMemory memory = WorldMemory.get(level);
+        WorldMemory.VillageRecord village = memory.nearestVillage(a.blockPosition(), 96.0D);
+        long day = level.getDayTime() / 24000L;
+        String place = village != null ? "#" + village.nameKey() : "?";
+        CompoundTag da = a.getPersistentData();
+        CompoundTag db = b.getPersistentData();
+        boolean married = da.hasUUID(SPOUSE) && da.getUUID(SPOUSE).equals(b.getUUID());
+        if (!married) {
+            da.putUUID(SPOUSE, b.getUUID());
+            db.putUUID(SPOUSE, a.getUUID());
+            memory.record(day, "chronicle.dunesrelics.wedding", place, "#" + Names.villagerKey(da.getInt(NAME)),
+                    "#" + Names.villagerKey(db.getInt(NAME)));
+            if (village != null && level.getBlockState(village.bell).getBlock() instanceof BellBlock bell) {
+                bell.attemptToRing(level, village.bell, null);
+            }
+            for (Villager guest : level.getEntitiesOfClass(Villager.class, a.getBoundingBox().inflate(16.0D))) {
+                level.broadcastEntityEvent(guest, (byte) 14);
+            }
+        }
+        memory.record(day, "chronicle.dunesrelics.birth", "#" + Names.villagerKey(child.getPersistentData().getInt(NAME)), place);
     }
 
     /** Trading makes a village prosper, and it grows faster. */

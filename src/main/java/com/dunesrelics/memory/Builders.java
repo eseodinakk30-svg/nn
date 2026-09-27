@@ -168,7 +168,8 @@ public final class Builders {
                         put(level, pos, Blocks.AIR.defaultBlockState());
                     }
                 }
-                for (int yy = ground; yy > y; yy--) {
+                // higher ground is cut down to the floor, but never more than the building's height
+                for (int yy = Math.min(ground, y + clear); yy > y; yy--) {
                     pos.set(min.getX() + dx, yy, min.getZ() + dz);
                     put(level, pos, Blocks.AIR.defaultBlockState());
                 }

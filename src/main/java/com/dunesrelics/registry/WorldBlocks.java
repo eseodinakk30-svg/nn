@@ -5,6 +5,7 @@ import com.dunesrelics.block.world.ClamBlock;
 import com.dunesrelics.block.world.DreamcatcherBlock;
 import com.dunesrelics.block.world.MillstoneBlock;
 import com.dunesrelics.block.world.SeashellBlock;
+import com.dunesrelics.block.world.SurfBlock;
 import com.dunesrelics.block.world.WaterTroughBlock;
 import com.dunesrelics.block.world.WaterWheelBlock;
 import com.dunesrelics.block.world.WetSandBlock;
@@ -45,6 +46,11 @@ public final class WorldBlocks {
     public static final RegistryObject<Block> CLAM = register("clam", () -> new ClamBlock(
             BlockBehaviour.Properties.of().mapColor(MapColor.TERRACOTTA_LIGHT_GRAY).strength(0.4F).noOcclusion()
                     .sound(SoundType.BONE_BLOCK).randomTicks().pushReaction(PushReaction.DESTROY)));
+
+    /** The flood tide on the beach (no item: the sea brings it). */
+    public static final RegistryObject<Block> SURF = ModBlocks.BLOCKS.register("surf", () -> new SurfBlock(
+            BlockBehaviour.Properties.of().mapColor(MapColor.WATER).replaceable().noCollission().instabreak().noLootTable()
+                    .noOcclusion().randomTicks().sound(SoundType.EMPTY).pushReaction(PushReaction.DESTROY)));
 
     // ---------------------------------------------------------------- Pirates and dreams
     public static final RegistryObject<Block> CANNON = register("cannon", () -> new CannonBlock(

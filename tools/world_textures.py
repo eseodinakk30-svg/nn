@@ -190,6 +190,25 @@ def dreamcatcher():
 # ------------------------------------------------------------------------------------------ items
 
 ITEMS = {
+    "request_note": ([
+        "................",
+        "................",
+        "...oooooooooo...",
+        "...oPPPPPPPPo...",
+        "...oPllllllPo...",
+        "...oPPPPPPPPo...",
+        "...oPllllPPPo...",
+        "...oPPPPPPPPo...",
+        "...oPlllllPPo...",
+        "...oPPPPPPPPo...",
+        "...oPllPPRRPo...",
+        "...oPPPPRrrRo...",
+        "...oPPPPRrrRo...",
+        "...ooooooRRoo...",
+        ".........R.R....",
+        "................",
+    ], {"o": hex_rgb("#8a7a5a"), "P": hex_rgb("#efe6cc"), "l": hex_rgb("#6a5a4a"), "R": hex_rgb("#9a1e1e"),
+        "r": hex_rgb("#c83a32")}),
     "flour": ([
         "................",
         "................",

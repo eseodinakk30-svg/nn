@@ -31,6 +31,9 @@ public class WorldMemory extends SavedData {
     final LongOpenHashSet touched = new LongOpenHashSet();
     final Long2ObjectOpenHashMap<VillageRecord> villages = new Long2ObjectOpenHashMap<>();
     final List<Chronicle.Entry> chronicle = new ArrayList<>();
+    /** Sheets of surf the flood has laid on the beaches, and shallows the ebb has dried into sandbars. */
+    public final LongOpenHashSet surf = new LongOpenHashSet();
+    public final LongOpenHashSet sandbars = new LongOpenHashSet();
     long lastDay = -1L;
     long lastDusk = -1L;
     long lastNight = -1L;
@@ -149,6 +152,8 @@ public class WorldMemory extends SavedData {
         tag.putLong("LastDay", this.lastDay);
         tag.putLong("LastDusk", this.lastDusk);
         tag.putLong("LastNight", this.lastNight);
+        tag.put("Surf", new LongArrayTag(this.surf.toLongArray()));
+        tag.put("Sandbars", new LongArrayTag(this.sandbars.toLongArray()));
         return tag;
     }
 
@@ -171,6 +176,12 @@ public class WorldMemory extends SavedData {
         memory.lastDay = tag.getLong("LastDay");
         memory.lastDusk = tag.getLong("LastDusk");
         memory.lastNight = tag.getLong("LastNight");
+        for (long pos : tag.getLongArray("Surf")) {
+            memory.surf.add(pos);
+        }
+        for (long pos : tag.getLongArray("Sandbars")) {
+            memory.sandbars.add(pos);
+        }
         return memory;
     }
 

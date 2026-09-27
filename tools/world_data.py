@@ -113,9 +113,23 @@ def windmill_sails_models():
         "firstperson_righthand": {"rotation": [0, 45, 0], "scale": [0.3, 0.3, 0.3]}}})
 
 
+def surf_models():
+    """The flood's sheet of water: the still-water texture, tinted like the sea around it, drawn see-through."""
+    block_model("surf", {"parent": "minecraft:block/block", "render_type": "minecraft:translucent",
+                         "textures": {"water": "minecraft:block/water_still", "particle": "minecraft:block/water_still"},
+                         "elements": [{"from": [0, 0, 0], "to": [16, 1.8, 16], "shade": False, "faces": {
+                             "up": face("#water", [0, 0, 16, 16], tint=True),
+                             "north": face("#water", [0, 0, 16, 2], tint=True, cull="north"),
+                             "south": face("#water", [0, 0, 16, 2], tint=True, cull="south"),
+                             "east": face("#water", [0, 0, 16, 2], tint=True, cull="east"),
+                             "west": face("#water", [0, 0, 16, 2], tint=True, cull="west")}}]})
+    blockstate("surf", {"variants": {"": {"model": m("block/surf")}}})
+
+
 def generate_block_assets():
     water_wheel_models()
     windmill_sails_models()
+    surf_models()
 
     # millstone: a stone base (block model) and the runner stone (turned by the block entity renderer)
     base = {"parent": "minecraft:block/block",
@@ -216,7 +230,8 @@ def generate_block_assets():
 
 
 def generate_item_models():
-    generated = ["flour", "dough", "pearl", "message_in_a_bottle", "cannonball", "captain_hat", "gloom_dust", "world_chronicle"]
+    generated = ["flour", "dough", "pearl", "message_in_a_bottle", "cannonball", "captain_hat", "gloom_dust", "world_chronicle",
+                 "request_note"]
     for name in generated:
         item_model(name, {"parent": "minecraft:item/generated", "textures": {"layer0": m("item/" + name)}})
     item_model("cutlass", {"parent": "minecraft:item/handheld", "textures": {"layer0": m("item/cutlass")}})
@@ -463,6 +478,7 @@ def generate_misc_data():
 BLOCKS = {
     "water_wheel": ("Water Wheel", "Водяное колесо"),
     "windmill_sails": ("Windmill Sails", "Крылья ветряной мельницы"),
+    "surf": ("Surf", "Прибой"),
     "millstone": ("Millstone", "Жернова"),
     "water_trough": ("Water Trough", "Жёлоб для воды"),
     "wet_sand": ("Wet Sand", "Мокрый песок"),
@@ -483,6 +499,7 @@ ITEMS = {
     "captain_hat": ("Captain's Hat", "Капитанская треуголка"),
     "gloom_dust": ("Gloom Dust", "Сумрачная пыль"),
     "world_chronicle": ("World Chronicle", "Летопись мира"),
+    "request_note": ("Villager's Request", "Просьба жителя"),
     "pirate_spawn_egg": ("Pirate Spawn Egg", "Яйцо призыва пирата"),
     "pirate_gunner_spawn_egg": ("Pirate Gunner Spawn Egg", "Яйцо призыва пирата-стрелка"),
     "pirate_captain_spawn_egg": ("Pirate Captain Spawn Egg", "Яйцо призыва капитана пиратов"),
@@ -660,6 +677,34 @@ EXTRA = {
     "project.dunesrelics.smithy": ("a smithy", "кузница"),
     "project.dunesrelics.chapel": ("a chapel", "часовня"),
     "sign.dunesrelics.milestone.distance": ("%s m", "%s м"),
+    "item.dunesrelics.request_note.from": ("From %s of %s", "От: %s, деревня %s"),
+    "item.dunesrelics.request_note.bring": ("Bring %s × %s", "Принести: %2$s × %1$s"),
+    "item.dunesrelics.request_note.hunt": ("Drive off the monsters round the village: %s of %s",
+                                           "Прогнать монстров у деревни: %s из %s"),
+    "item.dunesrelics.request_note.find": ("Find the cow that wandered off and bring her back",
+                                           "Найти пропавшую корову и привести её обратно"),
+    "item.dunesrelics.request_note.reward": ("Reward: %s emeralds", "Награда: изумрудов — %s"),
+    "item.dunesrelics.request_note.done": ("Done! Go back to the villager for your reward.",
+                                           "Готово! Вернитесь к жителю за наградой."),
+    "villager.dunesrelics.request.bring": ("Could you help me out? I need a few things. I wrote them down for you.",
+                                           "Не выручишь? Мне кое-что нужно, я записал."),
+    "villager.dunesrelics.request.hunt": ("Monsters prowl round here at night. Could you drive them off?",
+                                          "По ночам тут бродят чудища. Прогонишь их?"),
+    "villager.dunesrelics.request.find": ("My cow has wandered off! Could you find her and bring her back?",
+                                          "Моя корова ушла! Найдёшь её и приведёшь назад?"),
+    "villager.dunesrelics.request.waiting": ("Not yet? I'll wait.", "Ещё не всё? Я подожду."),
+    "villager.dunesrelics.request.thanks": ("Thank you! Here, %s emeralds.", "Спасибо! Держи изумруды: %s."),
+    "villager.dunesrelics.news": ("Have you heard? %s", "Слыхал? %s"),
+    "chronicle.dunesrelics.wedding": ("A wedding in %s: %s and %s.", "Свадьба в деревне %s: %s и %s."),
+    "chronicle.dunesrelics.birth": ("A new little one, %s, in %s.", "Пополнение в деревне %2$s: малыш %1$s."),
+    "name.dunesrelics.cow.0": ("Daisy", "Бурёнка"),
+    "name.dunesrelics.cow.1": ("Buttercup", "Зорька"),
+    "name.dunesrelics.cow.2": ("Bessie", "Пеструшка"),
+    "name.dunesrelics.cow.3": ("Clover", "Ночка"),
+    "name.dunesrelics.cow.4": ("Rosie", "Милка"),
+    "name.dunesrelics.cow.5": ("Maisie", "Звёздочка"),
+    "name.dunesrelics.cow.6": ("Bluebell", "Ромашка"),
+    "name.dunesrelics.cow.7": ("Marigold", "Марта"),
     "commands.dunesrelics.livingworld.status": (
         "Region: %s blocks placed, %s days here, stage %s; trail %s blocks, farm %s, hamlet %s",
         "Регион: поставлено блоков %s, дней здесь %s, стадия %s; тропа %s блоков, ферма %s, хутор %s"),

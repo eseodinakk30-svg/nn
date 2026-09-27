@@ -4,6 +4,7 @@ import com.dunesrelics.item.ModArmorMaterials;
 import com.dunesrelics.item.world.CaptainHatItem;
 import com.dunesrelics.item.world.ChronicleItem;
 import com.dunesrelics.item.world.MessageInABottleItem;
+import com.dunesrelics.item.world.RequestNoteItem;
 import com.dunesrelics.item.world.TideClockItem;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.Item;
@@ -40,6 +41,8 @@ public final class WorldItems {
     public static final RegistryObject<Item> GLOOM_DUST = ITEMS.register("gloom_dust", () -> new Item(new Item.Properties()));
     public static final RegistryObject<Item> WORLD_CHRONICLE = ITEMS.register("world_chronicle",
             () -> new ChronicleItem(new Item.Properties().stacksTo(1)));
+    public static final RegistryObject<Item> REQUEST_NOTE = ITEMS.register("request_note",
+            () -> new RequestNoteItem(new Item.Properties().stacksTo(1)));
 
     // Spawn eggs
     public static final RegistryObject<Item> PIRATE_SPAWN_EGG = ITEMS.register("pirate_spawn_egg",

@@ -112,7 +112,7 @@ public final class ClientSetup {
     @SubscribeEvent
     public static void blockColors(RegisterColorHandlersEvent.Block event) {
         event.register((state, level, pos, tint) -> level != null && pos != null
-                ? BiomeColors.getAverageWaterColor(level, pos) : 0x3F76E4, WorldBlocks.WATER_TROUGH.get());
+                ? BiomeColors.getAverageWaterColor(level, pos) : 0x3F76E4, WorldBlocks.WATER_TROUGH.get(), WorldBlocks.SURF.get());
     }
 
     @SubscribeEvent

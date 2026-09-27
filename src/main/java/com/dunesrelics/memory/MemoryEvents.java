@@ -18,6 +18,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.server.ServerStartingEvent;
+import net.minecraftforge.event.entity.living.BabyEntitySpawnEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.player.ItemFishedEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
@@ -111,8 +112,14 @@ public final class MemoryEvents {
         for (ServerPlayer player : level.players()) {
             VillageLife.greet(level, player, day);
         }
-        if (time % 40 == 0 && rules.getBoolean(ModGameRules.TIDES)) {
-            Tides.tickShore(level, memory, level.random);
+        if (time % 40 == 0) {
+            if (rules.getBoolean(ModGameRules.TIDES)) {
+                Tides.tickShore(level, memory, level.random);
+                Tides.tickTide(level, memory, level.random);
+            } else {
+                // tides switched off: the sea goes back to where it always was
+                Tides.recede(level, memory, 0, false, 256);
+            }
         }
         if (time % 100 == 0 && rules.getBoolean(ModGameRules.VILLAGE_GROWTH)) {
             // the villages near players: surveyed, checked for damage, and given builders
@@ -189,6 +196,13 @@ public final class MemoryEvents {
 
     @SubscribeEvent
     public static void onInteract(PlayerInteractEvent.EntityInteract event) {
+        if (event.getTarget() instanceof Villager villager && event.getLevel() instanceof ServerLevel level
+                && Requests.tryComplete(level, villager, event.getEntity(), event.getItemStack())) {
+            // came back about a request: that is what they talk about, not trade
+            event.setCanceled(true);
+            event.setCancellationResult(InteractionResult.SUCCESS);
+            return;
+        }
         if (event.getTarget() instanceof Villager villager && event.getEntity().isShiftKeyDown()
                 && event.getLevel() instanceof ServerLevel level) {
             ItemStack stack = event.getItemStack();
@@ -204,6 +218,15 @@ public final class MemoryEvents {
         if (event.getSource().getEntity() instanceof Player player && event.getEntity() instanceof Enemy
                 && event.getEntity().level() instanceof ServerLevel level) {
             VillageLife.onMonsterKilled(level, player, event.getEntity());
+            Requests.onMonsterKilled(player, event.getEntity());
+        }
+    }
+
+    @SubscribeEvent
+    public static void onBaby(BabyEntitySpawnEvent event) {
+        if (event.getParentA() instanceof Villager a && event.getParentB() instanceof Villager b
+                && event.getChild() instanceof Villager child && a.level() instanceof ServerLevel level) {
+            VillageLife.family(level, a, b, child);
         }
     }
 
