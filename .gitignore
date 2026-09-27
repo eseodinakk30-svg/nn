@@ -1,0 +1,29 @@
+# gradle
+build/
+.gradle/
+out/
+classes/
+
+# idea / eclipse / vscode
+*.iml
+*.ipr
+*.iws
+.idea/
+.eclipse/
+.settings/
+.classpath
+.project
+bin/
+.vscode/
+
+# minecraft run dirs
+run/
+run-data/
+logs/
+
+# os
+.DS_Store
+Thumbs.db
+
+# texture tooling cache
+tools/__pycache__/
