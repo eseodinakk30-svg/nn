@@ -1,0 +1,8 @@
+The nearest dunesrelics:pirate_ship is at [-864, ~, -544] (994 blocks away)
+
+The nearest #minecraft:village (minecraft:village_plains) is at [-384, ~, 656] (744 blocks away)
+
+ship: -864 -544  village: -384 656
+pirate: Test passed, count: 4
+pirate_gunner: Test passed, count: 3
+pirate_captain: Test passed, count: 1

@@ -1,0 +1,60 @@
+[18:05:57] [Server thread/INFO] [minecraft/IntegratedServer]: Changing view distance to 8, from 10
+[18:05:57] [Server thread/INFO] [minecraft/IntegratedServer]: Changing simulation distance to 6, from 0
+[18:05:57] [Render thread/WARN] [io.ne.ut.in.SystemPropertyUtil/]: Unable to parse the boolean system property 'java.net.preferIPv6Addresses':system - using the default value: false
+[18:05:58] [Netty Local Client IO #0/INFO] [ne.mi.ne.NetworkHooks/]: Connected to a modded server.
+[18:05:58] [Server thread/INFO] [minecraft/PlayerList]: Dev[local:E:1748de37] logged in with entity id 197 at (-29.5, 63.0, 5.5)
+[18:05:58] [Server thread/INFO] [minecraft/MinecraftServer]: Dev joined the game
+[18:05:59] [Render thread/INFO] [minecraft/AdvancementList]: Loaded 31 advancements
+[18:06:14] [Server thread/INFO] [minecraft/MinecraftServer]: [Not Secure] [Server] living_shot 01_pirate_ship
+[18:06:14] [Render thread/INFO] [minecraft/ChatComponent]: [System] [CHAT] [Server] living_shot 01_pirate_ship
+[18:06:20] [Render thread/INFO] [minecraft/AdvancementList]: Loaded 40 advancements
+[18:06:34] [Server thread/INFO] [minecraft/MinecraftServer]: [Not Secure] [Server] living_shot 02_boarding
+[18:06:34] [Render thread/INFO] [minecraft/ChatComponent]: [System] [CHAT] [Server] living_shot 02_boarding
+[18:06:42] [Server thread/WARN] [minecraft/MinecraftServer]: Can't keep up! Is the server overloaded? Running 2516ms or 50 ticks behind
+[18:06:48] [Server thread/INFO] [minecraft/MinecraftServer]: [Not Secure] [Server] living_result pirates_landed
+[18:06:48] [Render thread/INFO] [minecraft/ChatComponent]: [System] [CHAT] [Server] living_result pirates_landed
+[18:07:02] [Server thread/INFO] [minecraft/MinecraftServer]: [Not Secure] [Server] living_shot 03_village
+[18:07:02] [Render thread/INFO] [minecraft/ChatComponent]: [System] [CHAT] [Server] living_shot 03_village
+[18:07:22] [Server thread/INFO] [minecraft/MinecraftServer]: [Not Secure] [Server] living_shot 04_village_life
+[18:07:22] [Render thread/INFO] [minecraft/ChatComponent]: [System] [CHAT] [Server] living_shot 04_village_life
+[18:07:28] [Server thread/INFO] [minecraft/MinecraftServer]: [Not Secure] [Server] living_result world_reacted
+[18:07:28] [Render thread/INFO] [minecraft/ChatComponent]: [System] [CHAT] [Server] living_result world_reacted
+[18:07:47] [Server thread/INFO] [minecraft/MinecraftServer]: [Not Secure] [Server] living_shot 05_world_memory
+[18:07:47] [Render thread/INFO] [minecraft/ChatComponent]: [System] [CHAT] [Server] living_shot 05_world_memory
+[18:08:07] [Server thread/INFO] [minecraft/MinecraftServer]: [Not Secure] [Server] living_shot 06_night
+[18:08:07] [Render thread/INFO] [minecraft/ChatComponent]: [System] [CHAT] [Server] living_shot 06_night
+[18:08:12] [Server thread/INFO] [minecraft/MinecraftServer]: [Not Secure] [Server] living_done
+[18:08:12] [Render thread/INFO] [minecraft/ChatComponent]: [System] [CHAT] [Server] living_done
+[18:08:15] [Server thread/INFO] [minecraft/MinecraftServer]: Stopping server
+[18:08:15] [Server thread/INFO] [minecraft/MinecraftServer]: Saving players
+[18:08:15] [Server thread/INFO] [minecraft/MinecraftServer]: Saving worlds
+[18:08:16] [Server thread/INFO] [minecraft/MinecraftServer]: Saving chunks for level 'ServerLevel[world]'/minecraft:overworld
+[18:08:16] [Server thread/INFO] [minecraft/MinecraftServer]: Saving chunks for level 'ServerLevel[world]'/minecraft:the_end
+[18:08:16] [Server thread/INFO] [minecraft/MinecraftServer]: Saving chunks for level 'ServerLevel[world]'/minecraft:the_nether
+[18:08:16] [Server thread/INFO] [minecraft/MinecraftServer]: ThreadedAnvilChunkStorage (living): All chunks are saved
+[18:08:16] [Server thread/INFO] [minecraft/MinecraftServer]: ThreadedAnvilChunkStorage (DIM1): All chunks are saved
+[18:08:16] [Server thread/INFO] [minecraft/MinecraftServer]: ThreadedAnvilChunkStorage (DIM-1): All chunks are saved
+[18:08:16] [Server thread/INFO] [minecraft/MinecraftServer]: ThreadedAnvilChunkStorage: All dimensions are saved
+
+> Task :runClient FAILED
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':runClient'.
+> Process 'command '/usr/lib/jvm/temurin-17-jdk-amd64/bin/java'' finished with non-zero exit value 143
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights.
+> Get more help at https://help.gradle.org.
+
+Deprecated Gradle features were used in this build, making it incompatible with Gradle 9.0.
+
+You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+
+For more on this, please refer to https://docs.gradle.org/8.8/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+
+BUILD FAILED in 3m 3s
+10 actionable tasks: 3 executed, 7 up-to-date
